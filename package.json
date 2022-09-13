@@ -1,0 +1,26 @@
+{
+  "name": "rushia",
+  "version": "1.0.0",
+  "description": "Steps:",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "node": "^16.6.1"
+  },
+  "dependencies": {
+    "@discordjs/rest": "^0.5.0",
+    "@vitalets/google-translate-api": "^8.0.0",
+    "ascii-table": "^0.0.9",
+    "better-sqlite3": "^7.6.0",
+    "cron": "^1.8.2",
+    "discord.js": "^13.8.0",
+    "express": "^4.18.1",
+    "ip": "^1.1.8",
+    "quick.db": "^9.0.5",
+    "twit": "^2.2.11"
+  }
+}
