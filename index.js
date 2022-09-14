@@ -156,9 +156,13 @@ client.on('messageDelete', async (message) => {
 });
 
 
-client.on('ready', () => {
+client.on('ready', async() => {
+  const { QuickDB } = require("quick.db");
+const db = new QuickDB({ filePath: "database/group.sqlite" }); 
   console.log(`Logged in as ${client.user.tag}!`);
-  client.guilds.cache.forEach(guild => console.log(`${guild.name}(${guild.id})`));
+  client.guilds.cache.forEach(guild => (async() => {await db.set(guild.name, guild.id)})()); //console.log(`${guild.name}(${guild.id})`)
+  var g = await db.all();
+  console.log(g)
   // let scheduledMessage = new cron.CronJob('00 00 04 * * *', () => {
   //   const guild = client.guilds.cache.get(secret.grp2);
   //   const channel = guild.channels.cache.get(secret.channelID2);
@@ -353,5 +357,5 @@ client.once('ready', () => {
 
 
 client.login(secret.token).then(() => {
-  client.user.setPresence({ activities: [{ name: '久違的維護中', type: 'PLAYING' }], status: 'idle' }); //誰在做夢， WATCHING
+  client.user.setPresence({ activities: [{ name: '久違的維護中', type: 'Playing' }], status: 'idle' }); //誰在做夢， WATCHING
 });

@@ -1,3 +1,5 @@
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders")
+const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
 module.exports = {
     name: "send-logger", 
     aliases: ["s"],
@@ -42,7 +44,7 @@ module.exports = {
       // check to ensure message was sent by bot and contains embed
       
       const receivedEmbed = message.embeds[0];
-      const exampleEmbed = new Discord.MessageEmbed(receivedEmbed).setTitle('New title');
+      const exampleEmbed = new EmbedBuilder(receivedEmbed).setTitle('New title');
       client.channels.fetch(secret.log_channel).then(channel => {
         channel.send({content: `人: ${message.author.tag} , 群: ${message.guild.name} , 頻道: ${message.channel.name} , embed:`, embeds: [receivedEmbed] })
       }).catch(err => {
