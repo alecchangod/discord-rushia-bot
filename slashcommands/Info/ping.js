@@ -13,42 +13,44 @@ module.exports = {
         }
     ],
     run: async(client, interaction, guild,  args) => {
+        var yourping = new Date().getTime() - interaction.createdTimestamp
+        var botping = Math.round(client.ws.ping);
         interaction.reply({
-            content: "test"
+            content: `Your ping: ${yourping} \nBots ping: ${botping}`
         })
-        const msg = interaction.options.getString('message')
-        const row = new ActionRowBuilder()
-        .addComponents(
-            new ButtonBuilder()
-            .setLabel('Button')
-            .setCustomId('button')
-            .setStyle(ButtonStyle.Primary)
-        )
+        // const msg = interaction.options.getString('message')
+        // const row = new ActionRowBuilder()
+        // .addComponents(
+        //     new ButtonBuilder()
+        //     .setLabel('Button')
+        //     .setCustomId('button')
+        //     .setStyle(ButtonStyle.Primary)
+        // )
 
-        const row2 = new ActionRowBuilder()
-        .addComponents(
-            new SelectMenuBuilder()
-            .setCustomId('select')
-            .setPlaceholder('Nothing Selected')
-            .addOptions(
-                {
-                    label: 'Select Me',
-                    description: 'Select the button',
-                    value: 'first_option',
-                },
-                {
-                    label: 'Select Me2',
-                    description: 'Select2 the button',
-                    value: 'second_option',
-                }
-            )
-        )
-        const embed = new EmbedBuilder()
-        .setTitle('Message')
-        .setDescription(`${msg}`)
-        interaction.followUp({
-            embeds: [embed],
-            components: [row, row2]
-        })
+        // const row2 = new ActionRowBuilder()
+        // .addComponents(
+        //     new SelectMenuBuilder()
+        //     .setCustomId('select')
+        //     .setPlaceholder('Nothing Selected')
+        //     .addOptions(
+        //         {
+        //             label: 'Select Me',
+        //             description: 'Select the button',
+        //             value: 'first_option',
+        //         },
+        //         {
+        //             label: 'Select Me2',
+        //             description: 'Select2 the button',
+        //             value: 'second_option',
+        //         }
+        //     )
+        // )
+        // const embed = new EmbedBuilder()
+        // .setTitle('Message')
+        // .setDescription(`${msg}`)
+        // interaction.followUp({
+        //     embeds: [embed],
+        //     components: [row, row2]
+        // })
     }
 }
