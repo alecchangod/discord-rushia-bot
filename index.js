@@ -357,5 +357,5 @@ client.once('ready', () => {
 
 
 client.login(secret.token).then(() => {
-  client.user.setPresence({ activities: [{ name: '久違的維護中', type: 'PLAYING' }], status: 'idle', clientStatus: "desktop"}); //誰在做夢， WATCHING
+  client.user.setPresence({ activities: [{ name: '誰在做夢', type: 'Watching'}], status: 'idle', clientStatus: "desktop"}); //，  
 });
