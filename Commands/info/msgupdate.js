@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } >
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require('discord.js");
 const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
 module.exports = {
     name: "msgupdate",
