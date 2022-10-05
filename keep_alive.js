@@ -12,10 +12,9 @@ app.get('/',function(req, res) {
 
 
 const ip = require('ip');
-const ipAddress = ip.address();
 const port = 3000
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
-  console.log(`Network access via: ${ipAddress}:${port}!`);
+  console.log(`Network access via: localhost:${port}!`);
 });

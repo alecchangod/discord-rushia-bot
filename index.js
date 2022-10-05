@@ -163,12 +163,12 @@ const db = new QuickDB({ filePath: "database/group.sqlite" });
   client.guilds.cache.forEach(guild => (async() => {await db.set(guild.name, guild.id)})()); //console.log(`${guild.name}(${guild.id})`)
   var g = await db.all();
   console.log(g)
-  // let scheduledMessage = new cron.CronJob('00 00 04 * * *', () => {
-  //   const guild = client.guilds.cache.get(secret.grp2);
-  //   const channel = guild.channels.cache.get(secret.channelID2);
-  //   channel.send('你各位別當死魚堆');
-  // });
-  // scheduledMessage.start()
+   let scheduledMessage = new cron.CronJob('00 00 04 * * *', () => {
+     const guild = client.guilds.cache.get(secret.grp2);
+     const channel = guild.channels.cache.get(secret.channelID2);
+     channel.send('你各位別當死魚堆');
+   });
+   scheduledMessage.start()
 });
 let date_ob = new Date();
 

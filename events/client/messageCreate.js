@@ -29,7 +29,7 @@ client.on('messageCreate', async message => {
 
 //message log
 client.on('messageCreate', async message => {
-  if (message.channel.parent.id === "974997417315414016") return;  
+  if ((message.channel.parent.id) && (message.channel.parent.id === "974997417315414016")) return;  
   if(!message.guild) return;
   const cmd = 'send-logger';
   let command = client.commands.get(cmd)

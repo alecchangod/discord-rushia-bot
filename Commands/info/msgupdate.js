@@ -1,3 +1,5 @@
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } >
+const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
 module.exports = {
     name: "msgupdate",
     aliases: ["m"],
