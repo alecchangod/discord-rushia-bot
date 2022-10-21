@@ -104,13 +104,13 @@ client.on('messageCreate', (message) => {
     if (message.author.id === secret.botid) return;
     // if (message.author.id === secret.me) return;
     if (message.channel.id === secret.log_channel) return;
-     if (message.channel.parent.id === "946997221969240075") return; 
-     if (message.channel.parent.id === "963763737683181568") return;
-     if (message.channel.parent.id === "974997417315414016") return;  
-     if (message.channel.parent.id === "951150838657744937") return; 
-     if (message.channel.parent.id === "948101203202543696") return; 
-     if (message.channel.parent.id === "949597072343068714") return;
-     if (message.channel.parent.id === "942625037956030504") return;
+     if ((message.channel.parent) && (message.channel.parent.id === "946997221969240075")) return; 
+     if ((message.channel.parent) && (message.channel.parent.id === "963763737683181568")) return;
+     if ((message.channel.parent) && (message.channel.parent.id === "974997417315414016")) return;  
+     if ((message.channel.parent) && (message.channel.parent.id === "951150838657744937")) return; 
+     if ((message.channel.parent) && (message.channel.parent.id === "948101203202543696")) return; 
+     if ((message.channel.parent) && (message.channel.parent.id === "949597072343068714")) return;
+     if ((message.channel.parent) && (message.channel.parent.id === "942625037956030504")) return;
      // if (message.channel.parent.id === "969408256768344066") return; //bot testing channel
     if (message.content.toLowerCase().includes('老ㄆㄛˊ') || message.content.toLowerCase().includes('waifu')) {
       message.reply('醒')
