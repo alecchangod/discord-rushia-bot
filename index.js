@@ -1,17 +1,26 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-
-
 const Discord = require('discord.js');
 const translate = require('@vitalets/google-translate-api');
 const { MessageAttachment } = require('discord.js');
+const keep_alive = require('./keep_alive.js')
+const secret = require('./config.json')
+const cron = require('cron');
+const Twit = require('twit');
+var T = new Twit({
+  consumer_key: secret.TWITTER_CONSUMER_KEY,
+  consumer_secret: secret.TWITTER_CONSUMER_SECRET,
+  access_token: secret.TWITTER_ACCESS_TOKEN,
+  access_token_secret: secret.TWITTER_ACCESS_TOKEN_SECRET,
+  timeout_ms: 60 * 1000,  // optional HTTP request timeout to apply to all requests.
+  strictSSL: true,     // optional - requires SSL certificates to be valid.
+})
 // const {
 //   Client, GatewayIntentBits, Embed, Embedbuilder, EnumResolvers, GatewayIntendBits, Partials, ApplicationCommandType, ApplicationCommandOptionType, ButtonStyle, Colors, Collection, MessageEmbed, ButtonBuilder
 // } = require('discord.js');
 // const client = new Client({
 //   partials: ['Messages', 'Channels', 'Reactions', 'GuildMembers', 'enum'], intents: ["Guilds","GuildMembers","GuildBans","GuildIntegrations","GuildWebhooks","GuildInvites","GuildVoiceStates","GuildPresences","GuildMessages","GuildMessageReactions","GuildMessageTyping","DirectMessages","DirectMessageReactions","DirectMessageTyping"],
 // });
-
 
 const {
   Client, Intents, Embed, Embedbuilder, EnumResolvers, GatewayIntendBits, Partials, ApplicationCommandType, ApplicationCommandOptionType, ButtonStyle, Colors, Collection, MessageEmbed, ButtonBuilder
@@ -56,10 +65,6 @@ intents: ['Guilds',
   'MessageContent']
 });
 
-const keep_alive = require('./keep_alive.js')
-const secret = require('./config.json')
-
-
 process.setMaxListeners(50)
 process.on('unhandledRejection', err => {
 
@@ -81,17 +86,13 @@ module.exports = client;
   require(`./structures/${handler}`)(client);
 });
 
-
 // //twitter track start
-// client.once('ready', () => {
-//   const cmd = 'main';
-//   let command = client.commands.get(cmd)
-//   if(!command) command = client.commands.get(client.aliases.get(cmd));
-//   if(command) command.run(client, secret)
-// });
-
-
-
+client.once('ready', () => {
+  const cmd = 'main';
+  let command = client.commands.get(cmd)
+  if(!command) command = client.commands.get(client.aliases.get(cmd));
+  if(command) command.run(client, secret, T)
+});
 
 //new member
 client.on('guildMemberAdd', async member => {
@@ -101,16 +102,13 @@ client.on('guildMemberAdd', async member => {
   if(command) command.run(client, message, secret, member)
 });
 
-
 //role change
-
 client.on('guildMemberUpdate', async (oldMember, newMember) => { 
   const cmd = 'mupdate';
   let command = client.commands.get(cmd)
   if(!command) command = client.commands.get(client.aliases.get(cmd));
   if(command) command.run(client, oldMember, newMember)
 });
-
 
 //message edit
 client.on('messageUpdate', async (oldMessage, newMessage) => { 
@@ -122,7 +120,6 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
   if(command) command.run(client, oldMessage, newMessage, secret)
 });
 
-
 //message delete log
 client.on('messageDelete', async (message) => {
   if (message.channel.parent.id === "974997417315414016") return;  
@@ -132,7 +129,6 @@ client.on('messageDelete', async (message) => {
   if(!command) command = client.commands.get(client.aliases.get(cmd));
   if(command) command.run(client, message, secret)
 })
-
 
 //dm edit detect
 client.on('messageUpdate', async (oldMessage, newMessage) => {
@@ -144,7 +140,6 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 }
 });
 
-
 //dm delete detect
 client.on('messageDelete', async (message) => {
   if (message.channel.type == 1) {
@@ -155,7 +150,7 @@ client.on('messageDelete', async (message) => {
 }
 });
 
-
+//start-up activities
 client.on('ready', async() => {
   const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/group.sqlite" }); 
@@ -163,6 +158,7 @@ const db = new QuickDB({ filePath: "database/group.sqlite" });
   client.guilds.cache.forEach(guild => (async() => {await db.set(guild.name, guild.id)})()); //console.log(`${guild.name}(${guild.id})`)
   var g = await db.all();
   console.log(g)
+  //auto send message
    let scheduledMessage = new cron.CronJob('00 00 04 * * *', () => {
      const guild = client.guilds.cache.get(secret.grp2);
      const channel = guild.channels.cache.get(secret.channelID2);
@@ -199,9 +195,6 @@ console.log(year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" 
 
 // prints time in HH:MM format
 console.log(hours + ":" + minutes);
-
-const cron = require('cron');
-
 
 client.setMaxListeners(50)
 
@@ -324,11 +317,6 @@ process.on('unhandledRejection', err => {
   console.log(err);
 });
 
-
-
-
-
-
 //self role
 client.once('ready', () => {
   let channel = client.channels.fetch('963802334482284595').then(channel => {
@@ -355,7 +343,7 @@ client.once('ready', () => {
   })
 });
 
-
+//login
 client.login(secret.token).then(() => {
-  client.user.setPresence({ activities: [{ name: '誰在做夢', type: 'Watching'}], status: 'idle', clientStatus: "desktop"}); //，  
+  client.user.setPresence({ activities: [{ name: '誰在做夢', type: 'watching'}], status: 'idle', clientStatus: "desktop"}); //，  
 });
