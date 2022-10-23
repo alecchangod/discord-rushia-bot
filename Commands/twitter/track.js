@@ -55,11 +55,11 @@ module.exports = {
             (async () => {
 
                 //add new track
-                var check = await db.get(`track`);
+                var check0 = await db.get(`track`);
                 // let c1 = 0;
-                if ((check != null)) {
-                    if (!check.includes(user_id)) {
-                        if (check == []) (async () => { await db.set('track', [user_id]) })();
+                if ((check0 != null)) {
+                    if (!check0.includes(user_id)) {
+                        if (check0 == []) (async () => { await db.set('track', [user_id]) })();
                         else console.log('adding screen name'), (async () => { await db.push('track', user_id) })();
                     }
                     else return console.log('user already added', check);
@@ -74,10 +74,10 @@ module.exports = {
                 else await db.push('track', user_id);
 
                 //put screen name
-                var check2 = await db.get(user_id);
-                if (check2 != null) {
-                    if (!check2.includes(user_id)) { console.log('adding user id'), (async () => { await db.set(user_id, screen_name) })(); }
-                    else return console.log('user already tracking', check2);
+                var check = await db.get(user_id);
+                if (check != null) {
+                    if (!check.includes(user_id)) { console.log('adding user id'), (async () => { await db.set(user_id, screen_name) })(); }
+                    else return console.log('user already tracking', check);
                 }
                 else await db.push(user_id, screen_name);
 
