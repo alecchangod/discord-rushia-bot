@@ -2,7 +2,7 @@
 <br> Rushia </br>
 </h1>
 
-# About the bot
+### About the bot
 Rushia is a bot written by [alecchangod](https://github.com/alecchangod) in [discord.js](https://discord.js.org/#/)
 
 # [Add rushia to your server](https://discord.com/api/oauth2/authorize?client_id=953567399687364659&permissions=8&scope=bot%20applications.commands)
