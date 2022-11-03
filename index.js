@@ -15,12 +15,6 @@ var T = new Twit({
   timeout_ms: 60 * 1000,  // optional HTTP request timeout to apply to all requests.
   strictSSL: true,     // optional - requires SSL certificates to be valid.
 })
-// const {
-//   Client, GatewayIntentBits, Embed, Embedbuilder, EnumResolvers, GatewayIntendBits, Partials, ApplicationCommandType, ApplicationCommandOptionType, ButtonStyle, Colors, Collection, MessageEmbed, ButtonBuilder
-// } = require('discord.js');
-// const client = new Client({
-//   partials: ['Messages', 'Channels', 'Reactions', 'GuildMembers', 'enum'], intents: ["Guilds","GuildMembers","GuildBans","GuildIntegrations","GuildWebhooks","GuildInvites","GuildVoiceStates","GuildPresences","GuildMessages","GuildMessageReactions","GuildMessageTyping","DirectMessages","DirectMessageReactions","DirectMessageTyping"],
-// });
 
 const {
   Client, Intents, Embed, Embedbuilder, EnumResolvers, GatewayIntendBits, Partials, ApplicationCommandType, ApplicationCommandOptionType, ButtonStyle, Colors, Collection, MessageEmbed, ButtonBuilder
@@ -68,7 +62,7 @@ intents: ['Guilds',
 process.setMaxListeners(50)
 process.on('unhandledRejection', err => {
 
-  var channel = client.channels.fetch('994459707580358656').then(channel => {
+  client.channels.fetch('994459707580358656').then(channel => {
     channel.send(`Unhandled Promise Rejection: ${err}`);
   })
   });
@@ -158,7 +152,7 @@ const db = new QuickDB({ filePath: "database/group.sqlite" });
   client.guilds.cache.forEach(guild => (async() => {await db.set(guild.name, guild.id)})()); //console.log(`${guild.name}(${guild.id})`)
   var g = await db.all();
   console.log(g)
-  //auto send message
+  //send scheduled message
    let scheduledMessage = new cron.CronJob('00 00 04 * * *', () => {
      const guild = client.guilds.cache.get(secret.grp2);
      const channel = guild.channels.cache.get(secret.channelID2);
