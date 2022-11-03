@@ -16,7 +16,7 @@ module.exports = {
           (async () => {
             var a = await db.get(ch_id)
 
-            a.forEach(uid => {
+            a?.forEach(uid => {
               (async () => {
                 // const c = await db.get(`${e}_c`);
 
