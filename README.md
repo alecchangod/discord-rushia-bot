@@ -1,7 +1,9 @@
 <h1 style="text-align: center;">
 <br> Rushia </br>
 </h1>
-A bot written by [alecchangod](https://github.com/alecchangod) in [discord.js](https://discord.js.org/#/)
+
+# About the bot
+Rushia is a bot written by [alecchangod](https://github.com/alecchangod) in [discord.js](https://discord.js.org/#/)
 
 # [Add rushia to your server](https://discord.com/api/oauth2/authorize?client_id=953567399687364659&permissions=8&scope=bot%20applications.commands)
 It will require admin permission(all permission) by default. If you don't like that, you can use [this link](https://discord.com/api/oauth2/authorize?client_id=953567399687364659&permissions=2068063845568&scope=bot%20applications.commands) instead. Incase any feature doesn't work, just tell me. I'll updated the link.
