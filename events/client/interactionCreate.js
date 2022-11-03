@@ -5,9 +5,10 @@ client.on("interactionCreate", async(interaction) => {
 
         const cmd = client.slashCommands.get(interaction.commandName);
         if(!cmd)
-        return interaction.followUp({
+        return interaction.reply({
             content: "An Error Has Occered In Slash Command"
         });
+        if(!interaction.guildId) return interaction.reply("using slash command in DM is not yet supported.")
 
         const guild =  client.guilds.cache.get(interaction.guildId);
         const args = [];
