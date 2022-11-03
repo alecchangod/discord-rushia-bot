@@ -8,14 +8,14 @@ module.exports = {
         {
             name: 'amount',
             description: 'enter the amount of message that you want to delete',
-            type: ApplicationCommandOptionType.Integer,
+            type: 3,
             require: true
         }
     ],
   run: async (client, interaction) => {
     // Parse Amount
-    // var amount = Number(interaction.options.getString('amount'));
-    // if (amount === "NaN") return interaction.reply({ content: ("please provide a valid number."), ephemeral: true });
+    var amount = Number(interaction.options.getString('amount'));
+    if (amount === "NaN") return interaction.reply({ content: ("please provide a valid number."), ephemeral: true });
     if (amount > 100) return interaction.reply({ content: ("max amount of message to delete allowed is 100."), ephemeral: true });
     // Fetch messages (will be filtered and lowered up to max amount requested)
     interaction.channel.messages.fetch({
