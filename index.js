@@ -1,12 +1,14 @@
+// Imports the client library
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const Discord = require('discord.js');
-const translate = require('@vitalets/google-translate-api');
+const fs = require('fs')
 const { MessageAttachment } = require('discord.js');
 const keep_alive = require('./keep_alive.js')
 const secret = require('./config.json')
 const cron = require('cron');
 const Twit = require('twit');
+// Creates clients
 var T = new Twit({
   consumer_key: secret.TWITTER_CONSUMER_KEY,
   consumer_secret: secret.TWITTER_CONSUMER_SECRET,
@@ -15,11 +17,9 @@ var T = new Twit({
   timeout_ms: 60 * 1000,  // optional HTTP request timeout to apply to all requests.
   strictSSL: true,     // optional - requires SSL certificates to be valid.
 })
-
 const {
   Client, Intents, Embed, Embedbuilder, EnumResolvers, GatewayIntendBits, Partials, ApplicationCommandType, ApplicationCommandOptionType, ButtonStyle, Colors, Collection, MessageEmbed, ButtonBuilder
 } = require('discord.js');
-const fs = require('fs')
 const client = new Discord.Client({
 messageCacheLifetime: 60,
 fetchAllMembers: false,
@@ -93,7 +93,7 @@ client.on('guildMemberAdd', async member => {
   const cmd = 'join';
   let command = client.commands.get(cmd)
   if(!command) command = client.commands.get(client.aliases.get(cmd));
-  if(command) command.run(client, message, secret, member)
+  if(command) command.run(client, secret, member)
 });
 
 //role change

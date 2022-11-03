@@ -1,9 +1,11 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders")
 const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
-const translate = require('@vitalets/google-translate-api');
 const wait = require('node:timers/promises').setTimeout;
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/lang.sqlite" });
+const { translate } = require("@almeidx/translate");
+const lang = require('../../lang.json')
+
 
 module.exports = {
     name: 'tl',
@@ -16,12 +18,12 @@ module.exports = {
             require: true
         },
 
-        {
-            name: 'original-lang',
-            description: 'enter original language',
-            type: ApplicationCommandOptionType.String,
-            require: true
-        },
+        // {
+        //     name: 'original-lang',
+        //     description: 'enter original language',
+        //     type: ApplicationCommandOptionType.String,
+        //     require: true
+        // },
         {
             name: 'tar-lang',
             description: 'enter target language',
@@ -38,19 +40,18 @@ module.exports = {
         var trantext = ""
         var trantext = interaction.options.getString('text');
         var tarlang = interaction.options.getString('tar-lang');
-        var orilang = interaction.options.getString('original-lang');
+        // var orilang = interaction.options.getString('original-lang');
         if ((!tarlang) || (tarlang.length = 0)) var tarlang = await db.get(`${interaction.guild.id}_lang`);
         await wait(100);
-        if ((!orilang) || (orilang.length = 0)) var orilang = "auto";
+        // if ((!orilang) || (orilang.length = 0)) var orilang = "auto";
         if (tarlang === null) var tarlang = "zh-TW";
-        var tar = translate.languages[tarlang];
-        var ori = translate.languages[orilang];
-        console.log(orilang, tarlang, tar, ori);
-        if (tar === undefined) return await wait(2000), interaction.editReply("please input a valid language code.");
-        if (ori === undefined) return await wait(2000), interaction.editReply("please input a valid language code.");
+        if(JSON.stringify(lang).includes(tarlang) === false) return await wait(2000), interaction.editReply("please input a valid language code.");
+        // var ori = translate.languages[orilang];
+        // console.log(orilang, tarlang, tar, ori);
+        // if (tar === undefined) return await wait(2000), interaction.editReply("please input a valid language code.");
+        // if (ori === undefined) return await wait(2000), interaction.editReply("please input a valid language code.");
         if ((!trantext) || (trantext.length = 0)) return await wait(2000), interaction.editReply('must provide text to translate!');
-        translate(trantext, { from: orilang, to: tarlang }).then(res => {
-            interaction.editReply(`原語言：${res.from.language.iso} \n 譯文： ${res.text} \n ||沒錯就是Google渣翻||`)
-        })
+        const translation = await translate(trantext, tarlang);
+        interaction.editReply(`原語言：${translation.sourceLang} \n 譯文： ${translation.translation} \n ||沒錯就是Google渣翻||`)
     }
 }

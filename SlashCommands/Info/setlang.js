@@ -3,7 +3,9 @@ const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
 const wait = require('node:timers/promises').setTimeout;
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/lang.sqlite" }); 
-const translate = require('@vitalets/google-translate-api');
+const { translate } = require("@almeidx/translate");
+const lang = require('../../lang.json')
+
 
 module.exports = {
     name: 'setlang',
@@ -18,12 +20,11 @@ module.exports = {
     ],
     run: async(client, interaction, guild,  args) => {
         interaction.reply("loading...")
-      var lang = interaction.options.getString('lang');
-      var l = translate.languages[lang];
-        if (l === undefined) return await wait(2000), interaction.editReply("please input a valid language code.");
-      await db.set(`${interaction.guild.id}_lang`, lang);
+      var slang = interaction.options.getString('lang');
+      if(JSON.stringify(lang).includes(slang) === false) return await wait(2000), interaction.editReply("please input a valid language code.");
+      await db.set(`${interaction.guild.id}_lang`, slang);
       var nlang = await db.get(`${interaction.guild.id}_lang`);
-      await wait(500);
+      await wait(2000);
       interaction.editReply(`new preferred translate language was setted to ${nlang} .`)
     }
 }

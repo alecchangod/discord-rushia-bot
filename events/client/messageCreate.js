@@ -1,5 +1,9 @@
 const client = require('../../index.js')
 const Discord = require('../../index.js')
+
+
+
+// Creates clients
 const PREFIX = '='
 const secret = require('../../config.json')
 const { QuickDB } = require("quick.db");
