@@ -39,19 +39,19 @@ Give the bot permission to create slash command and just type "/" in the chat bo
 You can choose opition for the command.
 
 ### Feature planned to add.
-help - show all command and useage of it
-log - log message deletion/update to a log channel(if you have a channel named "log" then it is forced to enable by now. Will add command to change later.
-more accurate role change
-language per server
-calculator
-join message
-twitter(track/untrack/delete/ping role/translate)
-bot status
-leave server logging
-manage role
-count message sent by a user(if discord api allow)
-leveling system(rank for user)
-music(already done, will add soon)
-schedule message
+help - show all command and useage of it \n
+log - log message deletion/update to a log channel(if you have a channel named "log" then it is forced to enable by now. Will add command to change later. \n
+more accurate role change \n
+language per server \n 
+calculator \n
+join message \n 
+twitter(track/untrack/delete/ping role/translate) \n 
+bot status \n
+leave server logging \n
+manage role \n
+count message sent by a user(if discord api allow) \n
+leveling system(rank for user) \n
+music(already done, will add soon) \n
+schedule message \n
 
-If you have any suggestion plesase tell me in the support channel. Thanks a lot!
+### If you have any suggestion plesase tell me in the support channel. Thanks a lot!
