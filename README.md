@@ -38,7 +38,7 @@ Useage: {prefix} warn {tag the target user here} {reason for warning}
 Give the bot permission to create slash command and just type "/" in the chat box and command will appear.
 You can choose opition for the command.
 
-#### Feature planned to add.
+### Feature planned to add.
 help - show all command and useage of it
 log - log message deletion/update to a log channel(if you have a channel named "log" then it is forced to enable by now. Will add command to change later.
 more accurate role change
