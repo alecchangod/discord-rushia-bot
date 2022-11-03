@@ -44,11 +44,45 @@ module.exports = {
 
 
             // Getting an object from the database:
-            await db.get(`track`).then(gid => {
-                gid.forEach(g_id => {
+            await db.get(`track`).then(uid => {
+                uid.forEach(u_id => {
                     (async () => {
-                        var cid = await db.get(`${g_id}_ch`)
+                        var cid = await db.get(`${u_id}_ch`)
                         cid.forEach(ch_id => {
+
+                            ch_id.forEach(uid => {
+
+
+
+                                T.get('users/show', { id: uid }, function (err, data, response) {
+                                    if (err) {
+                                        console.log(`User Fetch Error`);
+                                        console.log(err);
+                                        message.reply("Error while fetching user, please make sure you have entered a correct twitter screen name. To check all command and the usage of the command, please use `=help`.")
+                                    }
+
+                                    var screen_name = data.screen_name;
+                                    console.log(screen_name)
+                                    if (det == screen_name) {
+                                        var user_id = data.id_str;
+                                        (async () => { var sn = await db.get(user_id) 
+                                        if (sn = screen_name){
+                                            
+                                        }
+                                    })()
+                                    }
+
+                                    // (async () => {
+                                    //     await db.get(uid).then(() => {
+                                    //         if (screen_name == user_name) {
+                                    //             used++
+                                    //         }
+                                    //     })
+                                    // })()
+
+                                    // if (used == 0) { (async () => { await db.delete(user_id) })() };
+                                })();
+                            })
 
 
                             (async () => {
@@ -57,35 +91,7 @@ module.exports = {
 
 
 
-                                a.forEach(uid => {
-
-
-
-                                    T.get('users/show', { id: uid }, function (err, data, response) {
-                                        if (err) {
-                                            console.log(`User Fetch Error`);
-                                            console.log(err);
-                                            message.reply("Error while fetching user, please make sure you have entered a correct twitter screen name. To check all command and the usage of the command, please use `=help`.")
-                                        }
-
-                                        var screen_name = data.screen_name;
-                                        console.log(screen_name)
-                                        if (det == screen_name) {
-                                            var user_id = data.id_str;
-                                            (async () => { await db.pull(channel_id, user_id) })()
-                                        }
-
-                                        (async () => {
-                                            await db.get(uid).then(() => {
-                                                if (screen_name == user_name) {
-                                                    used++
-                                                }
-                                            })
-                                        })()
-
-                                        if (used == 0) { (async () => { await db.delete(user_id) })() };
-                                    })();
-                                })
+                                a
 
                             })()
 
