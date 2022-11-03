@@ -173,6 +173,8 @@ client.on('messageCreate', (message) => {
     }
 
     if (message.content.toLowerCase().includes('婆')) {
+      var msg = message.content.split("婆");
+      if (msg[2] != undefined) return message.reply("https://cdn.discordapp.com/attachments/956867669959794728/1037586158877679636/unknown.png");
       var a = (`https://media.discordapp.net/attachments/956867669959794728/960943560117596221/FB_IMG_1628385959138.jpg`);
       var b = (`醒`);
       let n = getRandomNumber(0, 2);
