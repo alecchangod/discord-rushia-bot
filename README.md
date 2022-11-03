@@ -20,23 +20,25 @@ By default, the prefix is "=". You can change that with the setprefix command.
 - getprefix - get your current prefix detail. (who set it, when, what is it)
 - ping - get the ping of the bot
 - say - send something as the bot
-Useage: {prefix}say {content}
+- Useage: {prefix}say {content}
 - msgdel - delete multiple message at once
 REQUIRE ADMIN/MANAGE MESSAGES PERMISSION TO USE
-Useage: {prefix}msgdel {amount}
+- Useage: {prefix}msgdel {amount}
+- setlang - set language for translation
+Slash command only for now. Will add soon for normal chat box input.
 - setprefix - change your server prefix(in 5 char)
 REQUIRE ADMIN PERMISSION TO USE
-Useage: {current prefix}setprefix {new prefix}
+- Useage: {current prefix}setprefix {new prefix}
 - spam(for personal use now. will release soon) - spam message in a channel.
 REQUIRE ADMIN/MANAGE MESSAGES PERMISSION TO USE
-Useage: {prefix}spam {amount} {content}
+- Useage: {prefix}spam {amount} {content}
 - time - get current time(yeah it is just such a useless command)
-- tl - translate something to another language(hardcoded target language to zh-TW for now. Use slash command version for more opition)
+- tl - translate something to another language
 (if you want to translate something that have a space inside use the slash command version instead)
-Useage: {prefix}tl {content}
+- Useage: {prefix}tl {content} {target language code(check lang.json for the code. If any code wan't there, please tell me inside the support channel or just open a issue in github page.)}
 - warn - warn a user(can't warn admin)
 REQUIRE ADMIN/TIMEOUT MEMBERS PERMISSION TO USE
-Useage: {prefix} warn {tag the target user here} {reason for warning}
+- Useage: {prefix} warn {tag the target user here} {reason for warning}
 
 #### Use with slash command
 Give the bot permission to create slash command and just type "/" in the chat box and command will appear.
