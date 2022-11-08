@@ -9,6 +9,7 @@ module.exports = {
     var user_id = await db.get(`track`)
     console.log(user_id)
     user_id?.array?.forEach(u_id => {
+      console.log(u_id)
       (async () => {
         var c_id = await db.get(`${u_id}_ch`)
         c_id?.array?.forEach(ch_id => {
