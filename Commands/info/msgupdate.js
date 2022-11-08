@@ -7,7 +7,7 @@ module.exports = {
         if (!newMessage) return;
         // if (newMessage.channel.id === secret.log_channel) return;
         // if (newMessage.channel.id === secret.edit_log_channel) return;
-        if (message.channel.name.toLowerCase().includes("log")) return;
+        if (newMessage.channel.name.toLowerCase().includes("log")) return;
         if (newMessage.content = oldMessage?.content) return;
         if ((newMessage.embeds[0]) && (newMessage.embeds[0].description) && (oldMessage.embeds[0]) && (oldMessage.embeds[0].description) ) {
             if (newMessage.embed = oldMessage?.embed) return;
