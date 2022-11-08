@@ -58,7 +58,7 @@ module.exports = {
                 var check0 = await db.get(`track`);
                 // let c1 = 0;
                 if ((check0 != null) && (check0 != undefined)) {
-                    if (!check0.includes(user_id)) {
+                    if (JSON.stringify(check0).includes(user_id) === false) {
                         if (check0 == []) (async () => { await db.set('track', [user_id]) })();
                         else console.log('adding screen name'), (async () => { await db.push('track', user_id) })();
                     }
@@ -76,7 +76,7 @@ module.exports = {
                 //put screen name
                 var check = await db.get(user_id);
                 if ((check != null) && (check != undefined)) {
-                    if (!check.includes(user_id)) { console.log('adding user id'), (async () => { await db.set(user_id, screen_name) })(); }
+                    if (JSON.stringify(check).includes(screen_name) === false) { console.log('adding user id'), (async () => { await db.set(user_id, screen_name) })(); }
                     else return console.log('user already tracking', check);
                 }
                 else await db.push(user_id, screen_name);
@@ -90,7 +90,7 @@ module.exports = {
                 var check1 = await db.get(`${user_id}_ch`);
                 // let c2 = 0
                 if ((check1 != null) && (check1 != undefined)) {
-                    if (!check1.includes(channel_id)) {
+                    if (JSON.stringify(check1).includes(channel_id) === false) {
                         console.log('adding user channel'), (async () => {
                             await db.push(`${user_id}_ch`, channel_id)
                         })();
@@ -108,7 +108,7 @@ module.exports = {
                 var check2 = await db.get(channel_id);
                 // let c2 = 0
                 if ((check2 != null) && (check2 != undefined)) {
-                    if (!check2.includes(user_id)) {
+                    if (JSON.stringify(lang).includes(user_id) === false) {
                         console.log('adding user into channel'), (async () => {
                             await db.push(channel_id, user_id)
                         })();

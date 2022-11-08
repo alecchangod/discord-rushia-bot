@@ -7,16 +7,17 @@ module.exports = {
   run: async (client, secret, message, T) => {
     // if (message.author.id !== secret.me) return;
     var user_id = await db.get(`track`)
-    user_id?.forEach(u_id => {
+    console.log(user_id)
+    user_id?.array?.forEach(u_id => {
       (async () => {
         var c_id = await db.get(`${u_id}_ch`)
-        c_id.forEach(ch_id => {
+        c_id?.array?.forEach(ch_id => {
 
 
           (async () => {
             var a = await db.get(ch_id)
 
-            a?.forEach(uid => {
+            a?.array.forEach(uid => {
               (async () => {
                 // const c = await db.get(`${e}_c`);
 
