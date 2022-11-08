@@ -146,12 +146,17 @@ client.on('messageDelete', async (message) => {
 
 //start-up activities
 client.on('ready', async() => {
+
+  console.log(`${client.user.tag} is ready on ${client.guilds.cache.size} servers.`);
+  client.guilds.cache.forEach(guild=>console.log(`${guild.name}(${guild.id}), ${guild.memberCount} user, ${guild.roles.cache.size} roles, ${guild.channels.cache.size} channels`))
+  // console.log(client.guilds.cache)
+  // msgCount = await client.guilds.cache.message.size;
+  // console.log(`${msgCount}`);
+
   const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/group.sqlite" }); 
   console.log(`Logged in as ${client.user.tag}!`);
-  client.guilds.cache.forEach(guild => (async() => {await db.set(guild.name, guild.id)})()); //console.log(`${guild.name}(${guild.id})`)
-  var g = await db.all();
-  console.log(g)
+  client.guilds.cache.forEach(guild => (async() => {await db.set(guild.name, guild.id)})()); 
   //send scheduled message
    let scheduledMessage = new cron.CronJob('00 00 04 * * *', () => {
      const guild = client.guilds.cache.get(secret.grp2);
@@ -306,6 +311,13 @@ client.on('messageCreate', (message) => {
 });
 
 
+// if there are errors, log them
+client.on("disconnect", () => console.log("Bot is disconnecting...", "warn"))
+	.on("reconnecting", () => console.log("Bot reconnecting...", "log"))
+	.on("error", (e) => console.log(e, "error"))
+	.on("warn", (info) => console.log(info, "warn"));
+
+// if there is an unhandledRejection, log them
 process.on('unhandledRejection', err => {
   console.log(`[ERROR] Unhandled promise rejection: ${err.message}.`);
   console.log(err);
@@ -339,5 +351,5 @@ client.once('ready', () => {
 
 //login
 client.login(secret.token).then(() => {
-  client.user.setPresence({ activities: [{ name: '誰在做夢', type: 'watching'}], status: 'idle', clientStatus: "desktop"}); //，  
+  client.user.setPresence({ activities: [{ name: '誰在做夢', type: 'WATCHING'}], status: 'idle', clientStatus: "desktop"}); //，  
 });
