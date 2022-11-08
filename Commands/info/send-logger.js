@@ -6,9 +6,10 @@ module.exports = {
     run: async (client, message, secret, Discord) => {
         try{
 
-    if (message.channel.id === secret.log_channel) return;
-    if (message.channel.id === secret.edit_log_channel) return;
+    // if (message.channel.id === secret.log_channel) return;
+    // if (message.channel.id === secret.edit_log_channel) return;
     if (message.channel.id === '994459707580358656') return;
+    if (message.channel.name.toLowerCase().includes("log")) return;
     var channel = client.channels.fetch(secret.log_channel).then(channel => {
       if(message.stickers.size > 0) {channel.send('人:' + message.author.tag + ' , 訊息: 啊就貼圖(X , 群:' + message.guild.name + ' , 頻道:' + message.channel.name, { split: true })}
 
