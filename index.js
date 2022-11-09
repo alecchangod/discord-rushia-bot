@@ -1,77 +1,58 @@
 // Imports the client library
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const Discord = require('discord.js');
+const { Routes } = require('discord-api-types/v10');
 const fs = require('fs')
 const { MessageAttachment } = require('discord.js');
 const keep_alive = require('./keep_alive.js')
 const secret = require('./config.json')
-const cron = require('cron');
-const Twit = require('twit');
 // Creates clients
-var T = new Twit({
-  consumer_key: secret.TWITTER_CONSUMER_KEY,
-  consumer_secret: secret.TWITTER_CONSUMER_SECRET,
-  access_token: secret.TWITTER_ACCESS_TOKEN,
-  access_token_secret: secret.TWITTER_ACCESS_TOKEN_SECRET,
-  timeout_ms: 60 * 1000,  // optional HTTP request timeout to apply to all requests.
-  strictSSL: true,     // optional - requires SSL certificates to be valid.
-})
 const {
-  Client, Intents, Embed, Embedbuilder, EnumResolvers, GatewayIntendBits, Partials, ApplicationCommandType, ApplicationCommandOptionType, ButtonStyle, Colors, Collection, MessageEmbed, ButtonBuilder
+  Client, ComponentType, REST, Intents, Embed, Embedbuilder, EnumResolvers, GatewayIntendBits, Partials, ApplicationCommandType, ApplicationCommandOptionType, ButtonStyle, Colors, Collection, MessageEmbed, ButtonBuilder
 } = require('discord.js');
-const client = new Discord.Client({
-messageCacheLifetime: 60,
-fetchAllMembers: false,
-messageCacheMaxSize: 10,
-restTimeOffset: 0,
-restWsBridgetimeout: 100,
-shards: "auto",
-allowedMentions: {
-  parse: ["roles", "users", "everyone"],
-  repliedUser: true,
-},
-partials: [
-Partials.Message,
-  Partials.Channel,
-  Partials.GuildMember,
-  Partials.Reaction,
-  Partials.GuildScheduledEvent,
-  Partials.User,
-  Partials.ThreadMember,
-  Partials.enum
-],
-intents: ['Guilds',
-  'GuildMembers',
-  'GuildBans',
-  'GuildEmojisAndStickers',
-  'GuildIntegrations',
-  'GuildWebhooks',
-  'GuildInvites',
-  'GuildVoiceStates',
-  'GuildPresences',
-  'GuildMessages',
-  'GuildMessageReactions',
-  'GuildMessageTyping',
-  'DirectMessages',
-  'DirectMessageReactions',
-  'DirectMessageTyping',
-  'MessageContent']
+const client = new Client({
+  messageCacheLifetime: 60,
+  fetchAllMembers: false,
+  messageCacheMaxSize: 10,
+  restTimeOffset: 0,
+  restWsBridgetimeout: 100,
+  shards: "auto",
+  allowedMentions: {
+    parse: ["roles", "users", "everyone"],
+    repliedUser: true,
+  },
+  partials: [
+    Partials.Message,
+    Partials.Channel,
+    Partials.GuildMember,
+    Partials.Reaction,
+    Partials.GuildScheduledEvent,
+    Partials.User,
+    Partials.ThreadMember,
+    Partials.enum
+  ],
+  intents: ['Guilds',
+    'GuildMembers',
+    'GuildBans',
+    'GuildEmojisAndStickers',
+    'GuildIntegrations',
+    'GuildWebhooks',
+    'GuildInvites',
+    'GuildVoiceStates',
+    'GuildPresences',
+    'GuildMessages',
+    'GuildMessageReactions',
+    'GuildMessageTyping',
+    'DirectMessages',
+    'DirectMessageReactions',
+    'DirectMessageTyping',
+    'MessageContent']
 });
 
 process.setMaxListeners(50)
-process.on('unhandledRejection', err => {
-
-  client.channels.fetch('994459707580358656').then(channel => {
-    channel.send(`Unhandled Promise Rejection: ${err}`);
-  })
-  });
 
 client.commands = new Collection();
 client.aliases = new Collection();
 client.categories = fs.readdirSync("./Commands");
 client.events = new Collection();
-
 client.slashCommands = new Collection();
 
 module.exports = client;
@@ -80,120 +61,17 @@ module.exports = client;
   require(`./structures/${handler}`)(client);
 });
 
-// //twitter track start
-client.once('ready', () => {
-  const cmd = 'main';
-  let command = client.commands.get(cmd)
-  if(!command) command = client.commands.get(client.aliases.get(cmd));
-  if(command) command.run(client, secret, T)
-});
-
-//new member
-client.on('guildMemberAdd', async member => {
-  const cmd = 'join';
-  let command = client.commands.get(cmd)
-  if(!command) command = client.commands.get(client.aliases.get(cmd));
-  if(command) command.run(client, secret, member)
-});
-
-//role change
-client.on('guildMemberUpdate', async (oldMember, newMember) => { 
-  const cmd = 'mupdate';
-  let command = client.commands.get(cmd)
-  if(!command) command = client.commands.get(client.aliases.get(cmd));
-  if(command) command.run(client, oldMember, newMember)
-});
-
-//message edit
-client.on('messageUpdate', async (oldMessage, newMessage) => { 
-  if (newMessage.channel.parent.id === "974997417315414016") return;  
-  if(!newMessage.guild) return;
-  const cmd = 'msgupdate';
-  let command = client.commands.get(cmd)
-  if(!command) command = client.commands.get(client.aliases.get(cmd));
-  if(command) command.run(client, oldMessage, newMessage, secret)
-});
-
-//message delete log
-client.on('messageDelete', async (message) => {
-  if (message.channel.parent.id === "974997417315414016") return;  
-  if(!message.guild) return;
-  const cmd = 'delete-logger';
-  let command = client.commands.get(cmd)
-  if(!command) command = client.commands.get(client.aliases.get(cmd));
-  if(command) command.run(client, message, secret)
-})
-
-//dm edit detect
-client.on('messageUpdate', async (oldMessage, newMessage) => {
-  if (newMessage.channel.type == 1) {
-  const cmd = 'pm-edit-logger';
-  let command = client.commands.get(cmd)
-  if(!command) command = client.commands.get(client.aliases.get(cmd));
-  if(command) command.run(client, oldMessage, newMessage, secret)
-}
-});
-
-//dm delete detect
-client.on('messageDelete', async (message) => {
-  if (message.channel.type == 1) {
-  const cmd = 'pm-delete-logger';
-  let command = client.commands.get(cmd)
-  if(!command) command = client.commands.get(client.aliases.get(cmd));
-  if(command) command.run(client, message, secret)
-}
-});
-
-//start-up activities
-client.on('ready', async() => {
-
-  console.log(`${client.user.tag} is ready on ${client.guilds.cache.size} servers.`);
-  client.guilds.cache.forEach(guild=>console.log(`${guild.name}(${guild.id}), ${guild.memberCount} user, ${guild.roles.cache.size} roles, ${guild.channels.cache.size} channels`))
-  // console.log(client.guilds.cache)
-  // msgCount = await client.guilds.cache.message.size;
-  // console.log(`${msgCount}`);
-
-  const { QuickDB } = require("quick.db");
-const db = new QuickDB({ filePath: "database/group.sqlite" }); 
-  console.log(`Logged in as ${client.user.tag}!`);
-  client.guilds.cache.forEach(guild => (async() => {await db.set(guild.name, guild.id)})()); 
-  //send scheduled message
-   let scheduledMessage = new cron.CronJob('00 00 04 * * *', () => {
-     const guild = client.guilds.cache.get(secret.grp2);
-     const channel = guild.channels.cache.get(secret.channelID2);
-     channel.send('你各位別當死魚堆');
-   });
-   scheduledMessage.start()
-});
-let date_ob = new Date();
-
 // current date
-// adjust 0 before single digit date
-let date = ("0" + date_ob.getDate()).slice(-2);
-
-// current month
-let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-
-// current year
-let year = date_ob.getFullYear();
-
-// current hours
-let hours = date_ob.getHours();
-
-// current minutes
-let minutes = date_ob.getMinutes();
-
-// current seconds
-let seconds = date_ob.getSeconds();
-
-// prints date in YYYY-MM-DD format
-console.log(year + "-" + month + "-" + date);
-
-// prints date & time in YYYY-MM-DD HH:MM:SS format
-console.log(year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds);
-
-// prints time in HH:MM format
-console.log(hours + ":" + minutes);
+let date_ob = new Date();
+let date = ("0" + date_ob.getDate()).slice(-2); // adjust 0 before single digit date
+let month = ("0" + (date_ob.getMonth() + 1)).slice(-2); // current month
+let year = date_ob.getFullYear(); // current year
+let hours = date_ob.getHours(); // current hours
+let minutes = date_ob.getMinutes(); // current minutes
+let seconds = date_ob.getSeconds(); // current seconds
+console.log(year + "-" + month + "-" + date); // prints date in YYYY-MM-DD format
+console.log(year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds); // prints date & time in YYYY-MM-DD HH:MM:SS format
+console.log(hours + ":" + minutes); // prints time in HH:MM format
 
 client.setMaxListeners(50)
 
@@ -313,43 +191,21 @@ client.on('messageCreate', (message) => {
 
 // if there are errors, log them
 client.on("disconnect", () => console.log("Bot is disconnecting...", "warn"))
-	.on("reconnecting", () => console.log("Bot reconnecting...", "log"))
-	.on("error", (e) => console.log(e, "error"))
-	.on("warn", (info) => console.log(info, "warn"));
+  .on("reconnecting", () => console.log("Bot reconnecting...", "log"))
+  .on("error", (e) => console.log(e, "error"))
+  .on("warn", (info) => console.log(info, "warn"));
 
 // if there is an unhandledRejection, log them
 process.on('unhandledRejection', err => {
   console.log(`[ERROR] Unhandled promise rejection: ${err.message}.`);
   console.log(err);
-});
 
-//self role
-client.once('ready', () => {
-  let channel = client.channels.fetch('963802334482284595').then(channel => {
-    try {
-      channel.messages.fetch('963802394045583370').then(message => {
-        message.react('<:makaneko_surprise:958407417559908382>')
-        const filter = (reaction, user) => {
-          return reaction.emoji.name === 'makaneko_surprise';
-        };
-
-
-        const collector = message.createReactionCollector({ filter });
-
-
-        collector.on('collect', (reaction, user) => {
-          const role = message.guild.roles.fetch('964140235401355304');
-
-          message.guild.members.fetch(user.id).then(member => {
-            member.roles.add('964140235401355304');
-          });
-        });
-      })
-    } catch (e) { console.log(e) }
+  client.channels.fetch('994459707580358656').then(channel => {
+    channel.send(`Unhandled Promise Rejection: ${err}`);
   })
 });
 
 //login
 client.login(secret.token).then(() => {
-  client.user.setPresence({ activities: [{ name: '誰在做夢', type: 'WATCHING'}], status: 'idle', clientStatus: "desktop"}); //，  
+  client.user.setPresence({ activities: [{ name: '誰在做夢', type: 'Watching' }], status: 'idle', clientStatus: "desktop" }); //，  
 });
