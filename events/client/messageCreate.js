@@ -1,9 +1,5 @@
+// Imports the client library
 const client = require('../../index.js')
-const Discord = require('../../index.js')
-
-
-
-// Creates clients
 const PREFIX = '='
 const secret = require('../../config.json')
 const { QuickDB } = require("quick.db");
@@ -38,18 +34,17 @@ client.on('messageCreate', async message => {
 
 //message log
 client.on('messageCreate', async message => {
-  if (message.channel.parent?.id === "974997417315414016") return;  
   if(!message.guild) return;
   const cmd = 'send-logger';
   let command = client.commands.get(cmd)
   if(!command) command = client.commands.get(client.aliases.get(cmd));
-  if(command) command.run(client, message, secret, Discord)
+  if(command) command.run(client, message, secret)
 });
 
 
 //dm detect
 client.on('messageCreate', async (message) => {
-  if (message.channel.type == 'DM') {
+  if (message.channel.type == 1) {
   const cmd = 'pm-logger';
   let command = client.commands.get(cmd)
   if(!command) command = client.commands.get(client.aliases.get(cmd));
