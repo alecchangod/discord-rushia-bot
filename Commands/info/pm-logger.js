@@ -2,7 +2,7 @@ module.exports = {
     name: "pm-logger", 
     aliases: ["p"],
     run: async(client, message, secret) => {
-        let channel = client.channels.fetch(secret.PMlog).then(channel => {
+        client.channels.fetch(secret.PMlog).then(channel => {
         if(message.stickers.size > 0) {channel.send('人:' + message.author.tag + ' , 訊息: 啊就貼圖(X ')}
         else if (message.attachments.size > 0) {
             var attachments = message.attachments;
