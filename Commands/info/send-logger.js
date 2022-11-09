@@ -3,11 +3,8 @@ const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
 module.exports = {
     name: "send-logger", 
     aliases: ["s"],
-    run: async (client, message, secret, Discord) => {
+    run: async (client, message, secret) => {
         try{
-
-    // if (message.channel.id === secret.log_channel) return;
-    // if (message.channel.id === secret.edit_log_channel) return;
     if (message.channel.id === '994459707580358656') return;
     if (message.channel.name.toLowerCase().includes("log")) return;
     var channel = client.channels.fetch(secret.log_channel).then(channel => {
