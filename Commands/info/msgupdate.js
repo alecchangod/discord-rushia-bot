@@ -5,13 +5,10 @@ module.exports = {
     aliases: ["m"],
     run: async (client, oldMessage, newMessage, secret) => {
         if (!newMessage) return;
-        // if (newMessage.channel.id === secret.log_channel) return;
-        // if (newMessage.channel.id === secret.edit_log_channel) return;
         if (newMessage.channel.name.toLowerCase().includes("log")) return;
-        if (newMessage.content = oldMessage?.content) return;
+        if (newMessage.content === oldMessage?.content) return;
         if ((newMessage.embeds[0]) && (newMessage.embeds[0].description) && (oldMessage.embeds[0]) && (oldMessage.embeds[0].description) ) {
             if (newMessage.embed = oldMessage?.embed) return;
-            
             const oreceivedEmbed = oldMessage.embeds[0];
             const nreceivedEmbed = newMessage.embeds[0];
             const exampleEmbed = new EmbedBuilder(oreceivedEmbed).setTitle('New title');
