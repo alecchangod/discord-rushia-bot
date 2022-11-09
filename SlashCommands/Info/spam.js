@@ -31,7 +31,7 @@ module.exports = {
     interaction.reply({ content: `now sending ${amount} * ${content} to <#${interaction.channelId}>`, ephemeral: true });
     console.log(amount);
     // await wait(1000);
-    var chid = client.channels.fetch(interaction.channelId).then(async chid => {
+    client.channels.fetch(interaction.channelId).then(async chid => {
       for (let i = 0; i < amount; i++) {
         chid.send(content)
         await wait(100);
