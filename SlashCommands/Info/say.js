@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders")
 const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
+const { PermissionFlagsBits } = require('discord-api-types/v10');
 
 module.exports = {
     name: "say", 
@@ -12,12 +13,14 @@ module.exports = {
           require: true
       }
   ],
+  DefaultMemberPermissions: PermissionFlagsBits.ManageMessages,
     run: async(client, interaction, args, secret) => {
         try {
-            // if (((interaction.guild.id === secret.grp1) && (interaction.member.roles.cache.some(role => role.name == "test") || interaction.member.roles.cache.some(role => role.name == "元首") || interaction.member.roles.cache.some(role => role.name == "管理員") || interaction.member.roles.cache.some(role => role.name == "神志不清的天才寶特瓶") )) || ((interaction.guild.id === secret.grp) && (interaction.member.roles.cache.some(role => role.name == "大哥") || interaction.member.roles.cache.some(role => role.name == "管理員") ))) {
-              var q = interaction.options.getString('content');
-              interaction.reply(q)
-            //}
+          const content = interaction.options.getString('content');
+          interaction.reply({ content: `${content} are being sent to <#${interaction.channelId}>`, ephemeral: true });
+          client.channels.fetch(interaction.channelId).then(async chid => {
+              chid.send(content)
+          })
           } catch (e) {
             console.log(e)
           }
