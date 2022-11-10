@@ -13,7 +13,7 @@ module.exports = {
           require: true
       }
   ],
-  DefaultMemberPermissions: PermissionFlagsBits.ManageMessages,
+  userPermissions: PermissionFlagsBits.ManageMessages,
     run: async(client, interaction, args, secret) => {
         try {
           const content = interaction.options.getString('content');
