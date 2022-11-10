@@ -206,6 +206,4 @@ process.on('unhandledRejection', err => {
 });
 
 //login
-client.login(secret.token).then(() => {
-  client.user.setPresence({ activities: [{ name: '誰在做夢', type: 'Watching' }], status: 'idle', clientStatus: "desktop" }); //，  
-});
+client.login(secret.token)

@@ -26,6 +26,7 @@ client.on('ready', async () => {
     const db = new QuickDB({ filePath: "database/group.sqlite" });
     console.log(`Logged in as ${client.user.tag}!`);
     client.guilds.cache.forEach(guild => (async () => { await db.set(guild.name, guild.id) })());
+    client.user.setPresence({ activities: [{ name: "誰在做夢", type: 3 }], status: 'idle', clientStatus: "PS5" }); 
     //send scheduled message
     let scheduledMessage = new cron.CronJob('00 00 04 * * *', () => {
       const guild = client.guilds.cache.get(secret.grp2);
