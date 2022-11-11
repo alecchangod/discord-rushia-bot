@@ -9,7 +9,7 @@ Rushia is a bot written by [alecchangod](https://github.com/alecchangod) in [dis
 It will require admin permission(all permission) by default. If you don't like that, you can use [this link](https://discord.com/api/oauth2/authorize?client_id=953567399687364659&permissions=2068063845568&scope=bot%20applications.commands) instead. Incase any feature doesn't work, just tell me. I'll updated the link.
 
 ## Suggestion/bugs
-If you have any suggestion or found bug please tell me in the [discord support channel](https://discord.gg/j9yHKXdyhM).
+If you have any suggestion or found bug please tell me in the [discord support channel](https://discord.gg/utRrnKWdbG).
 
 ### Current feature 
 
