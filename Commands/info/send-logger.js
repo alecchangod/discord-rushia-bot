@@ -26,6 +26,7 @@ module.exports = {
               content: data
             });
           });
+          break;
           }
           else client.channels.fetch(secret.log_channel).then(channel1 => {
             if (message.content.length == 0) var data = `人: ${message.author.tag} , 群: ${message.guild.name} , 頻道: ${message.channel.name} , 附件:`
@@ -34,7 +35,7 @@ module.exports = {
               files: Array.from(message.attachments.values()),
               content: data
             });
-          });
+          }); break;
         }
       }
 
