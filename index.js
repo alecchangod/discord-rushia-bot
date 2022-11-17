@@ -61,6 +61,16 @@ module.exports = client;
   require(`./structures/${handler}`)(client);
 });
 
+// emoji
+client.emotes = {
+    "play": "▶️",
+    "stop": "⏹️",
+    "queue": "📄",
+    "success": "☑️",
+    "repeat": "🔁",
+    "error": "❌"
+}
+
 // current date
 let date_ob = new Date();
 let date = ("0" + date_ob.getDate()).slice(-2); // adjust 0 before single digit date

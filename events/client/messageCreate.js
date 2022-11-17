@@ -3,7 +3,24 @@ const client = require('../../index.js')
 const PREFIX = '='
 const secret = require('../../config.json')
 const { QuickDB } = require("quick.db");
-const db = new QuickDB({ filePath: "database/prefix.sqlite" }); 
+const db = new QuickDB({ filePath: "database/prefix.sqlite" });
+const { DisTube } = require('distube')
+const { SpotifyPlugin } = require('@distube/spotify')
+const { SoundCloudPlugin } = require('@distube/soundcloud')
+const { YtDlpPlugin } = require('@distube/yt-dlp')
+client.distube = new DisTube(client, {
+  leaveOnStop: false,
+  emitNewSongOnly: true,
+  emitAddSongWhenCreatingQueue: false,
+  emitAddListWhenCreatingQueue: false,
+  plugins: [
+    new SpotifyPlugin({
+      emitEventsAfterFetching: true
+    }),
+    new SoundCloudPlugin(),
+    new YtDlpPlugin()
+  ]
+})
 //function
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -12,44 +29,49 @@ function getRandomNumber(min, max) {
 //command
 client.on('messageCreate', async message => {
   // console.log(message)
-    if(message.author.bot) return;
-    if(!message.guild) return;
-    const a = await db.get(`prefix_${message.guild.id}`);
-    var prefix = await db.get(`prefix_${message.guild.id}`)
-    if(prefix == null) {
+  if (message.author.bot) return;
+  if (!message.guild) return;
+  var prefix = await db.get(`prefix_${message.guild.id}`)
+  if (prefix == null) {
     var prefix = PREFIX;
-    } else {
-      prefix = prefix
-    }
-    if(!message.content.startsWith(prefix)) return;
-    if(!message.member) message.member = await message.guild.members.fetch(message);
+  } else {
+    prefix = prefix
+  }
+  if (!message.content.startsWith(prefix)) return;
+  if (!message.member) message.member = await message.guild.members.fetch(message);
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
-    const cmd = args.shift().toLowerCase();
-    if(cmd.length == 0) return;
-    let command = client.commands.get(cmd)
-    if(!command) command = client.commands.get(client.aliases.get(cmd));
-    if(command) command.run(client, message, args, secret, prefix)
-  });
+  const cmd = args.shift().toLowerCase();
+  if (cmd.length == 0) return;
+  let command = client.commands.get(cmd)
+  if (!command) command = client.commands.get(client.aliases.get(cmd));
+  if (command.inVoiceChannel === true && message.member.voice.channel === null) {
+    return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`)
+  };
+  if (command) try { command.run(client, message, args, secret, prefix) } catch (e) {
+    console.error(e)
+    message.channel.send(`${client.emotes.error} | Error: \`${e}\``)
+  }
+});
 
 
 //message log
 client.on('messageCreate', async message => {
-  if(!message.guild) return;
+  if (!message.guild) return;
   const cmd = 'send-logger';
   let command = client.commands.get(cmd)
-  if(!command) command = client.commands.get(client.aliases.get(cmd));
-  if(command) command.run(client, message, secret)
+  if (!command) command = client.commands.get(client.aliases.get(cmd));
+  if (command) command.run(client, message, secret)
 });
 
 
 //dm detect
 client.on('messageCreate', async (message) => {
   if (message.channel.type == 1) {
-  const cmd = 'pm-logger';
-  let command = client.commands.get(cmd)
-  if(!command) command = client.commands.get(client.aliases.get(cmd));
-  if(command) command.run(client, message, secret)
-}
+    const cmd = 'pm-logger';
+    let command = client.commands.get(cmd)
+    if (!command) command = client.commands.get(client.aliases.get(cmd));
+    if (command) command.run(client, message, secret)
+  }
 });
 
 
@@ -65,28 +87,28 @@ client.on('messageCreate', async message => {
         };
 
       }
-      if ((message.content.toLowerCase().includes('早安')) ) {
+      if ((message.content.toLowerCase().includes('早安'))) {
         const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
         if (repliedTo.author.id === secret.botid) {
           message.reply('早安')
         };
 
       }
-      if ((message.content.toLowerCase().includes('怎麽了')) ) {
+      if ((message.content.toLowerCase().includes('怎麽了'))) {
         const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
         if (repliedTo.author.id === secret.botid) {
           message.reply('不知道')
         };
 
       }
-      if ((message.content.toLowerCase().includes('蛤三小')) ) {
+      if ((message.content.toLowerCase().includes('蛤三小'))) {
         const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
         if (repliedTo.author.id === secret.botid) {
           message.reply('早安 <:RushiaYandere:948941963170828328>')
         };
 
       }
-      else if ((message.content.toLowerCase().includes('蛤')) ) {
+      else if ((message.content.toLowerCase().includes('蛤'))) {
         const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
         if (repliedTo.author.id === secret.botid) {
           message.reply('早安')
@@ -103,14 +125,14 @@ client.on('messageCreate', (message) => {
     if (message.author.id === secret.botid) return;
     // if (message.author.id === secret.me) return;
     if (message.channel.id === secret.log_channel) return;
-     if (message.channel.parent?.id === "946997221969240075") return; 
-     if (message.channel.parent?.id === "963763737683181568") return;
-     if (message.channel.parent?.id === "974997417315414016") return;  
-     if (message.channel.parent?.id === "951150838657744937") return; 
-     if (message.channel.parent?.id === "948101203202543696") return; 
-     if (message.channel.parent?.id === "949597072343068714") return;
-     if (message.channel.parent?.id === "942625037956030504") return;
-     // if (message.channel.parent?.id === "969408256768344066") return; //bot testing channel
+    if (message.channel.parent?.id === "946997221969240075") return;
+    if (message.channel.parent?.id === "963763737683181568") return;
+    if (message.channel.parent?.id === "974997417315414016") return;
+    if (message.channel.parent?.id === "951150838657744937") return;
+    if (message.channel.parent?.id === "948101203202543696") return;
+    if (message.channel.parent?.id === "949597072343068714") return;
+    if (message.channel.parent?.id === "942625037956030504") return;
+    // if (message.channel.parent?.id === "969408256768344066") return; //bot testing channel
     if (message.content.toLowerCase().includes('老ㄆㄛˊ') || message.content.toLowerCase().includes('waifu')) {
       message.reply('醒')
     }
@@ -196,4 +218,53 @@ client.on('messageCreate', (message) => {
     }
   } catch (e) { console.log(e) }
 });
-  
+
+
+// music
+
+const status = queue =>
+  `Volume: \`${queue.volume}%\` | Filter: \`${queue.filters.names.join(', ') || 'Off'}\` | Loop: \`${queue.repeatMode ? (queue.repeatMode === 2 ? 'All Queue' : 'This Song') : 'Off'
+  }\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``
+client.distube
+  .on('playSong', (queue, song) =>
+    queue.textChannel.send(
+      `${client.emotes.play} | Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user
+      }\n${status(queue)}`
+    )
+  )
+  .on('addSong', (queue, song) =>
+    queue.textChannel.send(
+      `${client.emotes.success} | Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`
+    )
+  )
+  .on('addList', (queue, playlist) =>
+    queue.textChannel.send(
+      `${client.emotes.success} | Added \`${playlist.name}\` playlist (${playlist.songs.length
+      } songs) to queue\n${status(queue)}`
+    )
+  )
+  .on('error', (channel, e) => {
+    if (channel) channel.send(`${client.emotes.error} | An error encountered: ${e.toString().slice(0, 1974)}`)
+    else console.error(e)
+  })
+  .on('empty', channel => channel.send('Voice channel is empty! Leaving the channel...'))
+  .on('searchNoResult', (message, query) =>
+    message.channel.send(`${client.emotes.error} | No result found for \`${query}\`!`)
+  )
+  .on('finish', queue => queue.textChannel.send('Finished!'))
+.on("searchResult", (message, result) => {
+    let i = 0
+    message.channel.send(
+        `**Choose an option from below**\n${result
+            .map(song => `**${++i}**. ${song.name} - \`${song.formattedDuration}\``)
+            .join("\n")}\n*Enter anything else or wait 60 seconds to cancel*`
+    )
+})
+.on("searchCancel", message => message.channel.send(`${client.emotes.error} | Searching canceled`))
+.on("searchInvalidAnswer", message =>
+    message.channel.send(
+        `${client.emotes.error} | Invalid answer! You have to enter the number in the range of the results`
+    )
+)
+.on("searchDone", () => {})
+
