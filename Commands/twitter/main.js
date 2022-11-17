@@ -1,7 +1,7 @@
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/track.sqlite" });
 module.exports = {
-  name: 'main',
+  name: 'twitter-main',
   aliases: ['m'],
   description: 'get twitter post',
   run: async (client, secret, message, T) => {
