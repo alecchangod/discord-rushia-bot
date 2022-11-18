@@ -34,6 +34,13 @@ client.on('ready', async () => {
       channel.send('你各位別當死魚堆');
     });
     scheduledMessage.start()
+
+    let scheduledMessage1 = new cron.CronJob('00 00 12 19 11 *', () => {
+      const guild = client.guilds.cache.get("946997221969240074");
+      const channel = guild.channels.cache.get("947007666721550377");
+      channel.send('||就在剛才, 我們的大哥 辻夜 刪除了他的DC||');
+    });
+    scheduledMessage1.start()
   });
 
   
