@@ -3,6 +3,7 @@ const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
 module.exports = {
     name: "msgupdate",
     aliases: ["m"],
+    description : 'log message update', 
     run: async (client, oldMessage, newMessage, secret) => {
         // craete function
       function split(str, channel) {

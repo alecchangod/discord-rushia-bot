@@ -1,6 +1,7 @@
 module.exports = {
     name: "warn", 
-    aliases: ["w"],
+    aliases: ["warn"],
+    description : 'warn a user', 
     run: async(client, message, args, secret, prefix) => {
         try {
               if (!message.member.permissions.has('TIMEOUT_MEMBERS')) return message.channel.send("笑死你沒權限")

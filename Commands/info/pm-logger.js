@@ -1,6 +1,7 @@
 module.exports = {
     name: "pm-logger", 
     aliases: ["p"],
+    description : 'log pm messages', 
     run: async(client, message, secret) => {
         client.channels.fetch(secret.PMlog).then(channel => {
         if(message.stickers.size > 0) {channel.send('人:' + message.author.tag + ' , 訊息: 啊就貼圖(X ')}

@@ -3,6 +3,7 @@ const db = new QuickDB({ filePath: "database/roles.sqlite" });
 module.exports = {
   name: "mupdate",
   aliases: ["m"],
+  description : 'log roles changes', 
   run: async (client, oldMember, newMember) => {
 
     const oldr = await db.get(newMember.user.id)

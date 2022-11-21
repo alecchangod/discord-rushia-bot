@@ -1,6 +1,7 @@
 module.exports = {
     name: "join", 
     aliases: ["j"],
+    description : 'send a message when user join(hardcoded for now)', 
     run: async(client, message, secret, member) => {
         try {                  
             if (member.guild.id == secret.grp) {

@@ -1,6 +1,7 @@
 module.exports = {
   name: "time",
-  aliases: ["t"],
+  aliases: ["time"],
+  description : 'get current time', 
   run: async (client, message, args) => {
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/track.sqlite" });

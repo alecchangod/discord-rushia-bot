@@ -2,7 +2,7 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/prefix.sqlite" }); 
 module.exports = {
     name : 'getprefix', 
-    aliases : ['gp'], 
+    aliases : ['gp', 'get-prefix'], 
     description : 'get prefix/serer', 
     run : async(client, message, args, prefix) => {
 

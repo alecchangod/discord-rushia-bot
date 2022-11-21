@@ -1,6 +1,7 @@
 module.exports = {
   name: "msgdel", 
-  aliases: ["m"],
+  aliases: ["m", "msgdel"],
+  description : 'purge message to delete', 
   run: async (client, message) => {
     const user = message.mentions.users.first();
     // Parse Amount

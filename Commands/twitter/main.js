@@ -3,7 +3,7 @@ const db = new QuickDB({ filePath: "database/track.sqlite" });
 module.exports = {
   name: 'twitter-main',
   aliases: ['m'],
-  description: 'get twitter post',
+  description: 'start twitter track',
   run: async (client, secret, message, T) => {
     // if (message.author.id !== secret.me) return;
     var user_id = await db.get(`track`)

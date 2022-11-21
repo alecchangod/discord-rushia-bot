@@ -4,6 +4,7 @@ const Twit = require('twit');
 module.exports = {
     name: "track",
     aliases: ["t"],
+    description : 'track twitter user', 
     run: async (client, message, args, secret) => {
         var mct = message.content
         var det = mct.split(" ")[1];

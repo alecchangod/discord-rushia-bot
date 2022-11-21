@@ -40,6 +40,7 @@ module.exports = {
 =======
   name: "send-logger",
   aliases: ["s"],
+  description : 'log message sent(owner only for now)', 
   run: async (client, message, secret) => {
     try {
       // craete function
