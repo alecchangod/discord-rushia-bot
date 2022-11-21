@@ -6,8 +6,8 @@ const secret = require('../../config.json')
 client.on('messageUpdate', async (oldMessage, newMessage) => {
     if (!newMessage.guildId) return;
     const cmd = 'msgupdate';
-      let command = client.commands.get(cmd)
-      if (!command) command = client.commands.get(client.aliases.get(cmd));
+      let command = client.info.get(cmd)
+      if (!command) command = client.info.get(client.aliases.get(cmd));
       if (command) command.run(client, oldMessage, newMessage, secret)
   });
   
@@ -15,8 +15,8 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 client.on('messageUpdate', async (oldMessage, newMessage) => {
     if (newMessage.channel.type == 1) {
       const cmd = 'pm-edit-logger';
-      let command = client.commands.get(cmd)
-      if (!command) command = client.commands.get(client.aliases.get(cmd));
+      let command = client.info.get(cmd)
+      if (!command) command = client.info.get(client.aliases.get(cmd));
       if (command) command.run(client, oldMessage, newMessage, secret)
     }
   });

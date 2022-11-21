@@ -6,7 +6,7 @@ const secret = require('../../config.json')
 client.on('messageDelete', async (message) => {
     if (!message.guild) return;
     const cmd = 'delete-logger';
-    let command = client.commands.get(cmd)
+    let command = client.info.get(cmd)
     if (!command) command = client.commands.get(client.aliases.get(cmd));
     if (command) command.run(client, message, secret)
 });
@@ -15,8 +15,8 @@ client.on('messageDelete', async (message) => {
 client.on('messageDelete', async (message) => {
     if (message.channel.type == 1) {
         const cmd = 'pm-delete-logger';
-        let command = client.commands.get(cmd)
-        if (!command) command = client.commands.get(client.aliases.get(cmd));
+        let command = client.info.get(cmd)
+        if (!command) command = client.info.get(client.aliases.get(cmd));
         if (command) command.run(client, message, secret)
     }
 });

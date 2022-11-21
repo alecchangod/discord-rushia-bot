@@ -74,7 +74,7 @@ client.once('ready', () => {
 // //twitter track start
 client.once('ready', () => {
     const cmd = 'main';
-    let command = client.commands.get(cmd)
-    if (!command) command = client.commands.get(client.aliases.get(cmd));
+    let command = client.twitter.get(cmd)
+    if (!command) command = client.twitter.get(client.aliases.get(cmd));
     if (command) command.run(client, secret, T)
   });
