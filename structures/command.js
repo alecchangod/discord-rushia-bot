@@ -8,7 +8,6 @@ module.exports = (client) => {
         if (dir === "cmd"){const cmd = readdirSync(`./Commands/${dir}`).filter(file => file.endsWith('.js'));
         for(let file of cmd) {
             let pull0 = require(`../Commands/${dir}/${file}`);
-            console.log(pull0);
             if(pull0.name) {
                 client.cmd.set(pull0.name, pull0);
                 table.addRow(file, 'COMMAND REGISTERED')
@@ -19,39 +18,36 @@ module.exports = (client) => {
         };}
         if (dir === "info"){const cmd = readdirSync(`./Commands/${dir}`).filter(file => file.endsWith('.js'));
         for(let file of cmd) {
-            let pull0 = require(`../Commands/${dir}/${file}`);
-            console.log(pull0);
-            if(pull0.name) {
-                client.info.set(pull0.name, pull0);
+            let pull1 = require(`../Commands/${dir}/${file}`);
+            if(pull1.name) {
+                client.info.set(pull1.name, pull1);
                 table.addRow(file, 'COMMAND REGISTERED')
             } else {
                 table.addRow(file, 'COMMAND UNREGISTERED')
                 continue;
-            } if(pull0.aliases && Array.isArray(pull0.aliases)) pull0.aliases.forEach(alias => client.aliases.set(alias, pull0.name));
+            } if(pull1.aliases && Array.isArray(pull1.aliases)) pull1.aliases.forEach(alias => client.aliases.set(alias, pull1.name));
         };}
         if (dir === "twitter"){const cmd = readdirSync(`./Commands/${dir}`).filter(file => file.endsWith('.js'));
         for(let file of cmd) {
-            let pull0 = require(`../Commands/${dir}/${file}`);
-            console.log(pull0);
-            if(pull0.name) {
-                client.twitter.set(pull0.name, pull0);
+            let pull2 = require(`../Commands/${dir}/${file}`);
+            if(pull2.name) {
+                client.twitter.set(pull2.name, pull2);
                 table.addRow(file, 'COMMAND REGISTERED')
             } else {
                 table.addRow(file, 'COMMAND UNREGISTERED')
                 continue;
-            } if(pull0.aliases && Array.isArray(pull0.aliases)) pull0.aliases.forEach(alias => client.aliases.set(alias, pull0.name));
+            } if(pull2.aliases && Array.isArray(pull2.aliases)) pull2.aliases.forEach(alias => client.aliases.set(alias, pull2.name));
         };}
         if (dir === "music"){const cmd = readdirSync(`./Commands/${dir}`).filter(file => file.endsWith('.js'));
         for(let file of cmd) {
-            let pull0 = require(`../Commands/${dir}/${file}`);
-            console.log(pull0);
-            if(pull0.name) {
-                client.music.set(pull0.name, pull0);
+            let pull3 = require(`../Commands/${dir}/${file}`);
+            if(pull3.name) {
+                client.music.set(pull3.name, pull3);
                 table.addRow(file, 'COMMAND REGISTERED')
             } else {
                 table.addRow(file, 'COMMAND UNREGISTERED')
                 continue;
-            } if(pull0.aliases && Array.isArray(pull0.aliases)) pull0.aliases.forEach(alias => client.aliases.set(alias, pull0.name));
+            } if(pull3.aliases && Array.isArray(pull3.aliases)) pull3.aliases.forEach(alias => client.aliases.set(alias, pull3.name));
         };}
     });
     console.log(table.toString());
