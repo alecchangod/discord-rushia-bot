@@ -42,8 +42,8 @@ client.on('messageCreate', async message => {
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const cmd = args.shift().toLowerCase();
   if (cmd.length == 0) return;
-  let command = client.commands.get(cmd)
-  if (!command) command = client.commands.get(client.aliases.get(cmd));
+  let command = client.info.get(cmd) || client.cmd.get(cmd) || client.twitter.get(cmd) || client.music.get(cmd)
+  if (!command) command = client.info.get(client.aliases.get(cmd)) || client.cmd.get(client.aliases.get(cmd)) || client.twitter.get(client.aliases.get(cmd)) || client.music.get(client.aliases.get(cmd));
   if (command.inVoiceChannel === true && message.member.voice.channel === null) {
     return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`)
   };
@@ -58,8 +58,8 @@ client.on('messageCreate', async message => {
 client.on('messageCreate', async message => {
   if (!message.guild) return;
   const cmd = 'send-logger';
-  let command = client.commands.get(cmd)
-  if (!command) command = client.commands.get(client.aliases.get(cmd));
+  let command = client.info.get(cmd)
+  if (!command) command = client.info.get(client.aliases.get(cmd));
   if (command) command.run(client, message, secret)
 });
 
@@ -68,8 +68,8 @@ client.on('messageCreate', async message => {
 client.on('messageCreate', async (message) => {
   if (message.channel.type == 1) {
     const cmd = 'pm-logger';
-    let command = client.commands.get(cmd)
-    if (!command) command = client.commands.get(client.aliases.get(cmd));
+    let command = client.info.get(cmd)
+    if (!command) command = client.info.get(client.aliases.get(cmd));
     if (command) command.run(client, message, secret)
   }
 });

@@ -49,7 +49,10 @@ const client = new Client({
 
 process.setMaxListeners(50)
 
-client.commands = new Collection();
+client.info = new Collection();
+client.cmd = new Collection();
+client.twitter = new Collection();
+client.music = new Collection();
 client.aliases = new Collection();
 client.categories = fs.readdirSync("./Commands");
 client.events = new Collection();
