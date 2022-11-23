@@ -13,8 +13,6 @@ module.exports = {
       (async () => {
         var c_id = await db.get(`${u_id}_ch`)
         c_id?.array?.forEach(ch_id => {
-
-
           (async () => {
             var a = await db.get(ch_id)
 
