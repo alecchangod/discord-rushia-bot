@@ -57,15 +57,13 @@ module.exports = {
                       if (tweet.user.id == uid) {
                         var url = "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str;
                         var n = tweet.user.screen_name;
-                        try {
+                        if(ch_id) {
                           client.channels.fetch(ch_id).then(channel => {
-                            channel.send(`${sn}just post a new tweet <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
+                            channel.send(`${n}just post a new tweet <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
                           }).catch(err => {
                             console.log(err)
                           })
-                        } catch (error) {
-                          console.error(error);
-                        }
+                        } 
                       };
                     }
                   });
@@ -79,15 +77,13 @@ module.exports = {
                       if (tweet.user.id == uid) {
                         var url = "twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str;
                         var n = tweet.user.screen_name;
-                        try {
+                        if(ch_id) {
                           client.channels.fetch(ch_id).then(channel => {
-                            channel.send(`${sn}just post a new reply <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
+                            channel.send(`${n}just post a new reply <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
                           }).catch(err => {
                             console.log(err)
                           })
-                        } catch (error) {
-                          console.error(error);
-                        }
+                        } 
                       };
                     }
                   });
@@ -103,15 +99,13 @@ module.exports = {
                         if (tweet.user.id == uid) {
                           var url = "twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str;
                           var n = tweet.user.screen_name;
-                          try {
+                          if(ch_id) {
                             client.channels.fetch(ch_id).then(channel => {
-                              channel.send(`${sn}just post a has retweeted <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
+                              channel.send(`${n}just post a has retweeted <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
                             }).catch(err => {
                               console.log(err)
                             })
-                          } catch (error) {
-                            console.error(error);
-                          }
+                          } 
                         }
                       }
                     } catch (e) { }
