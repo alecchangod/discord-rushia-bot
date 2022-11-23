@@ -108,7 +108,7 @@ module.exports = {
         // if it was a reply
         else if (message.reference?.messageId) {
           const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
-          var str = `人:${message.author.tag} ,\n 前文(?: ${repliedTo.author.tag}\n 内容：${repliedTo.content} \n訊息: ${message.content} ,\n 群:${message.guild.name} ,\n 頻道:${message.channel.name}`
+          var str = `\n 前文(?: ${repliedTo.author.tag}\n 内容：${repliedTo.content} \n ======================================== \n 人:${message.author.tag} , 訊息: ${message.content} ,\n 群:${message.guild.name} ,\n 頻道:${message.channel.name}`
           split(str, channel)
         }
         // normal message
