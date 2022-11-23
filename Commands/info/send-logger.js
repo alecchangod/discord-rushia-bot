@@ -40,7 +40,7 @@ module.exports = {
 =======
   name: "send-logger",
   aliases: ["s"],
-  description : 'log message sent(owner only for now)', 
+  description: 'log message sent(owner only for now)',
   run: async (client, message, secret) => {
     try {
       // craete function
@@ -54,13 +54,19 @@ module.exports = {
 >>>>>>> 61925c7 (added message spliting and fixed fetching original message)
         }
       }
-      
+
       // define message type and log them
       if (message.channel.id === '994459707580358656') return;
       if (message.channel.name.toLowerCase().includes("log")) return;
       client.channels.fetch(secret.log_channel).then(async channel => {
-        if (message.stickers.size > 0) { console.log(message.stickers), channel.send('人:' + message.author.tag + ' , 訊息: 啊就貼圖(X , 群:' + message.guild.name + ' , 頻道:' + message.channel.name, { split: true }) }
-
+        // if it was a sticker
+        if (message.stickers.size > 0) {
+          var ext = "png",
+              sck = message.stickers.first();
+          var sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`
+          channel.send(`人:${message.author.tag} , 貼圖： ${sticurl} , 群:${message.guild.name} , 頻道:${message.channel.name}`, { split: true })
+        }
+        // if it has attachments (image/video/document....)
         else if (message.attachments.size > 0) {
           var attachments = message.attachments;
           for (let file of attachments) {
@@ -87,7 +93,7 @@ module.exports = {
             }); break;
           }
         }
-
+        // if it have embed
         else if ((message.embeds[0]) && (message.embeds[0].description)) {
           // check to ensure message was sent by bot and contains embed
           const receivedEmbed = message.embeds[0];
@@ -99,13 +105,13 @@ module.exports = {
           })
         }
 
-
+        // if it was a reply
         else if (message.reference?.messageId) {
           const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
-            var str = `人:${message.author.tag} ,\n 前文(?: ${repliedTo.author.tag}\n 内容：${repliedTo.content} \n訊息: ${message.content} ,\n 群:${message.guild.name} ,\n 頻道:${message.channel.name}`
-            split(str, channel)
+          var str = `人:${message.author.tag} ,\n 前文(?: ${repliedTo.author.tag}\n 内容：${repliedTo.content} \n訊息: ${message.content} ,\n 群:${message.guild.name} ,\n 頻道:${message.channel.name}`
+          split(str, channel)
         }
-
+        // normal message
         else {
           var str = '人:' + message.author.tag + '訊息: ' + message.content + ' , 群:' + message.guild.name + ' , 頻道:' + message.channel.name
           split(str, channel);
