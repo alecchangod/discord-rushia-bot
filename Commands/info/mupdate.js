@@ -10,7 +10,6 @@ module.exports = {
       if(oldr === null || oldr === undefined){
     const r = newMember.roles.cache
     r.forEach(async r => {
-      console.log(r.name, r.id);
       await db.push(newMember.user.id, r.id)
     })}
 
