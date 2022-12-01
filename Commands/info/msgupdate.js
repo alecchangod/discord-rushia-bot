@@ -26,9 +26,9 @@ module.exports = {
       const nreceivedEmbed = newMessage.embeds[0];
       const exampleEmbed = new EmbedBuilder(oreceivedEmbed).setTitle('New title');
       client.channels.fetch(secret.edit_log_channel).then(log => {
-        if (oreceivedEmbed) { log.send({ content: `頻道： ${newMessage.channel} \n 人：${newMessage.author.tag} \n 原信息(如有)： ${oldMessage?.content}\n 原embed： `, embeds: [oreceivedEmbed] }) }
-        else { log.send({ content: `頻道： ${newMessage.channel} \n 人：${newMessage.author.tag} \n 原信息(如有)： ${oldMessage?.content}` }) };
-        log.send({ content: `頻道： ${newMessage.channel} \n 人：${newMessage.author.tag} \n 新信息(如有)： ${newMessage.content}\n 新embed： `, embeds: [nreceivedEmbed] });
+        if (oreceivedEmbed) { log.send({ content: `群組： ${newMessage.guild.name} \n  頻道： ${newMessage.channel} \n 人：${newMessage.author.tag} \n 原信息(如有)： ${oldMessage?.content}\n 原embed： `, embeds: [oreceivedEmbed] }) }
+        else { log.send({ content: `群組： ${newMessage.guild.name} \n  頻道： ${newMessage.channel} \n 人：${newMessage.author.tag} \n 原信息(如有)： ${oldMessage?.content}` }) };
+        log.send({ content: `群組： ${newMessage.guild.name} \n  頻道： ${newMessage.channel} \n 人：${newMessage.author.tag} \n 新信息(如有)： ${newMessage.content}\n 新embed： `, embeds: [nreceivedEmbed] });
       })
       let channel = newMessage.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
       if (!channel) return;
