@@ -21,7 +21,7 @@ module.exports = {
     if (newMessage.channel.name.toLowerCase().includes("log")) return;
     if ((newMessage.content === oldMessage?.content) && (newMessage.embed === oldMessage?.embeds)) return;
     if ((newMessage.embeds[0]?.description)) { //  && (newMessage.embeds[0]) && (oldMessage.embeds[0]) && (oldMessage.embeds[0].description) 
-      if ((newMessage.embed = oldMessage?.embed) && (newMessage.content = oldMessage?.content)) return;
+      if ((newMessage.embed === oldMessage?.embed) && (newMessage.content === oldMessage?.content)) return;
       const oreceivedEmbed = oldMessage.embeds[0];
       const nreceivedEmbed = newMessage.embeds[0];
       const exampleEmbed = new EmbedBuilder(oreceivedEmbed).setTitle('New title');
