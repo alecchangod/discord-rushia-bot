@@ -107,7 +107,7 @@ async function msgtype(message, channel) {
     var ext = "png", sck = message.stickers.first();
     var sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
     var type = 0
-    str = `人:${message.author.tag} , 貼圖： ${sticurl} , 群:${message.guild.name} , 頻道:${message.channel.name}`
+    str = `人:${message.author.tag} ,\n 貼圖： ${sticurl} ,\n 群:${message.guild.name} ,\n 頻道:${message.channel.name}`
     split(str, channel)
   }
 
@@ -123,18 +123,18 @@ async function msgtype(message, channel) {
       if (s > 10485760) {
         var type = 1
         if (message.content.length == 0)
-          var str = `人: ${message.author.tag} , 群: ${message.guild.name} , 頻道: ${message.channel.name} , 附件: ${a.url}`;
+          var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
         else if (message.content.length > 0)
-          var str = `人: ${message.author.tag} , 訊息: ${message.content} , 群: ${message.guild.name} , 頻道: ${message.channel.name} , 附件: ${a.url}`;
+          var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
         split(str, channel)
         break;
       }
       else {
         var type = 2
         if (message.content.length == 0)
-          var str = `人: ${message.author.tag} , 群: ${message.guild.name} , 頻道: ${message.channel.name} , 附件:`;
+          var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
         else if (message.content.length > 0)
-          var str = `人: ${message.author.tag} , 訊息: ${message.content} , 群: ${message.guild.name} , 頻道: ${message.channel.name} , 附件:`;
+          var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
         var files = Array.from(message.attachments.values())
         split(str, channel, files)
         break;
@@ -168,7 +168,7 @@ async function msgtype(message, channel) {
 
   // normal message
   else {
-    var str = '人:' + message.author.tag + '訊息: ' + message.content + ' , 群:' + message.guild.name + ' , 頻道:' + message.channel.name, type = 6
+    var str = '人:' + message.author.tag + ',\n 訊息: ' + message.content + ' ,\n 群:' + message.guild.name + ' ,\n 頻道:' + message.channel.name, type = 6
     split(str, channel)
   }
 }
