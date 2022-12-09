@@ -106,8 +106,39 @@ async function msgtype(message, channel) {
   if (message.stickers.size > 0) {
     var ext = "png", sck = message.stickers.first();
     var sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
+    if (message.attachments.size > 0) {
+      var attachments = message.attachments;
+      for (let file of attachments) {
+        var s = 0;
+        message.attachments.forEach(a => {
+          s = s + a.size;
+  
+        });
+        if (s > 10485760) {
+          var type = 1
+          if (message.content.length == 0)
+            var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
+          else if (message.content.length > 0)
+            var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} , 貼圖： ${sticurl} , \n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
+          split(str, channel)
+          break;
+        }
+        else {
+          var type = 2
+          if (message.content.length == 0)
+            var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
+          else if (message.content.length > 0)
+            var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
+          var files = Array.from(message.attachments.values())
+          split(str, channel, files)
+          break;
+        }
+      }
+    }
+    else if(message.content.length > 0)
+      var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} , 貼圖： ${sticurl} , \n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name}`;
     var type = 0
-    str = `人:${message.author.tag} ,\n 貼圖： ${sticurl} ,\n 群:${message.guild.name} ,\n 頻道:${message.channel.name}`
+    // str = `人:${message.author.tag} ,\n 貼圖： ${sticurl} ,\n 群:${message.guild.name} ,\n 頻道:${message.channel.name}`
     split(str, channel)
   }
 
