@@ -83,7 +83,7 @@ function embed(str, channel, embed) {
   var partsArr = str.match(/[\s\S]{1,1900}/g) || [];
   if (partsArr.length > 1) {
     partsArr.forEach((partsArr, i) => {
-       channel.send({ content: `${partsArr} \nPart ${i + 1} / ${partsArr.length}`, embeds: [embed] }) // if (!file) { }
+      channel.send({ content: `${partsArr} \nPart ${i + 1} / ${partsArr.length}`, embeds: [embed] }) // if (!file) { }
       // else { channel.send({ content: `${partsArr} \nPart ${i + 1} / ${partsArr.length}`, files: [file], embeds: embed }) }
     });
   }
@@ -112,34 +112,34 @@ async function msgtype(message, channel) {
         var s = 0;
         message.attachments.forEach(a => {
           s = s + a.size;
-  
+
         });
         if (s > 10485760) {
-          var type = 1
           if (message.content.length == 0)
             var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
           else if (message.content.length > 0)
             var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} , 貼圖： ${sticurl} , \n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
-          split(str, channel)
           break;
         }
         else {
-          var type = 2
           if (message.content.length == 0)
-            var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
+            var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
           else if (message.content.length > 0)
-            var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
+            var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
           var files = Array.from(message.attachments.values())
-          split(str, channel, files)
           break;
         }
       }
     }
-    else if(message.content.length > 0)
+    else {
+      if (message.content.length == 0)
+        var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} , 貼圖： ${sticurl} , \n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name}`;
+      else (message.content.length > 0)
       var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} , 貼圖： ${sticurl} , \n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name}`;
+    }
     var type = 0
     // str = `人:${message.author.tag} ,\n 貼圖： ${sticurl} ,\n 群:${message.guild.name} ,\n 頻道:${message.channel.name}`
-    split(str, channel)
+    split(str, channel, files)
   }
 
   // if it has attachments (image/video/document....)
