@@ -13,8 +13,8 @@ module.exports = {
       var trantext = ""
       let text = message.content.split(" ");
       var trantext = text[1];
-      var orilang = text[2];
-      var tarlang = text[3];
+      var tarlang = text[2];
+      var orilang = text[3];
       if ((!tarlang) || (tarlang.length = 0)) var tarlang = await db.get(`${message.guild.id}_lang`);
         await wait(100);
         if ((!orilang) || (orilang.length = 0)) var orilang = "auto";
