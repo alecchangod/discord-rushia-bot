@@ -1,6 +1,7 @@
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/track.sqlite" });
 const Twit = require('twit');
+const { PermissionsBitField } = require('discord.js');
 module.exports = {
     name: "track",
     aliases: ["t"],
@@ -22,9 +23,9 @@ module.exports = {
         var test = client.channels.cache.get(channel_id);
         if (!test)
             return message.reply('must provid a valid channel id');
-        if (!message.member.permissions.has("SEND_MESSAGES"))
+        if (!message.member.permissions.has(PermissionFlagsBits.SendMessages))
             return message.reply('please give me send message permission in ' + det[2]);
-        if (!message.member.permissions.has("EMBED_LINKS"))
+        if (!message.member.permissions.has(PermissionFlagsBits.EmbedLinks))
             return message.reply('please give me embed link permission in ' + det[2]);
 
         if ((!user_name) || (user_name.length = 0))

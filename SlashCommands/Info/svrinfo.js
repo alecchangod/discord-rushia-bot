@@ -15,7 +15,7 @@ module.exports = {
         const lang = await db.get(`${interaction.guild.id}_lang`);
 
         if (pre == null) { pre = `=(Default)` }
-        var msg = `**Info for ${message.guild.name}** \n \n Group Language Code: ${lang} \n \n Current prefix: ${pre} \n Set by ${author} \n At <t:${time}>`;
+        var msg = `**Info for ${message.guild.name}** \n \n Group Language Code: \`\`${lang}\`\` \n \n Current prefix: \`\`${pre}\`\` \n Set by \`\`${author}\`\` \n At <t:${time}>`;
         interaction.reply(msg)
     }
 }
