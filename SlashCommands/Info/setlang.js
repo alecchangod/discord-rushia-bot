@@ -2,14 +2,14 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = req
 const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
 const wait = require('node:timers/promises').setTimeout;
 const { QuickDB } = require("quick.db");
-const db = new QuickDB({ filePath: "database/lang.sqlite" }); 
+const db = new QuickDB({ filePath: "database/server.sqlite" }); 
 const { translate } = require("@almeidx/translate");
 const lang = require('../../lang.json')
 
 
 module.exports = {
     name: 'setlang',
-    description: 'set group language for translating',
+    description: 'Set Group Language',
     options: [
         {
             name: 'lang',
