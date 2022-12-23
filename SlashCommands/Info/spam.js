@@ -22,20 +22,22 @@ module.exports = {
   ],
 
   run: async (client, interaction, secret) => {
-    console.log(interaction)
     // Parse Amount
-    if (interaction.user.id != '574194910459199489') return interaction.reply(`~~笑死這功能 <@574194910459199489> 專用~~`)
-    let amount = interaction.options.getNumber('times');
-    // if (amount = NaN) return interaction.reply("please provide a valid number.");
-    const content = interaction.options.getString('content');
-    interaction.reply({ content: `now sending ${amount} * ${content} to <#${interaction.channelId}>`, ephemeral: true });
-    console.log(amount);
-    // await wait(1000);
-    client.channels.fetch(interaction.channelId).then(async chid => {
-      for (let i = 0; i < amount; i++) {
-        chid.send(content)
-        await wait(100);
-      }
-    })
+    var usr = await message.guild.members.fetch(message.author)
+    if (usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
+      let amount = interaction.options.getNumber('times');
+      // if (amount = NaN) return interaction.reply("please provide a valid number.");
+      const content = interaction.options.getString('content');
+      interaction.reply({ content: `now sending ${amount} * ${content} to <#${interaction.channelId}>`, ephemeral: true });
+      console.log(amount);
+      // await wait(1000);
+      client.channels.fetch(interaction.channelId).then(async chid => {
+        for (let i = 0; i < amount; i++) {
+          chid.send(content)
+          await wait(100);
+        }
+      })
+    }
+    else message.reply("笑死你沒權限")
   }
 }
