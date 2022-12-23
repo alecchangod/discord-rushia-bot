@@ -1,3 +1,4 @@
+const { PermissionsBitField } = require('discord.js');
 module.exports = {
   name: "msgdel",
   aliases: ["m", "msgdel"],
