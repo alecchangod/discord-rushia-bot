@@ -4,7 +4,7 @@ const Twit = require('twit');
 const { PermissionsBitField } = require('discord.js');
 module.exports = {
     name: "track",
-    aliases: ["t"],
+    aliases: ["track"],
     description: 'track twitter user',
     run: async (client, message, args, secret) => {
         var track1 = 0; // return for tracked user
