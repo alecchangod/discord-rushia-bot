@@ -2,17 +2,6 @@
 const client = require('../../index.js')
 const secret = require('../../config.json')
 const cron = require('cron');
-const Twit = require('twit');
-// Creates clients
-var T = new Twit({
-    consumer_key: secret.TWITTER_CONSUMER_KEY,
-    consumer_secret: secret.TWITTER_CONSUMER_SECRET,
-    access_token: secret.TWITTER_ACCESS_TOKEN,
-    access_token_secret: secret.TWITTER_ACCESS_TOKEN_SECRET,
-    timeout_ms: 60 * 1000,  // optional HTTP request timeout to apply to all requests.
-    strictSSL: true,     // optional - requires SSL certificates to be valid.
-  })
-
 //start-up activities
 client.on('ready', async () => {
 
@@ -66,8 +55,8 @@ client.once('ready', () => {
   
 // //twitter track start
 client.once('ready', () => {
-    const cmd = 'main';
+    const cmd = 'twitter-main';
     let command = client.twitter.get(cmd)
     if (!command) command = client.twitter.get(client.aliases.get(cmd));
-    if (command) command.run(client, secret, T)
+    if (command) command.run(client, secret)
   });
