@@ -52,7 +52,7 @@ module.exports = {
                         var n = tweet.user.screen_name;
                         if (ch_id) {
                           client.channels.fetch(ch_id).then(channel => {
-                            channel.send(`${n} just retweeted <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
+                            channel.send(`**@${n}** just retweeted <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
                           }).catch(err => {
                             console.log(err)
                           })
@@ -72,7 +72,7 @@ module.exports = {
                         var n = tweet.user.screen_name;
                         if (ch_id) {
                           client.channels.fetch(ch_id).then(channel => {
-                            channel.send(`${n} just post a new reply <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
+                            channel.send(`**@${n}** just post a new reply <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
                           }).catch(err => {
                             console.log(err)
                           })
@@ -94,7 +94,7 @@ module.exports = {
                           var n = tweet.user.screen_name;
                           if (ch_id) {
                             client.channels.fetch(ch_id).then(channel => {
-                              channel.send(`${n} has post a bew post <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
+                              channel.send(`**@${n}** has post a new post <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
                             }).catch(err => {
                               console.log(err)
                             })
