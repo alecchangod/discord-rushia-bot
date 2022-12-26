@@ -7,8 +7,8 @@ module.exports = {
   description: 'start twitter track',
   run: async (client, secret) => {
     // Creates clients
-   var T = new Twit({
-     consumer_key: secret.TWITTER_CONSUMER_KEY,
+    var T = new Twit({
+      consumer_key: secret.TWITTER_CONSUMER_KEY,
       consumer_secret: secret.TWITTER_CONSUMER_SECRET,
       access_token: secret.TWITTER_ACCESS_TOKEN,
       access_token_secret: secret.TWITTER_ACCESS_TOKEN_SECRET,
@@ -28,26 +28,18 @@ module.exports = {
             var a = await db.get(ch_id);
             a.forEach(uid => {
               (async () => {
-                // const c = await db.get(`${e}_c`);
                 T.get('users/show', { id: u_id }, function (err, data, response) {
                   if (err) {
                     console.log(`User Fetch Error`);
                     console.log(err);
-                    // message.reply("Error while fetching user, please make sure you have entered a correct twitter screen name and it is not a private account.")
                   };
-                  // console.log(data);
-                  console.log(`bot is tracking ${data.name}, ${data.screen_name}`);
                   const screen_name = data.screen_name;
 
-                    (async () => {
-                      await db.set(u_id, screen_name);
-                    })();
+                  (async () => {
+                    await db.set(u_id, screen_name);
+                  })();
                 });
                 const sn = await db.get(u_id);
-                // console.log(`user=${uid}(${sn})`)
-                // console.log(`${g_id}_c = ${ch_id}`)
-                // message.reply(`now tracking ${uid}(${sn}) on twitter! \n message will be post to <#${ch_id}>`)
-
                 try {
                   var stream = T.stream('statuses/filter', { follow: [uid] })
                   console.log(`now following ${sn} on twitter!`)
@@ -58,13 +50,13 @@ module.exports = {
                       if (tweet.user.id == uid) {
                         var url = "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str;
                         var n = tweet.user.screen_name;
-                        if(ch_id) {
+                        if (ch_id) {
                           client.channels.fetch(ch_id).then(channel => {
                             channel.send(`${n} just retweeted <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
                           }).catch(err => {
                             console.log(err)
                           })
-                        } 
+                        }
                       };
                     }
                   });
@@ -78,13 +70,13 @@ module.exports = {
                       if (tweet.user.id == uid) {
                         var url = "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str;
                         var n = tweet.user.screen_name;
-                        if(ch_id) {
+                        if (ch_id) {
                           client.channels.fetch(ch_id).then(channel => {
                             channel.send(`${n} just post a new reply <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
                           }).catch(err => {
                             console.log(err)
                           })
-                        } 
+                        }
                       };
                     }
                   });
@@ -100,31 +92,24 @@ module.exports = {
                         if (tweet.user.id == uid) {
                           var url = "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str;
                           var n = tweet.user.screen_name;
-                          if(ch_id) {
+                          if (ch_id) {
                             client.channels.fetch(ch_id).then(channel => {
                               channel.send(`${n} has post a bew post <t:${Math.floor(new Date() / 1000)}:F> \n${url}`)
                             }).catch(err => {
                               console.log(err)
                             })
-                          } 
+                          }
                         }
                       }
                     } catch (e) { }
                   });
-
                 } catch (e) { }
               })()
-
             })
-
           })()
-
         }
         )
       })()
-
     })
   }
-
-
 }

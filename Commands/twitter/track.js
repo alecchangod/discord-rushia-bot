@@ -5,7 +5,7 @@ const { PermissionsBitField } = require('discord.js');
 module.exports = {
     name: "track",
     aliases: ["t"],
-    description : 'track twitter user', 
+    description: 'track twitter user',
     run: async (client, message, args, secret) => {
         var track1 = 0; // return for tracked user
         var mct = message.content;
@@ -20,17 +20,14 @@ module.exports = {
             var channel_id = message.channelId;
         else
             var channel_id = c_id.split('>')[0];
-            console.log(`channel_id: ${channel_id}`)
-            var test = client.channels.cache.get(channel_id);
-            if (!test)
-                return message.reply('must provid a valid channel id');
-            if (!message.member.permissions.has(PermissionsBitField.Flags.SendMessages))
-                return message.reply('please give me send message permission in ' + det[2]);
-            if (!message.member.permissions.has(PermissionsBitField.Flags.EmbedLinks))
-                return message.reply('please give me embed link permission in ' + det[2]);
-
-
-        message.reply(user_name)
+        console.log(`channel_id: ${channel_id}`)
+        var test = client.channels.cache.get(channel_id);
+        if (!test)
+            return message.reply('must provid a valid channel id');
+        if (!message.member.permissions.has(PermissionsBitField.Flags.SendMessages))
+            return message.reply('please give me send message permission in ' + det[2]);
+        if (!message.member.permissions.has(PermissionsBitField.Flags.EmbedLinks))
+            return message.reply('please give me embed link permission in ' + det[2]);
 
         var T = new Twit({
             consumer_key: secret.TWITTER_CONSUMER_KEY,
@@ -48,7 +45,6 @@ module.exports = {
                     console.log(err),
                     message.reply("Error while fetching user, please make sure you have entered a correct twitter screen name and it is not a private account.");
             }
-            // console.log(data)
             var dat = data
             console.log(`username is ${data.name}, ${data.screen_name}`);
             var screen_name = data.screen_name
@@ -57,34 +53,25 @@ module.exports = {
 
                 //add new track
                 var check0 = await db.get(`track`);
-                // let c1 = 0;
                 if ((check0 != null) || (check0 != undefined)) {
                     if (JSON.stringify(check0).includes(user_id) === false) {
-                        // (async () => { await db.set('track', [user_id]) })();
                         console.log('adding user id');
-                        (async () => { 
-                            await db.push('track', user_id) 
+                        (async () => {
+                            await db.push('track', user_id)
                         })();
                     }
                     else console.log('user already added', check0);
-                    // check.forEach(a => {
-                    //     if (a == grp_id) c1++
-                    // }
-
-                    // );
-                    // if (c1 == 0) await db.push('track', grp_id);
-                    // else console.log('grp alraedy added' + c1);
                 }
                 else await db.push('track', user_id);
 
                 //put screen name
                 var check = await db.get(user_id);
                 if ((check != null) || (check != undefined)) {
-                    if (JSON.stringify(check).includes(screen_name) === false) { 
+                    if (JSON.stringify(check).includes(screen_name) === false) {
                         console.log('adding screen name')
-                        (async () => { 
-                            await db.set(user_id, screen_name) 
-                        })(); 
+                            (async () => {
+                                await db.set(user_id, screen_name)
+                            })();
                     }
                     else console.log('user already tracking', check);
                 }
@@ -92,26 +79,19 @@ module.exports = {
 
                 //add userid_channel
                 var check1 = await db.get(`${user_id}_ch`);
-                // let c2 = 0
                 if ((check1 != null) || (check1 != undefined)) {
                     if (JSON.stringify(check1).includes(channel_id) === false) {
                         console.log('adding user channel')
-                        (async () => {
-                            await db.push(`${user_id}_ch`, channel_id)
-                        })();
+                            (async () => {
+                                await db.push(`${user_id}_ch`, channel_id)
+                            })();
                     }
                     else console.log('channel already added for user', check1);
-                    // check1.forEach(a => {
-                    //     if (a == channel_id) c2++
-                    // });
-                    // if (c2 === 0) await db.push(`${grp_id}_ch`, channel_id);
-                    // else console.log('channel already in grp' + c2)
                 }
                 else await db.push(`${user_id}_ch`, channel_id);
 
                 //add userid in channel
                 var check2 = await db.get(channel_id);
-                // let c2 = 0
                 if ((check2 != null) || (check2 != undefined)) {
                     if (JSON.stringify(check2).includes(user_id) === false) {
                         console.log('adding user into channel');
@@ -124,16 +104,11 @@ module.exports = {
                         message.reply(`${screen_name} already tracking in <#${channel_id}>`);
                         track1++
                     }
-                    // check1.forEach(a => {
-                    //     if (a == channel_id) c2++
-                    // });
-                    // if (c2 === 0) await db.push(`${grp_id}_ch`, channel_id);
-                    // else console.log('channel already in grp' + c2)
                 }
                 else await db.push(channel_id, user_id);
-                // await db.set(user_id, screen_name);
 
                 if (track1 = 1) return; //return for tracked user
+
                 // Getting an object from the database:
                 await db.get(`track`).then(uid => {
                     uid.forEach(u_id => {
@@ -145,16 +120,14 @@ module.exports = {
                                         (async () => {
                                             var a = await db.get(channel_id);
                                             a.forEach(uid => {
-                                            if (uid == user_id) {
-                                                (async () => {
-                                                    // const c = await db.get(`${e}_c`);
-                                                    var sn = await db.get(user_id);
-                                                    console.log(`user=${user_id}(${sn})`);
-                                                    // console.log(`${grp_id}_c = ${ch_id}`);
-                                                    message.reply(`now tracking ${data.name}(${sn}) on twitter! \n message will be post to <#${ch_id}>`);
-                                                })();
-                                            }
-                                        });
+                                                if (uid == user_id) {
+                                                    (async () => {
+                                                        var sn = await db.get(user_id);
+                                                        console.log(`user=${user_id}(${sn})`);
+                                                        message.reply(`now tracking ${data.name}(${sn}) on twitter! \n message will be post to <#${ch_id}>`);
+                                                    })();
+                                                }
+                                            });
                                         })();
                                     };
                                 }
