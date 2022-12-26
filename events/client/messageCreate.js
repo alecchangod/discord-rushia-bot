@@ -44,7 +44,7 @@ client.on('messageCreate', async message => {
   if (cmd.length == 0) return;
   let command = client.info.get(cmd) || client.cmd.get(cmd) || client.twitter.get(cmd) || client.music.get(cmd)
   if (!command) command = client.info.get(client.aliases.get(cmd)) || client.cmd.get(client.aliases.get(cmd)) || client.twitter.get(client.aliases.get(cmd)) || client.music.get(client.aliases.get(cmd));
-  if (command.inVoiceChannel === true && message.member.voice.channel === null) {
+  if ((command.inVoiceChannel === true) && (message.member.voice.channel === null)) {
     return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`)
   };
   if (command) try { command.run(client, message, args, secret, prefix) } catch (e) {
