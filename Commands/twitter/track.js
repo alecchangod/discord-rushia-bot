@@ -62,33 +62,48 @@ module.exports = {
                     }
                     else console.log('user already added', check0);
                 }
-                else await db.push('track', user_id);
+                else {
+                    (async () => {
+                        await db.push('track', user_id);
+                        console.log('adding user id');
+                    })();
+                }
 
                 //put screen name
                 var check = await db.get(user_id);
                 if ((check != null) || (check != undefined)) {
                     if (JSON.stringify(check).includes(screen_name) === false) {
-                        console.log('adding screen name')
-                            (async () => {
-                                await db.set(user_id, screen_name)
-                            })();
+                        console.log('adding screen name');
+                        (async () => {
+                            await db.set(user_id, screen_name)
+                        })();
                     }
                     else console.log('user already tracking', check);
                 }
-                else await db.set(user_id, screen_name);
+                else {
+                    (async () => {
+                        await db.set(user_id, screen_name);
+                        console.log('adding screen name');
+                    })();
+                }
 
                 //add userid_channel
                 var check1 = await db.get(`${user_id}_ch`);
                 if ((check1 != null) || (check1 != undefined)) {
                     if (JSON.stringify(check1).includes(channel_id) === false) {
-                        console.log('adding user channel')
-                            (async () => {
-                                await db.push(`${user_id}_ch`, channel_id)
-                            })();
+                        console.log('adding user channel');
+                        (async () => {
+                            await db.push(`${user_id}_ch`, channel_id)
+                        })();
                     }
                     else console.log('channel already added for user', check1);
                 }
-                else await db.push(`${user_id}_ch`, channel_id);
+                else {
+                    (async () => {
+                        await db.push(`${user_id}_ch`, channel_id);
+                        console.log('adding user channel');
+                    })();
+                }
 
                 //add userid in channel
                 var check2 = await db.get(channel_id);
@@ -101,13 +116,18 @@ module.exports = {
                     }
                     else {
                         console.log('user already added in channel', check2);
-                        message.reply(`${screen_name} already tracking in <#${channel_id}>`);
+                        message.reply(`${screen_name} was tracking already in <#${channel_id}>`);
                         track1++
                     }
                 }
-                else await db.push(channel_id, user_id);
+                else {
+                    (async () => {
+                        await db.push(channel_id, user_id);
+                        console.log('adding user into channel');
+                    })();
+                }
 
-                if (track1 = 1) return; //return for tracked user
+                if (track1 != 0) return; //return for tracked user
 
                 // Getting an object from the database:
                 await db.get(`track`).then(uid => {
@@ -124,7 +144,7 @@ module.exports = {
                                                     (async () => {
                                                         var sn = await db.get(user_id);
                                                         console.log(`user=${user_id}(${sn})`);
-                                                        message.reply(`now tracking ${data.name}(${sn}) on twitter! \n message will be post to <#${ch_id}>`);
+                                                        message.reply(`Now tracking **@${data.name}(${sn})** on twitter! \n New message will be posted to <#${ch_id}>`);
                                                     })();
                                                 }
                                             });
