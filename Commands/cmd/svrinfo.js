@@ -13,9 +13,9 @@ module.exports = {
 
         // Getting group language from the database
         const lang = await db.get(`${message.guild.id}_langn`);
-
-        if (pre == null) { var pre = `=(Default)` }
-        var msg = `**Info for ${message.guild.name}** \n \n Group Language: \`\`${lang}\`\` \n \n Current prefix: \`\`${pre}\`\` \n Set by \`\`${author}\`\` \n At <t:${time}>`;
+        var pret = `\`\`${pre}\`\` \n Set by \`\`${author}\`\` \n At <t:${time}>`
+        if (pre == null) { var pret = `=(Default)` }
+        var msg = `**Info for ${message.guild.name}** \n \n Group Language: \`\`${lang}\`\` \n \n Current prefix: ${pret}`;
         message.reply(msg)
     }
 }
