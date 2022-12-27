@@ -15,17 +15,8 @@ module.exports = {
             var slang = message.content.split(" ")[1];
             if (JSON.stringify(lang).includes(slang) === false) return await wait(2000), msg.edit("please input a valid language code.");
             await db.set(`${message.guild.id}_lang`, slang);
-            (async () => {
-                for(var i = 1; i<=185; i++){
-                    var l = lang[i];
-                    if(l.code === slang) {
-                        console.log(l.name)
-                        db.set(`${message.guild.id}_langn`, l.name);
-                    }
-            }
-            })()
             var nlang = await db.get(`${message.guild.id}_lang`);
-            var nlangn = await db.get(`${message.guild.id}_langn`);
+            var nlangn = lang.filter(it => it.code === nlang)[0]?.name;
             await wait(2000);
             msg.edit(`new preferred translate language was setted to ${nlangn} (${nlang}) .`)
         })
