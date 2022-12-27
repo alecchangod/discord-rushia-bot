@@ -4,6 +4,7 @@ const PREFIX = '='
 const secret = require('../../config.json')
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/prefix.sqlite" });
+const bl = new QuickDB({ filePath: "database/bad_word.sqlite" });
 const { DisTube } = require('distube')
 const { SpotifyPlugin } = require('@distube/spotify')
 const { SoundCloudPlugin } = require('@distube/soundcloud')
@@ -25,6 +26,30 @@ client.distube = new DisTube(client, {
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
+
+//blocked word
+client.on('messageCreate', async message => {
+  if(message.author.id === secret.botid) return;
+  var prefix = await db.get(`prefix_${message.guild.id}`)
+  if (prefix == null) {
+    var prefix = PREFIX;
+  } else {
+    prefix = prefix
+  }
+  if ((message.content.startsWith(`${prefix}bl add`)) || (message.content.startsWith(`${prefix}bl del`))) return;
+  var grp = await bl.get('group');
+  if (JSON.stringify(grp).includes(message.guild.id) === false) return;
+  var blocked = await bl.get(`${message.guild.id}`);
+  // console.log(blocked.length);
+  for (var ct = 0; ct < blocked.length;) {
+    // console.log(blocked[ct]);
+    // console.log(ct);
+    if (message.content.includes(blocked[ct])){
+      message.delete();
+    }
+    ct++;
+  }
+});
 
 //command
 client.on('messageCreate', async message => {
@@ -252,19 +277,19 @@ client.distube
     message.channel.send(`${client.emotes.error} | No result found for \`${query}\`!`)
   )
   .on('finish', queue => queue.textChannel.send('Finished!'))
-.on("searchResult", (message, result) => {
+  .on("searchResult", (message, result) => {
     let i = 0
     message.channel.send(
-        `**Choose an option from below**\n${result
-            .map(song => `**${++i}**. ${song.name} - \`${song.formattedDuration}\``)
-            .join("\n")}\n*Enter anything else or wait 60 seconds to cancel*`
+      `**Choose an option from below**\n${result
+        .map(song => `**${++i}**. ${song.name} - \`${song.formattedDuration}\``)
+        .join("\n")}\n*Enter anything else or wait 60 seconds to cancel*`
     )
-})
-.on("searchCancel", message => message.channel.send(`${client.emotes.error} | Searching canceled`))
-.on("searchInvalidAnswer", message =>
+  })
+  .on("searchCancel", message => message.channel.send(`${client.emotes.error} | Searching canceled`))
+  .on("searchInvalidAnswer", message =>
     message.channel.send(
-        `${client.emotes.error} | Invalid answer! You have to enter the number in the range of the results`
+      `${client.emotes.error} | Invalid answer! You have to enter the number in the range of the results`
     )
-)
-.on("searchDone", () => {})
+  )
+  .on("searchDone", () => { })
 
