@@ -40,10 +40,7 @@ client.on('messageCreate', async message => {
   var grp = await bl.get('group');
   if (JSON.stringify(grp).includes(message.guild.id) === false) return;
   var blocked = await bl.get(`${message.guild.id}`);
-  // console.log(blocked.length);
   for (var ct = 0; ct < blocked.length;) {
-    // console.log(blocked[ct]);
-    // console.log(ct);
     if (message.content.includes(blocked[ct])){
       message.delete();
     }
