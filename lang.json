@@ -24,8 +24,68 @@
     "name": "Amharic"
   },
   {
-    "code": "ar",
-    "name": "Arabic"
+    "code": "ar-DZ",
+    "name": "Arabic (Algeria)"
+  },
+  {
+    "code": "ar-BH",
+    "name": "Arabic (Bahrain)"
+  },
+  {
+    "code": "ar-EG",
+    "name": "Arabic (Egypt)"
+  },
+  {
+    "code": "ar-IQ",
+    "name": "Arabic (Iraq)"
+  },
+  {
+    "code": "ar-JO",
+    "name": "Arabic (Jordan)"
+  },
+  {
+    "code": "ar-KW",
+    "name": "Arabic (Kuwait)"
+  },
+  {
+    "code": "ar-LB",
+    "name": "Arabic (Lebanon)"
+  },
+  {
+    "code": "ar-LY",
+    "name": "Arabic (Libya)"
+  },
+  {
+    "code": "ar-MA",
+    "name": "Arabic (Morocco)"
+  },
+  {
+    "code": "ar-OM",
+    "name": "Arabic (Oman)"
+  },
+  {
+    "code": "ar-QA",
+    "name": "Arabic (Qatar)"
+  },
+  {
+    "code": "ar-SA",
+    "name": "Arabic (Saudi Arabia)"
+  },
+  {
+    "code": "ar-SY",
+    "name": "Arabic (Syria)"
+  },
+  {
+    "code": "ar-TN",
+    "name": "Arabic (Tunisia)"
+  },
+  {
+    "code": "ar-AE",
+    "name": "Arabic (U.A.E.)"
+  },
+  {
+    "code": "ar-YE",
+    "name": "Arabic (Yemen)"
   },
   {
     "code": "an",
@@ -124,8 +184,12 @@
     "name": "Chinese(Hong Kong)"
   },
   {
+    "code": "zh-SG",
+    "name": "Chinese(Singapore)"
+  },
+  {
     "code": "zh-CN",
-    "name": "Chinese"
+    "name": "Chinese(PRC)"
   },
   {
     "code": "cv",
@@ -160,8 +224,12 @@
     "name": "Divehi; Dhivehi; Maldivian;"
   },
   {
+    "code": "nl-BE",
+    "name": "Dutch(Belgium)"
+  },
+  {
     "code": "nl",
-    "name": "Dutch"
+    "name": "Dutch(Standard)"
   },
   {
     "code": "dz",
@@ -170,6 +238,46 @@
   {
     "code": "en",
     "name": "English"
+  },
+  {
+    "code": "en-AU",
+    "name": "English (Australia)"
+  },
+  {
+    "code": "en-BA",
+    "name": "English (Belize)"
+  },
+  {
+    "code": "en-CA",
+    "name": "English (Canada)"
+  },
+  {
+    "code": "en-IE",
+    "name": "English (Ireland)"
+  },
+  {
+    "code": "en-JM",
+    "name": "English (Jamaica)"
+  },
+  {
+    "code": "en-NZ",
+    "name": "English (New Zealand)"
+  },
+  {
+    "code": "en-ZA",
+    "name": "English (South Africa)"
+  },
+  {
+    "code": "en-TT",
+    "name": "English (Trinidad)"
+  },
+  {
+    "code": "en-GB",
+    "name": "English (United Kingdom)"
+  },
+  {
+    "code": "en-US",
+    "name": "English (United States)"
   },
   {
     "code": "eo",
