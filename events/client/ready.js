@@ -17,7 +17,7 @@ client.on('ready', async () => {
     client.guilds.cache.forEach(guild => (async () => { await db.set(guild.name, guild.id) })());
     client.user.setPresence({ activities: [{ name: "誰在做夢", type: 3 }], status: 'idle', clientStatus: "PS5" }); 
     //send scheduled message
-    let scheduledMessage = new cron.CronJob('00 00 04 * * *', () => {
+    let scheduledMessage = new cron.CronJob('00 00 12 * * *', () => {
       const guild = client.guilds.cache.get(secret.grp2);
       const channel = guild.channels.cache.get(secret.channelID2);
       channel.send('你各位別當死魚堆');
