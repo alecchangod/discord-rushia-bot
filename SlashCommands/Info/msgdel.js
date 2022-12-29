@@ -1,9 +1,9 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders")
-const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
+const { ApplicationCommandOptionType, ButtonStyle, PermissionsBitField } = require("discord.js")
 
 module.exports = {
   name: "msgdel", 
-  description: 'delete message(s)',
+  description: 'purge message to delete',
   options: [
         {
             name: 'amount',
@@ -13,6 +13,9 @@ module.exports = {
         }
     ],
   run: async (client, interaction) => {
+    // check if user have permission
+    var usr = await message.guild.members.fetch(message.author)
+    if (usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
     // Parse Amount
     var amount = Number(interaction.options.getString('amount'));
     if (amount === "NaN") return interaction.reply({ content: ("please provide a valid number."), ephemeral: true });
@@ -29,5 +32,7 @@ module.exports = {
      interaction.channel.bulkDelete(msg).catch(error => console.log(error.stack));
      interaction.reply({ content: (`I have deleted ${amount} messages in <#${interaction.channel.id}> .`), ephemeral: true });
     });
+  }
+  else message.reply("笑死你沒權限")
 }
 }
