@@ -38,6 +38,6 @@ module.exports = {
         }
       })
     }
-    else message.reply("笑死你沒權限")
+    else interaction.reply("笑死你沒權限")
   }
 }
