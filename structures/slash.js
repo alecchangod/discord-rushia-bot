@@ -1,9 +1,10 @@
 let slash = []
 const { readdirSync } = require("fs");
 const ascii = require("ascii-table");
+const wait = require('node:timers/promises').setTimeout;
 let table = new ascii("Slash Commands");
 table.setHeading('Slash Command', ' Load status');
-module.exports = (client) => {
+module.exports = async (client) => {
     readdirSync("./SlashCommands/").forEach(dir => {
         const commands = readdirSync(`./SlashCommands/${dir}/`).filter(file => file.endsWith(".js"));
         for (let file of commands) {
@@ -18,6 +19,7 @@ module.exports = (client) => {
              }
           }
     });
+    await wait(1500);
     console.log(table.toString());
 client.on("ready",async ()=> {
     await client.application.commands.set(slash)

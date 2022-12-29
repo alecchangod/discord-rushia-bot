@@ -1,9 +1,10 @@
 const { readdirSync } = require('fs');
 const ascii = require('ascii-table');
+const wait = require('node:timers/promises').setTimeout;
 let table = new ascii("Events");
 table.setHeading('EVENTS', ' LOAD STATUS');
 
-module.exports = (client) => {
+module.exports = async (client) => {
     readdirSync('./events/').forEach(dir => {
         const events = readdirSync(`./events/${dir}`).filter(file => file.endsWith('.js'));
         for(let file of events) {
@@ -16,5 +17,6 @@ module.exports = (client) => {
             } if(pull.aliases && Array.isArray(pull.aliases)) pull.aliases.forEach(alias => client.aliases.set(alias, pull.name))
         }
     });
+    await wait(1500);
     console.log(table.toString());
 }

@@ -1,26 +1,11 @@
 const { readdirSync } = require('fs');
 const ascii = require('ascii-table');
+const wait = require('node:timers/promises').setTimeout;
 let table = new ascii("Commands");
 table.setHeading('COMMANDS', ' LOAD STATUS');
 
-module.exports = (client) => {
+module.exports = async (client) => {
     readdirSync('./Commands/').forEach(async dir => {
-        if (dir === "mjs") {
-            const cmd = readdirSync(`./Commands/${dir}`).filter(file => file.endsWith('.mjs'));
-            for (let file of cmd) {
-                import(`../Commands/${dir}/${file}`).then((pull)=>{
-                    console.log(pull);
-                if (pull.name) {
-                    client.cmd.set(pull.name, pull);
-                    table.addRow(file, 'COMMAND REGISTERED')
-                } else {
-                    table.addRow(file, 'COMMAND UNREGISTERED')
-                    // continue;
-                } if (pull.aliases && Array.isArray(pull.aliases)) pull.aliases.forEach(alias => client.aliases.set(alias, pull.name));
-                })
-                
-            };
-        }
         if (dir === "cmd") {
             const cmd = readdirSync(`./Commands/${dir}`).filter(file => file.endsWith('.js'));
             for (let file of cmd) {
@@ -74,6 +59,7 @@ module.exports = (client) => {
             };
         }
     });
+    await wait(1500);
     console.log(table.toString());
 }
 

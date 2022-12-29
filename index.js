@@ -60,7 +60,7 @@ client.slashCommands = new Collection();
 
 module.exports = client;
 
-["command", "event", 'slash'].forEach(handler => {
+["command", "mjs", "event", 'slash'].forEach(handler => {
   require(`./structures/${handler}`)(client);
 });
 
