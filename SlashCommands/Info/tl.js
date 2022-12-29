@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = req
 const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
 const wait = require('node:timers/promises').setTimeout;
 const { QuickDB } = require("quick.db");
-const db = new QuickDB({ filePath: "database/server.sqlite" });
+const db = new QuickDB({ filePath: "database/lang.sqlite" });
 const { translate } = require("@almeidx/translate");
 const lang = require('../../lang.json')
 
