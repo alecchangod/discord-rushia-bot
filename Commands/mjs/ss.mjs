@@ -8,10 +8,10 @@ export async function run(client, message, args, secret) {
         console.log(`not start with http! ${url}`);
         var url = `https://${url}`
     }
-    if(message?.content?.split(" ")[2] === "full" || args) var tf = true;
-    else var tf = false;
+    // if(message?.content?.split(" ")[2] === "full" || args) var tf = true;
+    // else var tf = false;
     await captureWebsite.file(url, 'screenshot/screenshot.png', {
-    darkMode: true, width: 2400, height: 1080, fullPage: tf, overwrite: true
+    darkMode: true, width: 2400, height: 1080, fullPage: true, overwrite: true
 });
-    if(message?.channel?.id) message.channel.send({content: `Screenshot of ${url}`, files: ['screenshot/screenshot.png'], timeout: 100000})
+    if(message?.channel?.id) message.channel.send({content: `Screenshot of ${url}`, files: ['screenshot/screenshot.png']})
 }
