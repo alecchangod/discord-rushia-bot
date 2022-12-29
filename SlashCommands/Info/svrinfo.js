@@ -7,9 +7,9 @@ module.exports = {
     run: async (client, interaction, args, prefix) => {
 
         // Getting prefix from the database
-        const pre = await db.get(`prefix_${interaction.guild.id}`);
-        const author = await db.get(`c_${interaction.guild.id}`);
-        const time = await db.get(`t_${interaction.guild.id}`);
+        var pre = await db.get(`prefix_${message.guild.id}`),
+            author = await db.get(`c_${message.guild.id}`),
+            time = await db.get(`t_${message.guild.id}`);
 
         // Getting group language from the database
         const lang = await db.get(`${interaction.guild.id}_lang`);
