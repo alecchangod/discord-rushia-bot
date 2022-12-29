@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders")
-const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
+const { ApplicationCommandOptionType, ButtonStyle, PermissionsBitField } = require("discord.js")
 const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
