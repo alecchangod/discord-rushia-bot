@@ -3,7 +3,7 @@ module.exports = {
   name: "warn",
   aliases: ["warn"],
   description: 'warn a user',
-  run: async (client, message, args, secret, prefix) => {
+  run: async (client, message, args, secret, prefix, trans) => {
     try {
       var user = await message.guild.members.fetch(message.author)
       if (!user.permissions.has(PermissionsBitField.Flags.ModerateMembers)) return message.channel.send("笑死你沒權限")

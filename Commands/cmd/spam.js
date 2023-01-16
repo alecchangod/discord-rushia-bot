@@ -3,9 +3,8 @@ module.exports = {
   name: "spam", 
   aliases: ["spam"],
   description : 'spam message in a channel(owner only for now)', 
-  run: async (client, message, secret) => {
+  run: async (client, message) => {
     // Parse Amount
-    // if(message.author.id != '574194910459199489') return message.reply(`~~笑死這功能 <@574194910459199489> 專用~~`)
     var user = await message.guild.members.fetch(message.author)
     if(user.permissions.has(PermissionsBitField.Flags.ManageMessages)){
     const amount = message.content.split(' ')[1]

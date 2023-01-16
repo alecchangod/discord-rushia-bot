@@ -2,7 +2,7 @@ import captureWebsite from 'capture-website';
 export const name = "ss";
 export const aliases = ["ss"];
 export const description = 'screenshot website';
-export async function run(client, message, args, secret) {
+export async function run(client, message, args, secret, prefix, trans) {
     var url = message?.content?.split(" ")[1] || args;
     if(!url.startsWith("http")) {
         console.log(`not start with http! ${url}`);

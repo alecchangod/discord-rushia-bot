@@ -4,7 +4,7 @@ const db = new QuickDB({ filePath: "database/bad_word.sqlite" });
 module.exports = {
     name: 'bl',
     description: 'Block words in a group(case sensitive)',
-    run: async (client, message, guild, args) => {
+    run: async (client, message) => {
         var det = message.content.toLowerCase().split(" "),
             status = det[1],
             word = det[2];
