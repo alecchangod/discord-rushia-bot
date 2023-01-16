@@ -1,5 +1,6 @@
 // Imports the client library
 const client = require('../../index.js')
+const trans = require('../../trans.json')
 const PREFIX = '='
 const secret = require('../../config.json')
 const { QuickDB } = require("quick.db");
@@ -69,7 +70,7 @@ client.on('messageCreate', async message => {
   if ((command.inVoiceChannel === true) && (message.member.voice.channel === null)) {
     return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`)
   };
-  if (command) try { command.run(client, message, args, secret, prefix) } catch (e) {
+  if (command) try { command.run(client, message, args, secret, prefix, trans) } catch (e) {
     console.error(e)
     message.channel.send(`${client.emotes.error} | Error: \`${e}\``)
   }

@@ -1,0 +1,19 @@
+[
+    {
+        "name": "time",
+        "lang": [
+            {
+                "code": "en",
+                "trans": "current time is "
+            },
+            {
+                "code": "zh-TW",
+                "trans": "現在時間是 "
+            },
+            {
+                "code": "zh-HK",
+                "trans": "現在時間是 "
+            }
+        ]
+    }
+]
