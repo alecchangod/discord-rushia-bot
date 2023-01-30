@@ -23,7 +23,9 @@ module.exports = {
 
   run: async (client, interaction, secret) => {
     // Parse Amount
-    var usr = await message.guild.members.fetch(message.author)
+    var usr = interaction.member;
+    console.log(interaction.member);
+    // console.log(usr);
     if (usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
       let amount = interaction.options.getNumber('times');
       // if (amount = NaN) return interaction.reply("please provide a valid number.");
