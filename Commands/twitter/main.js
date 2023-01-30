@@ -19,7 +19,7 @@ module.exports = {
     // start tracking
     var user_id = await db.get(`track`);
     console.log(`bot is tracking ${user_id}`)
-    user_id.forEach(u_id => {
+    user_id?.forEach(u_id => {
       console.log(`user id: ${u_id}`);
       (async () => {
         var c_id = await db.get(`${u_id}_ch`);
