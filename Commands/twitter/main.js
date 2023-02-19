@@ -42,7 +42,7 @@ module.exports = {
                 const sn = await db.get(u_id);
                 try {
                   var stream = T.stream('statuses/filter', { follow: [uid] })
-                  console.log(`now following ${sn} on twitter!`)
+                  console.log(`now following ${sn} on twitter!`);
 
                   stream.on('tweet', function isReply(tweet) {
                     if ((tweet.retweeted_status)) {

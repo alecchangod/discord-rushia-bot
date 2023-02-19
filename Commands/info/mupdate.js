@@ -3,15 +3,16 @@ const db = new QuickDB({ filePath: "database/roles.sqlite" });
 module.exports = {
   name: "mupdate",
   aliases: ["m"],
-  description : 'log roles changes', 
+  description: 'log roles changes',
   run: async (client, oldMember, newMember) => {
 
     const oldr = await db.get(newMember.user.id)
-      if(oldr === null || oldr === undefined){
-    const r = newMember.roles.cache
-    r.forEach(async r => {
-      await db.push(newMember.user.id, r.id)
-    })}
+    if (oldr === null || oldr === undefined) {
+      const r = newMember.roles.cache
+      r.forEach(async r => {
+        await db.push(newMember.user.id, r.id)
+      })
+    }
 
     //role(s) were removed
     const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
@@ -20,7 +21,6 @@ module.exports = {
       if ((removedRoles.map(r => r.name).toString().length === 0) || (!removedRoles.map(r => r.name))) return;
       db.pull(newMember.user.id, removedRoles.map(r => r.id));
       const newr = (`${oldMember.displayName} 不再是 ${removedRoles.map(r => r.name)} 了`);
-      console.log(newr);
       const Embed = (`身份組變了欸~\n\n${newr}`)
       let rolelog = newMember.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
       if (!rolelog) return;
@@ -34,7 +34,6 @@ module.exports = {
       if ((!addedRoles.map(r => r.name)) || (addedRoles.map(r => r.name).toString().length === 0)) return;
       db.push(newMember.user.id, addedRoles.map(r => r.id));
       var rmr = `${oldMember.displayName} 現在是 ${addedRoles.map(r => r.name)} 了`
-      console.log(rmr);
       const Embed1 = (`身份組變了欸~\n\n${rmr}`)
       let log = newMember.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
       if (!log) return;
