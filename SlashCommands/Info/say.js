@@ -27,7 +27,7 @@ module.exports = {
       client.channels.fetch(interaction.channelId).then(async chid => {
         if (id) {
           const msg = await chid.messages.fetch(id);
-          if (!msg) return
+          if (!msg) return interaction.reply({ content: `Please provide a valid message id.`, ephemeral: true });
           msg.reply(content);
           interaction.reply({ content: `${content} has been sent to <#${interaction.channelId}>`, ephemeral: true });
         }
