@@ -11,15 +11,6 @@ module.exports = {
       if (message.channel.name.toLowerCase().includes("log")) return;
       client.channels.fetch(secret.log_channel).then(async channel => {
         await msgtype(message, channel);
-        // if (type == 0) 
-        // else if (type == 1) 
-        // else if (type == 2) 
-        // else if (type == 3) 
-        // else if (type == 4) 
-        // else if (type == 5) {
-
-        // }
-        // else if (type == 6) 
       }
       )
     } catch (e) { console.log(e) }

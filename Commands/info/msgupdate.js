@@ -21,16 +21,16 @@ module.exports = {
     if (newMessage.channel.name.toLowerCase().includes("log")) return;
     if ((newMessage.content === oldMessage?.content) && (newMessage.embed === oldMessage?.embeds)) return;
     var link = `https://discord.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${newMessage.id}`
-    if(oldMessage?.content) var omct = `\n原信息： ${oldMessage?.content}`
+    if (oldMessage?.content) var omct = `\n原信息： ${oldMessage?.content}`
     else var omct = "";
-    if(newMessage.content) var nmct = `\n新信息： ${newMessage.content}`
+    if (newMessage.content) var nmct = `\n新信息： ${newMessage.content}`
     else var nmct = "";
     if ((newMessage.embeds[0]?.description)) { //  && (newMessage.embeds[0]) && (oldMessage.embeds[0]) && (oldMessage.embeds[0].description) 
       if ((newMessage.embed === oldMessage?.embed) && (newMessage.content === oldMessage?.content)) return;
       const oreceivedEmbed = oldMessage.embeds[0];
       const nreceivedEmbed = newMessage.embeds[0];
       const exampleEmbed = new EmbedBuilder(oreceivedEmbed).setTitle('New title');
-      client.channels.fetch(secret.edit_log_channel).then(log => {       
+      client.channels.fetch(secret.edit_log_channel).then(log => {
         if (oreceivedEmbed) { log.send({ content: `群組： ${newMessage.guild.name} \n頻道： ${newMessage.channel} \n人：${newMessage.author.tag} ${omct} \n原embed： `, embeds: [oreceivedEmbed] }) }
         else { log.send({ content: `群組： ${newMessage.guild.name} \n頻道： ${newMessage.channel} \n人：${newMessage.author.tag} ${omct}` }) };
         log.send({ content: `鏈接：${link}\n群組： ${newMessage.guild.name} \n頻道： ${newMessage.channel} \n人：${newMessage.author.tag} ${nmct}\n新embed： `, embeds: [nreceivedEmbed] });
