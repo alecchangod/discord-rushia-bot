@@ -8,10 +8,10 @@ module.exports = {
         else if (message.attachments.size > 0) {
             var attachments = message.attachments;
             for (let file of attachments) {
-              message.attachments.forEach(a=>{
-                      if (a.size > 10485760) {
-                        if (message.content.length == 0) var data = `人: ${message.author.tag} , 附件: ${a.url}`
-                        else if (message.content.length > 0) var data = `人: ${message.author.tag} , 訊息: ${message.content} , 附件: ${a.url}`
+              message.attachments.forEach(attachments=>{
+                      if (attachments.size > 10485760) {
+                        if (message.content.length == 0) var data = `人: ${message.author.tag} , 附件: ${attachments.url}`
+                        else if (message.content.length > 0) var data = `人: ${message.author.tag} , 訊息: ${message.content} , 附件: ${attachments.url}`
                 var channel1 = client.channels.fetch(secret.PMlog).then(channel1 => {
                 channel1.send({
                   content: data

@@ -72,12 +72,12 @@ async function msgtype(message, channel) {
     if (message.attachments.size > 0) {
       var attachments = message.attachments;
       for (let file of attachments) {
-        var s = 0;
-        message.attachments.forEach(a => {
-          s = s + a.size;
+        var totalfilesize = 0;
+        message.attachments.forEach(filesize => {
+          totalfilesize = totalfilesize + filesize.size;
 
         });
-        if (s > 10485760) {
+        if (totalfilesize > 10485760) {
           if (message.content.length == 0)
             var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
           else if (message.content.length > 0)
@@ -109,12 +109,12 @@ async function msgtype(message, channel) {
   else if (message.attachments.size > 0) {
     var attachments = message.attachments;
     for (let file of attachments) {
-      var s = 0;
-      message.attachments.forEach(a => {
-        s = s + a.size;
+      var totalfilesize = 0;
+      message.attachments.forEach(filesize => {
+        totalfilesize = totalfilesize + filesize.size;
 
       });
-      if (s > 10485760) {
+      if (totalfilesize > 10485760) {
         var type = 1
         if (message.content.length == 0)
           var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
