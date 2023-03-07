@@ -18,7 +18,7 @@ module.exports = {
             require: true
         }
     ],
-    run: async(client, interaction, guild,  args) => {
+    run: async(client, interaction, args, secret, trans) => {
       interaction.reply("loading...")
       var userMember = await message.guild.members.fetch(message.author)
         //     console.log(userMember.permissions.has(PermissionsBitField.Flags.ManageGuild))

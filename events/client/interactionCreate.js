@@ -1,4 +1,7 @@
-const client = require('../../index.js');
+// Imports the client library
+const client = require('../../index.js')
+const trans = require('../../trans.json')
+const secret = require('../../config.json')
 
 client.on("interactionCreate", async(interaction) => {
     if(interaction.isChatInputCommand()) {
@@ -24,6 +27,6 @@ client.on("interactionCreate", async(interaction) => {
             args.push(option.value);
         }
         interaction.member = interaction.guild.members.cache.get(interaction.user.id);
-        cmd.run(client, interaction, guild, interaction.options);
+        cmd.run(client, interaction, args, secret, trans, guild, interaction.options);
     }
 })

@@ -30,7 +30,7 @@ module.exports = {
             require: true
         }
     ],
-    run: async (client, interaction, guild, args) => {
+    run: async (client, interaction, args, secret, trans) => {
         interaction.reply({
             content: "loading"
         })

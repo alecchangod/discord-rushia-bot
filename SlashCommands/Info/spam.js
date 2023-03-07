@@ -21,7 +21,7 @@ module.exports = {
     }
   ],
 
-  run: async (client, interaction, secret) => {
+  run: async (client, interaction, args, secret, trans) => {
     // Parse Amount
     var usr = interaction.member;
     console.log(interaction.member);

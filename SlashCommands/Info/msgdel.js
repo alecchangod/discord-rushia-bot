@@ -12,7 +12,7 @@ module.exports = {
             require: true
         }
     ],
-  run: async (client, interaction) => {
+  run: async (client, interaction, args, secret, trans) => {
     // check if user have permission
     var usr = await message.guild.members.fetch(message.author)
     if (usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
