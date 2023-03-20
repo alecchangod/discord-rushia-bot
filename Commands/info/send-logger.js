@@ -16,6 +16,7 @@ module.exports = {
     } catch (e) { console.log(e) }
   }
 }
+
 // craete function
 // split message > 2000
 function split(str, channel, file) {
@@ -61,78 +62,52 @@ async function msgtype(message, channel) {
     var ext = "png", sck = message.stickers.first();
     var sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
     if (message.attachments.size > 0) {
-      var attachments = message.attachments;
-      for (let file of attachments) {
-        var totalfilesize = 0;
-        message.attachments.forEach(filesize => {
-          totalfilesize = totalfilesize + filesize.size;
-
-        });
-        if (totalfilesize > 10485760) {
-          if (message.content.length == 0)
-            var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
-          else if (message.content.length > 0)
-            var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} , 貼圖： ${sticurl} , \n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
-          break;
+      message.attachments.forEach(attachments => {
+        if (attachments.size > 10485760) {
+          if (message.content.length == 0) var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件: ${attachments.url}`
+          else if (message.content.length > 0) var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件: ${attachments.url}`
         }
         else {
-          if (message.content.length == 0)
-            var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
-          else if (message.content.length > 0)
-            var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
-          var files = Array.from(message.attachments.values())
-          break;
+          if (message.content.length == 0) var data = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`
+          else if (message.content.length > 0) var data = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`
+          var files = Array.from(message.attachments.values());
         }
-      }
+      })
+      split(str, channel, files)
     }
     else {
       if (message.content.length == 0)
         var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} , 貼圖： ${sticurl} , \n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name}`;
       else (message.content.length > 0)
       var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} , 貼圖： ${sticurl} , \n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name}`;
+
+      split(str, channel)
     }
     var type = 0
-    // str = `人:${message.author.tag} ,\n 貼圖： ${sticurl} ,\n 群:${message.guild.name} ,\n 頻道:${message.channel.name}`
-    split(str, channel, files)
   }
 
   // if it has attachments (image/video/document....)
   else if (message.attachments.size > 0) {
-    var attachments = message.attachments;
-    for (let file of attachments) {
-      var totalfilesize = 0;
-      message.attachments.forEach(filesize => {
-        totalfilesize = totalfilesize + filesize.size;
-
-      });
-      if (totalfilesize > 10485760) {
-        var type = 1
-        if (message.content.length == 0)
-          var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
-        else if (message.content.length > 0)
-          var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${a.url}`;
+    message.attachments.forEach(attachments => {
+      if (attachments.size > 10485760) {
+        if (message.content.length == 0) var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件: ${attachments.url}`
+        else if (message.content.length > 0) var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件: ${attachments.url}`
         split(str, channel)
-        break;
       }
       else {
-        var type = 2
-        if (message.content.length == 0)
-          var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
-        else if (message.content.length > 0)
-          var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件:`;
-        var files = Array.from(message.attachments.values())
+        if (message.content.length == 0) var data = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`
+        else if (message.content.length > 0) var data = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`
+        var files = Array.from(message.attachments.values());
         split(str, channel, files)
-        break;
       }
-    }
+    })
   }
 
   // if it have embed
-  else if ((message.embeds[0])) { // && (message.embeds[0].description)
+  else if ((message.embeds[0])) {
     // check to ensure message was sent by bot and contains embed
     const receivedEmbed = message.embeds[0];
-    // const exampleEmbed = new EmbedBuilder(receivedEmbed).setTitle('New title');
-    if (message.content.length > 0) var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 内容(如有)： ${message.content} \n embed:`, type = 3
+    if (message.content.length > 0) var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 内容： ${message.content} \n embed:`, type = 3
     else if (message.content.length == 0) var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n embed:`, type = 4
     var embeds = receivedEmbed
     embed(str, channel, embeds)
