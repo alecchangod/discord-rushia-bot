@@ -95,8 +95,8 @@ async function msgtype(message, channel) {
         split(str, channel)
       }
       else {
-        if (message.content.length == 0) var data = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`
-        else if (message.content.length > 0) var data = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`
+        if (message.content.length == 0) var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`
+        else if (message.content.length > 0) var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`
         var files = Array.from(message.attachments.values());
         split(str, channel, files)
       }
