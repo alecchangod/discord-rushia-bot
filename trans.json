@@ -1,18 +1,85 @@
 [
     {
-        "name": "time",
+        "name": "bl",
         "lang": [
             {
-                "code": "en",
-                "trans": "current time is "
+                "code": "en-US",
+                "strings": [
+                    {
+                        "name": "missing_permission",
+                        "trans": "You don't have require permission for running this command!"
+                    },
+                    {
+                        "name": "already_banned",
+                        "trans": "Word already banned!"
+                    },
+                    {
+                        "name": "banned",
+                        "trans": "was now banned. Try to send it"
+                    },
+                    {
+                        "name": "no_word_banned",
+                        "trans": "No words were banned in this server yet!"
+                    },
+                    {
+                        "name": "not_banned",
+                        "trans": "Word not yet banned."
+                    },
+                    {
+                        "name": "unbanned",
+                        "trans": " was now unbanned."
+                    }
+                ]
             },
             {
                 "code": "zh-TW",
-                "trans": "現在時間是 "
+                "strings": [
+                    {
+                        "name": "missing_permission",
+                        "trans": "笑死你沒權限"
+                    }
+                ]
             },
             {
                 "code": "zh-HK",
-                "trans": "現在時間是 "
+                "strings": [
+                    {
+                        "name": "missing_permission",
+                        "trans": "笑死你沒權限"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "time",
+        "lang": [
+            {
+                "code": "en-US",
+                "strings": [
+                    {
+                        "name": "current_time",
+                        "trans": "Current time is "
+                    }
+                ]
+            },
+            {
+                "code": "zh-TW",
+                "strings": [
+                    {
+                        "name": "current_time",
+                        "trans": "現在時間是 "
+                    }
+                ]
+            },
+            {
+                "code": "zh-HK",
+                "strings": [
+                    {
+                        "name": "current_time",
+                        "trans": "現在時間是 "
+                    }
+                ]
             }
         ]
     }
