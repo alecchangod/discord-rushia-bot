@@ -1,11 +1,12 @@
 // Imports the client library
 const client = require('../../index.js')
-const trans = require('../../trans.json')
+const trans = require('../../lang.json')
 const PREFIX = '='
 const secret = require('../../config.json')
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/prefix.sqlite" });
 const bl = new QuickDB({ filePath: "database/bad_word.sqlite" });
+const svr = new QuickDB({ filePath: "database/server.sqlite" });
 const { DisTube } = require('distube')
 const { SpotifyPlugin } = require('@distube/spotify')
 const { SoundCloudPlugin } = require('@distube/soundcloud')
@@ -70,7 +71,9 @@ client.on('messageCreate', async message => {
   if ((command.inVoiceChannel === true) && (message.member.voice.channel === null)) {
     return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`)
   };
-  if (command) try { command.run(client, message, args, secret, prefix, trans) } catch (e) {
+  // Getting group language from the database
+  const langc = await svr.get(`${message.guild.id}_lang`);
+  if (command) try { command.run(client, message, args, secret, prefix, trans, langc) } catch (e) {
     console.error(e)
     message.channel.send(`${client.emotes.error} | Error: \`${e}\``)
   }
@@ -83,7 +86,9 @@ client.on('messageCreate', async message => {
   const cmd = 'send-logger';
   let command = client.info.get(cmd)
   if (!command) command = client.info.get(client.aliases.get(cmd));
-  if (command) command.run(client, message, args, secret, prefix, trans)
+  // Getting group language from the database
+  const langc = await svr.get(`${message.guild.id}_lang`);
+  if (command) command.run(client, message, args, secret, prefix, trans, langc)
 });
 
 
@@ -93,7 +98,9 @@ client.on('messageCreate', async (message) => {
     const cmd = 'pm-logger';
     let command = client.info.get(cmd)
     if (!command) command = client.info.get(client.aliases.get(cmd));
-    if (command) command.run(client, message, args, secret, prefix, trans)
+    // Getting group language from the database
+    const langc = await svr.get(`${message.guild.id}_lang`);
+    if (command) command.run(client, message, args, secret, prefix, trans, langc)
   }
 });
 

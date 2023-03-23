@@ -2,6 +2,8 @@
 const client = require('../../index.js')
 const trans = require('../../trans.json')
 const secret = require('../../config.json')
+const { QuickDB } = require("quick.db");
+const svr = new QuickDB({ filePath: "database/server.sqlite" });
 
 //message delete log
 client.on('messageDelete', async (message) => {
@@ -9,7 +11,9 @@ client.on('messageDelete', async (message) => {
     const cmd = 'delete-logger';
     let command = client.info.get(cmd)
     if (!command) command = client.commands.get(client.aliases.get(cmd));
-    if (command) command.run(client, message, secret, trans)
+    // Getting group language from the database
+    const langc = await svr.get(`${message.guild.id}_lang`);
+    if (command) command.run(client, message, secret, trans, langc)
 });
 
 //dm delete detect
@@ -18,6 +22,8 @@ client.on('messageDelete', async (message) => {
         const cmd = 'pm-delete-logger';
         let command = client.info.get(cmd)
         if (!command) command = client.info.get(client.aliases.get(cmd));
-        if (command) command.run(client, message, secret, trans)
+        // Getting group language from the database
+        const langc = await svr.get(`${message.guild.id}_lang`);
+        if (command) command.run(client, message, secret, trans, langc)
     }
 });

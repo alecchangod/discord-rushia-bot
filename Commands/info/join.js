@@ -2,7 +2,7 @@ module.exports = {
   name: "join",
   aliases: ["j"],
   description: 'send a message when user join(hardcoded for now)',
-  run: async (client, secret, member, trans) => {
+  run: async (client, secret, member, trans, langc) => {
     try {
       if (member.guild.id == secret.grp) {
         const channelId = secret.channelID

@@ -4,7 +4,7 @@ module.exports = {
   name: "send-logger",
   aliases: ["s"],
   description: 'log message sent(owner only for now)',
-  run: async (client, message, args, secret, prefix, trans) => {
+  run: async (client, message, args, secret, prefix, trans, langc) => {
     try {
       // define message type and log them
       if (message.channel.id === '994459707580358656') return;

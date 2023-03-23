@@ -4,7 +4,7 @@ module.exports = {
   name: "mupdate",
   aliases: ["m"],
   description: 'log roles changes',
-  run: async (client, oldMember, newMember, trans) => {
+  run: async (client, oldMember, newMember, trans, langc) => {
 
     const oldr = await db.get(newMember.user.id)
     if (oldr === null || oldr === undefined) {

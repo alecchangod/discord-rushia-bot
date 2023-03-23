@@ -10,7 +10,7 @@ const lang = require('../../lang.json')
 module.exports = {
     name: 'setlang',
     description: 'Set Group Language',
-    run: async (client, message, args, secret, prefix, trans) => {
+    run: async (client, message, args, secret, prefix, trans, langc) => {
         message.reply("loading...").then(async msg => {
             var slang = message.content.split(" ")[1];
             if (JSON.stringify(lang).includes(slang) === false) return await wait(2000), msg.edit("please input a valid language code.");

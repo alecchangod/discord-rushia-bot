@@ -3,7 +3,7 @@ module.exports = {
   name: "msgdel",
   aliases: ["m", "msgdel"],
   description: 'purge message to delete',
-  run: async (client, message, args, secret, prefix, trans) => {
+  run: async (client, message, args, secret, prefix, trans, langc) => {
     var usr = await message.guild.members.fetch(message.author)
     if (usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
       const user = message.mentions.users.first();

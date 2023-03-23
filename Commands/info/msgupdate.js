@@ -4,7 +4,7 @@ module.exports = {
   name: "msgupdate",
   aliases: ["m"],
   description: 'Log message changes',
-  run: async (client, oldMessage, newMessage, secret, trans) => {
+  run: async (client, oldMessage, newMessage, secret, trans, langc) => {
     // craete function
     function split(str, channel) {
       var partsArr = str.match(/[\s\S]{1,1900}/g) || [];

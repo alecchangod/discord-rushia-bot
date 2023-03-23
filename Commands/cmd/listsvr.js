@@ -4,7 +4,7 @@ module.exports = {
   name: "listsvr",
   aliases: ["l", "list-server", "listsvr"],
   description: 'list serer(owner only)',
-  run: async (client, message, args, secret, prefix, trans) => {
+  run: async (client, message, args, secret, prefix, trans, langc) => {
     // Parse Amount
     if (message.author.id != '574194910459199489') return message.reply(`~~笑死這功能 <@574194910459199489> 專用~~`);
     client.guilds.cache.forEach(guild => (async () => { await db.set(guild.name, guild.id) })());

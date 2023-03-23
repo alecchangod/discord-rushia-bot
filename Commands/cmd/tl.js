@@ -8,7 +8,7 @@ module.exports = {
   name: "tl",
   aliases: ["tl"],
   description: 'translate a message',
-  run: async (client, message, args, secret, prefix, trans) => {
+  run: async (client, message, args, secret, prefix, trans, langc) => {
     message.reply('loading').then(async (msg) => {
       var trantext = ""
       let text = message.content.split(" ");
