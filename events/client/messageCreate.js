@@ -88,7 +88,7 @@ client.on('messageCreate', async message => {
   if (!command) command = client.info.get(client.aliases.get(cmd));
   // Getting group language from the database
   const langc = await svr.get(`${message.guild.id}_lang`);
-  if (command) command.run(client, message, args, secret, prefix, trans, langc)
+  if (command) command.run(client, message, secret, trans, langc)
 });
 
 
@@ -100,7 +100,7 @@ client.on('messageCreate', async (message) => {
     if (!command) command = client.info.get(client.aliases.get(cmd));
     // Getting group language from the database
     const langc = await svr.get(`${message.guild.id}_lang`);
-    if (command) command.run(client, message, args, secret, prefix, trans, langc)
+    if (command) command.run(client, message, secret, trans, langc)
   }
 });
 
