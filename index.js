@@ -82,17 +82,18 @@ let year = date_ob.getFullYear(); // current year
 let hours = date_ob.getHours(); // current hours
 let minutes = date_ob.getMinutes(); // current minutes
 let seconds = date_ob.getSeconds(); // current seconds
-console.log(year + "-" + month + "-" + date); // prints date in YYYY-MM-DD format
-console.log(year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds); // prints date & time in YYYY-MM-DD HH:MM:SS format
-console.log(hours + ":" + minutes); // prints time in HH:MM format
+var full_date = year + "-" + month + "-" + date; // prints date in YYYY-MM-DD format
+var date_time = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds; // prints date & time in YYYY-MM-DD HH:MM:SS format
+var time = hours + ":" + minutes; // prints time in HH:MM format
+console.log(`${full_date}\n${date_time}\n${time}`)
 
 client.setMaxListeners(50)
 
 // if there are errors, log them
 client.on("disconnect", () => console.log("Bot is disconnecting...", "warn"))
   .on("reconnecting", () => console.log("Bot reconnecting...", "log"))
-  .on("error", (e) => console.log(e, "error"))
-  .on("warn", (info) => console.log(info, "warn"));
+  .on("error", (e) => console.log(date_time, e, "error"))
+  .on("warn", (info) => console.log(date_time, info, "warn"));
 
 // if there is an unhandledRejection, log them
 process.on('unhandledRejection', err => {
