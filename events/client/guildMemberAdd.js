@@ -1,6 +1,7 @@
 // Imports the client library
 const client = require('../../index.js')
 const secret = require('../../config.json')
+const trans = require('../../trans.json')
 
 //new member
 client.on('guildMemberAdd', async (member) => {

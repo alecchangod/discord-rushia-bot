@@ -1,6 +1,6 @@
 // Imports the client library
 const client = require('../../index.js')
-const trans = require('../../lang.json')
+const trans = require('../../trans.json')
 const PREFIX = '='
 const secret = require('../../config.json')
 const { QuickDB } = require("quick.db");

@@ -1,5 +1,6 @@
 // Imports the client library
 const client = require('../../index.js')
+const trans = require('../../trans.json')
 
 //role change
 client.on('guildMemberUpdate', async (oldMember, newMember) => {
