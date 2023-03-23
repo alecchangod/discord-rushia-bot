@@ -14,7 +14,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
   // Getting group language from the database
   var langc = await svr.get(`${newMessage.guild.id}_lang`);
   var langc = trans.filter(it => it.code === langc)[0]?.name;
-  if (langc == undefined) var langc = message.guild.preferredLocale;
+  if (langc == undefined) var langc = newMessage.guild.preferredLocale;
   if (command) command.run(client, oldMessage, newMessage, secret, trans, langc)
 });
 
@@ -27,7 +27,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
     // Getting group language from the database
     var langc = await svr.get(`${newMessage.guild.id}_lang`);
     var langc = trans.filter(it => it.code === langc)[0]?.name;
-    if (langc == undefined) var langc = message.guild.preferredLocale;
+    if (langc == undefined) var langc = newMessage.guild.preferredLocale;
     if (command) command.run(client, oldMessage, newMessage, secret, trans, langc)
   }
 });
