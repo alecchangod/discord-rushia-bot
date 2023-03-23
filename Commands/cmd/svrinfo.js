@@ -1,5 +1,5 @@
-// const { QuickDB } = require("quick.db");
-// const db = new QuickDB({ filePath: "database/server.sqlite" });
+const { QuickDB } = require("quick.db");
+const db = new QuickDB({ filePath: "database/server.sqlite" });
 // const lang = require('../../lang.json');
 module.exports = {
     name: 'svrinfo',
