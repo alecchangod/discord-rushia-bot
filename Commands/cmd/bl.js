@@ -5,7 +5,7 @@ const db = new QuickDB({ filePath: "database/bad_word.sqlite" });
 module.exports = {
     name: 'bl',
     description: 'Block words in a group(case sensitive)',
-    run: async (client, message) => {
+    run: async (client, message, args, secret, prefix, trans) => {
         var user = await message.guild.members.fetch(message.author)
         if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages)) return message.channel.send("笑死你沒權限")
         var det = message.content.toLowerCase().split(" "),

@@ -3,7 +3,7 @@ const { Constants } = require('discord.js')
 module.exports = {
   name: 'join',
   aliases: ['move'],
-  run: async (client, message, args) => {
+  run: async (client, message, args, secret, prefix, trans) => {
     let voiceChannel = message.member.voice.channel
     if (args[0]) {
       voiceChannel = await client.channels.fetch(args[0])

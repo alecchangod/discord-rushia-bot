@@ -5,7 +5,7 @@ module.exports = {
     name: 'setprefix',
     aliases: ['sp'],
     description: 'set prefix/serer',
-    run: async (client, message) => {
+    run: async (client, message, args, secret, prefix, trans) => {
         const member = message.guild.members.cache.get(message.author.id)
         if (!member.permissions.has('ADMINISTRATOR')) return message.reply('笑死你沒權限');
 

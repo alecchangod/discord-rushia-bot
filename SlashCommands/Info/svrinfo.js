@@ -5,7 +5,7 @@ module.exports = {
     name: 'svrinfo',
     aliases: ['info', 'server-info'],
     description: 'Get serer info',
-    run: async (client, interaction, args, secret, trans) => {
+    run: async (client, interaction, args, secret, trans, guild) => {
         // Getting prefix from the database:
         var pre = await db.get(`prefix_${interaction.guild.id}`),
             author = await db.get(`c_${interaction.guild.id}`),

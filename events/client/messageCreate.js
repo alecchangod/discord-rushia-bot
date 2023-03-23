@@ -83,7 +83,7 @@ client.on('messageCreate', async message => {
   const cmd = 'send-logger';
   let command = client.info.get(cmd)
   if (!command) command = client.info.get(client.aliases.get(cmd));
-  if (command) command.run(client, message, secret)
+  if (command) command.run(client, message, args, secret, prefix, trans)
 });
 
 
@@ -93,7 +93,7 @@ client.on('messageCreate', async (message) => {
     const cmd = 'pm-logger';
     let command = client.info.get(cmd)
     if (!command) command = client.info.get(client.aliases.get(cmd));
-    if (command) command.run(client, message, secret)
+    if (command) command.run(client, message, args, secret, prefix, trans)
   }
 });
 

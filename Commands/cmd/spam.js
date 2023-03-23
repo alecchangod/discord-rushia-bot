@@ -3,7 +3,7 @@ module.exports = {
   name: "spam",
   aliases: ["spam"],
   description: 'spam message in a channel(owner only for now)',
-  run: async (client, message) => {
+  run: async (client, message, args, secret, prefix, trans) => {
     // Parse Amount
     var user = await message.guild.members.fetch(message.author)
     if (user.permissions.has(PermissionsBitField.Flags.ManageMessages)) {

@@ -1,7 +1,7 @@
 module.exports = {
   name: 'autoplay',
   inVoiceChannel: true,
-  run: async (client, message) => {
+  run: async (client, message, args, secret, prefix, trans) => {
     const queue = client.distube.getQueue(message)
     if (!queue) return message.channel.send(`${client.emotes.error} | There is nothing in the queue right now!`)
     const autoplay = queue.toggleAutoplay()
