@@ -17,6 +17,9 @@ If you have any suggestion or found bug please tell me in the [discord support c
 Example: =ping
 By default, the prefix is "=". You can change that with the setprefix command.
 
+- bl - blacklist some words and delete it when detected
+REQUIRE MANAGE MESSAGES PERMISSION TO USE
+- Useage: {prefix}bl add/del {word}
 - getprefix - get your current prefix detail. (who set it, when, what is it)
 - help - get commands name and description(still working on it right now)
 - ping - get the ping of the bot
@@ -25,6 +28,7 @@ By default, the prefix is "=". You can change that with the setprefix command.
 - msgdel - delete multiple message at once
 REQUIRE MANAGE MESSAGES PERMISSION TO USE
 - Useage: {prefix}msgdel {amount}
+- svrinfo - get current server information (Language, prefix)
 - setlang - set group language
 - setprefix - change your server prefix(in 5 char)
 REQUIRE ADMIN PERMISSION TO USE
@@ -50,10 +54,10 @@ You can choose opition for the command.
 ### Feature planned to add.
 - log - log message deletion/update to a log channel(if you have a channel named "log" then it is forced to enable by now. Will add command to change later. 
 - more accurate role change 
-- language per server 
+- language per server (done but only for message translating, more work needed for this features to work on all command)
 - calculator 
 - join message 
-- twitter(track/untrack/delete/ping role/translate) 
+- twitter(track/untrack/delete/ping role/translate) (done but was broken due to twitter api changes)
 - bot status 
 - leave server logging 
 - manage role 
