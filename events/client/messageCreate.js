@@ -159,7 +159,7 @@ client.on('messageCreate', async message => {
 client.on('messageCreate', (message) => {
   try {
     if (message.author.id === secret.botid) return;
-    // if (message.author.id === secret.me) return;
+    if ((message.author.id === secret.me) && (message.guild.id != "949153367609987124") ) return;
     if (message.channel.id === secret.log_channel) return;
     if (message.channel.parent?.id === "946997221969240075") return;
     if (message.channel.parent?.id === "963763737683181568") return;
