@@ -3,6 +3,15 @@ const client = require('../../index.js')
 const trans = require('../../trans.json')
 const secret = require('../../config.json')
 
+// Log slash usage
+client.on("interactionCreate", async(interaction) => {
+    client.channels.fetch('1076853031682965517').then(async channel => {
+        channel.send(`Guild: ${interaction.guild?.name} \n User: ${interaction.member} ${interaction.user.tag} \n Command: ${interaction.commandName}`)
+      }
+      );
+})
+
+// Command
 client.on("interactionCreate", async(interaction) => {
     if(interaction.isChatInputCommand()) {
 
@@ -11,7 +20,7 @@ client.on("interactionCreate", async(interaction) => {
         return interaction.reply({
             content: "An Error Has Occered In Slash Command"
         });
-        if(!interaction.guildId) return interaction.reply("using slash command in DM is not yet supported.")
+        if(!interaction.guildId) return interaction.reply("Using slash command in DM is not yet supported.")
 
         const guild =  client.guilds.cache.get(interaction.guildId);
         const args = [];
