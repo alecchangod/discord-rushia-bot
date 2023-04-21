@@ -31,7 +31,7 @@ function getRandomNumber(min, max) {
 
 //blocked word
 client.on('messageCreate', async message => {
-  if(message.author.id === secret.botid) return;
+  if (message.author.id === secret.botid) return;
   var prefix = await db.get(`prefix_${message.guild.id}`)
   if (prefix == null) {
     var prefix = PREFIX;
@@ -43,7 +43,7 @@ client.on('messageCreate', async message => {
   if (JSON.stringify(grp).includes(message.guild.id) === false) return;
   var blocked = await bl.get(`${message.guild.id}`);
   for (var ct = 0; ct < blocked.length;) {
-    if (message.content.includes(blocked[ct])){
+    if (message.content.includes(blocked[ct])) {
       message.delete();
     }
     ct++;
@@ -159,7 +159,7 @@ client.on('messageCreate', async message => {
 client.on('messageCreate', (message) => {
   try {
     if (message.author.id === secret.botid) return;
-    if ((message.author.id === secret.me) && (message.guild.id != "949153367609987124") ) return;
+    if ((message.author.id === secret.me) && (message.guild.id != "949153367609987124")) return;
     if (message.channel.id === secret.log_channel) return;
     if (message.channel.parent?.id === "946997221969240075") return;
     if (message.channel.parent?.id === "963763737683181568") return;
