@@ -14,7 +14,7 @@ module.exports = {
     ],
   run: async (client, interaction, args, secret, trans, guild) => {
     // check if user have permission
-    var usr = await message.guild.members.fetch(message.author)
+    var usr = interaction.member;
     if (usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
     // Parse Amount
     var amount = Number(interaction.options.getString('amount'));
