@@ -51,12 +51,3 @@ client.once('ready', () => {
     } catch (e) { console.log(e) }
   })
 });
-
-
-// // twitter track start
-// client.once('ready', () => {
-//   const cmd = 'twitter-main';
-//   let command = client.twitter.get(cmd)
-//   if (!command) command = client.twitter.get(client.aliases.get(cmd));
-//   if (command) command.run(client, secret)
-// });
