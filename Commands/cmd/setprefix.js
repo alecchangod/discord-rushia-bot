@@ -3,7 +3,7 @@ const db = new QuickDB({ filePath: "database/prefix.sqlite" });
 const { PermissionsBitField } = require('discord.js');
 
 module.exports = {
-    name: 'setprefix',
+    name: 'Set Prefix',
     aliases: ['sp'],
     description: 'set prefix/serer',
     run: async (client, message, args, secret, prefix, trans, langc) => {

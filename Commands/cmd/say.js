@@ -1,5 +1,5 @@
 module.exports = {
-  name: "say",
+  name: "Say",
   aliases: ["say"],
   description: 'send message as bot(owner only for now)',
   run: async (client, message, args, secret, prefix, trans, langc) => {

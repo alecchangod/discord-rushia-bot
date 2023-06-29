@@ -5,7 +5,7 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/lang.sqlite" });
 
 module.exports = {
-  name: "tl",
+  name: "Translate",
   aliases: ["tl"],
   description: 'translate a message',
   run: async (client, message, args, secret, prefix, trans, langc) => {

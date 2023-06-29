@@ -1,5 +1,5 @@
 module.exports = {
-  name: "time",
+  name: "Time",
   aliases: ["time"],
   description: 'get current time',
   run: async (client, message, args, secret, prefix, trans, langc) => {

@@ -2,8 +2,8 @@ const { PermissionsBitField } = require('discord.js');
 const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
-    name: "purge",
-    aliases: ["m", "msgdel"],
+    name: "Spurge",
+    aliases: ["spurge", "purge"],
     description: 'purge message after a message (ONLY less than 14 days)',
     run: async (client, message, args, secret, prefix, trans, langc) => {
         try {

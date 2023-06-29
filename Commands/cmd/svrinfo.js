@@ -2,7 +2,7 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/server.sqlite" });
 
 module.exports = {
-    name: 'svrinfo',
+    name: 'Server Info',
     aliases: ['info', 'server-info'],
     description: 'Get server info',
     run: async (client, message, args, secret, prefix, trans, langc) => {

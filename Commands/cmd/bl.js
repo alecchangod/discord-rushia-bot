@@ -4,6 +4,7 @@ const db = new QuickDB({ filePath: "database/bad_word.sqlite" });
 
 module.exports = {
   name: 'Blacklist',
+  aliases: ["bl"],
   description: 'Ban words in a group (case sensitive)',
   run: async (client, message, args, secret, prefix, trans, langc) => {
     try {

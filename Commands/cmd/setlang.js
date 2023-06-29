@@ -8,7 +8,7 @@ const lang = require('../../lang.json')
 
 
 module.exports = {
-    name: 'setlang',
+    name: 'Set Language',
     description: 'Set Group Language',
     run: async (client, message, args, secret, prefix, trans, langc) => {
       try {

@@ -1,7 +1,7 @@
 const { PermissionsBitField } = require('discord.js');
 
 module.exports = {
-  name: "spam",
+  name: "Spam",
   aliases: ["spam"],
   description: 'spam message in a channel(owner only for now)',
   run: async (client, message, args, secret, prefix, trans, langc) => {
