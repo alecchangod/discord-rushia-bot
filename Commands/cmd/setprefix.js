@@ -1,43 +1,46 @@
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/prefix.sqlite" });
-const { Permissions } = require('discord.js');
+const { PermissionsBitField } = require('discord.js');
+
 module.exports = {
     name: 'setprefix',
     aliases: ['sp'],
     description: 'set prefix/serer',
     run: async (client, message, args, secret, prefix, trans, langc) => {
+        // Check if user have permission
         const member = message.guild.members.cache.get(message.author.id)
-        if (!member.permissions.has('ADMINISTRATOR')) return message.reply('笑死你沒權限');
-
-        var newprefix0 = message.content.split(' ')
-        var newprefix = newprefix0[1]
-
+        if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) return message.reply('笑死你沒權限');
+        // Get prefix provided
+        const [, newprefix] = message.content.split(' ');
+        // If no prefix provided
+        // Return and told them to re-enter
         if (!newprefix) return message.reply('啊到底要設什麽前綴(X')
+        // Limit prefic to 5 letter
         if (newprefix.length > 5) return message.reply('前綴太長了w \n 5個字内, 謝謝');
-
-        // self calling async function just to get async
-        // Setting an object in the database:
-        await db.set(`prefix_${message.guild.id}`, newprefix);
+        // Get message information
+        const guildId = message.guild.id;
+        const author = `${message.author.tag}`;
+        // Save the prefix
+        await db.set(`prefix_${guildId}`, newprefix);
         console.log(`prefix of ${message.guild.name} has been set to ${newprefix}`)
-
-        const author = "`" + message.author.tag + "`"
-
-        await db.set(`c_${message.guild.id}`, author);
+        // Save the user name which changed the prefix
+        await db.set(`c_${guildId}`, author);
         console.log(`prefix of ${message.guild.name}t was set by ${author}`)
+        // Save the time for changing it
+        const timestamp = Math.floor(Date.now() / 1000);
+        await db.set(`t_${guildId}`, timestamp);
+        console.log(`prefix of ${message.guild.name}t was set at ${timestamp}`)
+        // Check if it was saved
+        const prefixFromDb = await db.get(`prefix_${guildId}`);
+        console.log(`${message.guild.name}'s newprefix was checked working: \n \n ${prefixFromDb}`)
 
-        await db.set(`t_${message.guild.id}`, Math.floor(new Date() / 1000));
-        console.log(`prefix of ${message.guild.name}t was set at ${Math.floor(new Date() / 1000)}`)
-
-        const a = await db.get(`prefix_${message.guild.id}`);
-        console.log(`${message.guild.name}'s newprefix was checked working: \n \n ${a}`)
-
-        const aa = await db.get(`c_${message.guild.id}`);
-        console.log(`${message.guild.name}t was checked set by: \n \n \` ${aa} ` / ``)
-
-        const aaa = await db.get(`t_${message.guild.id}`);
-        console.log(`${message.guild.name}t was checked set by: \n \n  ${aaa} `)
-
-        const msg = `current prefix: ${a} \n set by ${aa} \n in <t:${aaa}>`
+        const authorFromDb = await db.get(`c_${guildId}`);
+        console.log(`${message.guild.name}t was checked set by: \n \n  ${authorFromDb}`)
+        
+        const timeFromDb = await db.get(`t_${guildId}`);
+        console.log(`${message.guild.name}t was checked set by: \n \n  ${timeFromDb}`)
+        // Give an reply after runnign the command
+        const msg = `current prefix: ${prefixFromDb} \n set by ${authorFromDb} \n in <t:${timeFromDb}>`
         message.reply(msg)
     }
 }
