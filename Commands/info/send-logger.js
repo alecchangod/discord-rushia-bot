@@ -4,10 +4,9 @@ module.exports = {
   name: "send-logger",
   aliases: ["s"],
   description: 'log message sent(owner only for now)',
-  run: async (client, message, secret) => {
+  run: async (client, message, secret, trans, langc) => {
     try {
       if (message.channel.id === '994459707580358656' || message.channel.name.toLowerCase().includes("log")) return;
-      
       const channel = await client.channels.fetch(secret.log_channel);
       await msgtype(message, channel);
     } catch (e) { 
@@ -19,7 +18,7 @@ function split(str, channel, file) {
   var partsArr = str.match(/[\s\S]{1,1900}/g) || [];
   partsArr.forEach((part, i) => {
     const content = `${part} \nPart ${i + 1} / ${partsArr.length}`;
-    channel.send(file ? { content, files: [file] } : content);
+    channel.send(file ? content ? { content: `${content}, 檔案: `, files: Array.from(file) } : {content: `檔案: `, files: Array.from(file) } : content);
   });
 };
 function embed(str, channel, embed) {
@@ -27,7 +26,7 @@ function embed(str, channel, embed) {
   var partsArr = str.match(/[\s\S]{1,1900}/g) || [];
   partsArr.forEach((part, i) => {
     const content = `${part} \nPart ${i + 1} / ${partsArr.length}`;
-    channel.send({ content, embeds: [embed] });
+    channel.send(content ? { content, embeds: [embed] } : {embeds: [embed]});
   });
 };
 // msgtype
@@ -51,33 +50,35 @@ async function msgtype(message, channel) {
       message.attachments.forEach(attachment => {
         const hasContent = message.content.length > 0;
         const attachmentText = attachment.size > 10485760 ? `, \n 附件: ${attachment.url}` : ', \n 附件:';
-        str = `人: ${message.author.tag} ,\n${hasContent ? ' 訊息: ' + message.content + ' ,' : ''} \n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}${attachmentText}`;
+        str = `人: ${message.author.tag} ,\n${hasContent ? ` 訊息: ${message.content} ,` : ''} \n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}${attachmentText}`;
         if (attachment.size <= 10485760) {
-          files = Array.from(message.attachments.values());
+          files = message.attachments.values();
         }
       });
       split(str, channel, files);
     }
     else {
       const hasContent = message.content.length > 0;
-      str = `人: ${message.author.tag} ,\n${hasContent ? ' 訊息: ' + message.content + ' ,' : ''} \n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}`; 
+      str = `人: ${message.author.tag} ,\n${hasContent ? ` 訊息: ${message.content} ,` : ''} \n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}`; 
       split(str, channel);
     }
     let type = 0;
   }
   // if it has attachments (image/video/document....)
   else if (message.attachments.size > 0) {
-    message.attachments.forEach(attachment => {
-      const hasContent = message.content.length > 0;
-      const attachmentText = attachment.size > 10485760 ? `, \n 附件: ${attachment.url}` : ', \n 附件:';
-      const str = `人: ${message.author.tag} ,\n${hasContent ? ' 訊息: ' + message.content + ' ,' : ''} \n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}${attachmentText}`;
-      if (attachment.size <= 10485760) {
-        const files = Array.from(message.attachments.values());
-        split(str, channel, files);
-      } else {
-        split(str, channel);
+    message.attachments.forEach(attachments => {
+      if (attachments.size > 10485760) {
+        if (message.content.length == 0) var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${attachments.url}`
+        else if (message.content.length > 0) var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件: ${attachments.url}`
+        split(str, channel)
       }
-    });
+      else {
+        if (message.content.length == 0) var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} , \n 頻道: ${message.channel.name} ,\n 附件:`
+        else if (message.content.length > 0) var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name} ,\n 附件:`
+        var files = message.attachments.values();
+        split(str, channel, files)
+      }
+    })
   }
   // if it have embed
   else if (message.embeds[0]) {
@@ -101,4 +102,3 @@ async function msgtype(message, channel) {
     split(str, channel)
   }
 }
-
