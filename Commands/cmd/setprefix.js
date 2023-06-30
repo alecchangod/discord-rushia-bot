@@ -4,7 +4,7 @@ const { PermissionsBitField } = require('discord.js');
 
 module.exports = {
     name: 'Set Prefix',
-    aliases: ['sp'],
+    aliases: ['setprefix'],
     description: 'set prefix/serer',
     run: async (client, message, args, secret, prefix, trans, langc) => {
         // Check if user have permission

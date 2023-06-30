@@ -3,8 +3,8 @@ const db = new QuickDB({ filePath: "database/group.sqlite" });
 
 module.exports = {
   name: "List server",
-  aliases: ["l", "list-server", "listsvr"],
-  description: 'list serer(owner only)',
+  aliases: ["listsvr"],
+  description: 'list server(owner only)',
   run: async (client, message, args, secret, prefix, trans, langc) => {
     try {
       // Don't allow other people to use it

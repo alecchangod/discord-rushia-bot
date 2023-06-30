@@ -3,7 +3,7 @@ const db = new QuickDB({ filePath: "database/server.sqlite" });
 
 module.exports = {
     name: 'Server Info',
-    aliases: ['info', 'server-info'],
+    aliases: ['svrinfo'],
     description: 'Get server info',
     run: async (client, message, args, secret, prefix, trans, langc) => {
         // Getting prefix information from the database:
