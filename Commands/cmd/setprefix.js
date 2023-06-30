@@ -22,25 +22,17 @@ module.exports = {
         const author = `${message.author.tag}`;
         // Save the prefix
         await db.set(`prefix_${guildId}`, newprefix);
-        console.log(`prefix of ${message.guild.name} has been set to ${newprefix}`)
         // Save the user name which changed the prefix
         await db.set(`c_${guildId}`, author);
-        console.log(`prefix of ${message.guild.name}t was set by ${author}`)
         // Save the time for changing it
         const timestamp = Math.floor(Date.now() / 1000);
         await db.set(`t_${guildId}`, timestamp);
-        console.log(`prefix of ${message.guild.name}t was set at ${timestamp}`)
         // Check if it was saved
         const prefixFromDb = await db.get(`prefix_${guildId}`);
-        console.log(`${message.guild.name}'s newprefix was checked working: \n \n ${prefixFromDb}`)
-
         const authorFromDb = await db.get(`c_${guildId}`);
-        console.log(`${message.guild.name}t was checked set by: \n \n  ${authorFromDb}`)
-        
         const timeFromDb = await db.get(`t_${guildId}`);
-        console.log(`${message.guild.name}t was checked set by: \n \n  ${timeFromDb}`)
         // Give an reply after runnign the command
         const msg = `current prefix: ${prefixFromDb} \n set by ${authorFromDb} \n in <t:${timeFromDb}>`
-        message.reply(msg)
+        message.reply(msg);
     }
 }

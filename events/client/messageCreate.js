@@ -52,7 +52,6 @@ client.on('messageCreate', async message => {
 
 //command
 client.on('messageCreate', async message => {
-  // console.log(message)
   if (message.author.bot) return;
   if (!message.guild) return;
   var prefix = await db.get(`prefix_${message.guild.id}`)

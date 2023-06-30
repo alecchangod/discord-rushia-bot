@@ -21,7 +21,6 @@ module.exports = {
     run: async(client, interaction, args, secret, trans, guild) => {
       interaction.reply("loading...")
       var userMember = await message.guild.members.fetch(message.author)
-        //     console.log(userMember.permissions.has(PermissionsBitField.Flags.ManageGuild))
       if(!userMember.permissions.has(PermissionsBitField.Flags.ManageGuild)) return interaction.editReply("You don't have permission to change the server language code. Ask help from admin or server owner.");
       var slang = interaction.options.getString('lang');
       if(JSON.stringify(lang).includes(slang) === false) return await wait(2000), interaction.editReply("please input a valid language code.");

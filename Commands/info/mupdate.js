@@ -17,7 +17,6 @@ module.exports = {
     //role(s) were removed
     const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
     if (removedRoles.size > 0) {
-      console.log(removedRoles.map(r => r.name).toString())
       if ((removedRoles.map(r => r.name).toString().length === 0) || (!removedRoles.map(r => r.name))) return;
       db.pull(newMember.user.id, removedRoles.map(r => r.id));
       const newr = (`${oldMember.displayName} 不再是 ${removedRoles.map(r => r.name)} 了`);
@@ -30,7 +29,6 @@ module.exports = {
     //role(s) were added
     const addedRoles = newMember.roles.cache.filter(role => !oldMember.roles.cache.has(role.id));
     if (addedRoles.size > 0) {
-      console.log(addedRoles.map(r => r.name).toString())
       if ((!addedRoles.map(r => r.name)) || (addedRoles.map(r => r.name).toString().length === 0)) return;
       db.push(newMember.user.id, addedRoles.map(r => r.id));
       var rmr = `${oldMember.displayName} 現在是 ${addedRoles.map(r => r.name)} 了`

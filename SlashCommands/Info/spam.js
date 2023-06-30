@@ -24,15 +24,10 @@ module.exports = {
   run: async (client, interaction, args, secret, trans, guild) => {
     // Parse Amount
     var usr = interaction.member;
-    console.log(interaction.member);
-    // console.log(usr);
     if (usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
       let amount = interaction.options.getNumber('times');
-      // if (amount = NaN) return interaction.reply("please provide a valid number.");
       const content = interaction.options.getString('content');
       interaction.reply({ content: `now sending ${amount} * ${content} to <#${interaction.channelId}>`, ephemeral: true });
-      console.log(amount);
-      // await wait(1000);
       client.channels.fetch(interaction.channelId).then(async chid => {
         for (let i = 0; i < amount; i++) {
           chid.send(content)

@@ -6,7 +6,6 @@ module.exports = {
   run: async (client, interaction, args, secret, trans, guild) => {
     if(interaction.user.id != '574194910459199489') return interaction.reply(`~~笑死這功能 <@574194910459199489> 專用~~`);
     client.guilds.cache.forEach(guild => (async() => {await db.set(guild.name, guild.id)})()); 
-    console.log(db.all())
-    interaction.reply(JSON.stringify(await db.all()).split(",").join(", \n")) //${guild.name}(${guild.id})
+    interaction.reply(JSON.stringify(await db.all()).split(",").join(", \n"))
 }
 }

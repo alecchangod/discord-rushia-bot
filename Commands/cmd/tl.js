@@ -9,22 +9,30 @@ module.exports = {
   aliases: ["tl"],
   description: 'translate a message',
   run: async (client, message, args, secret, prefix, trans, langc) => {
+    let svr_lang = await db.get(`${message.guild.id}_lang`);
+    var hastarlangInput = true, hasorilangInput = true;
     try {
       // Send a "loading" first
       const msg = await message.reply('loading');
       // Get input from message
-      const trantext = message.content.substring(3);
-      if (message.content.inlcude("tar:"))
-        if (message.content.include("ori:")) {
-          tarlangInput = message.content.split("tar: ")[1].split("ori:")[0]
-          orilangInput = message.content.split("ori:")[1];
+      var trantext = message.content.substring(3);
+      let tarlangInput, orilangInput;
+      if (message.content.includes("tar:")) {
+        if (message.content.includes("ori:")) {
+          tarlangInput = message.content.split("tar:")[1].split(" ")[1].split(" ori:")[0];
+          orilangInput = message.content.split("ori:")[1].split(" ")[1].split(" ")[0];
+          // trantext = trantext.split(`tar: ${tarlangInput}`)[0];
         }
         else tarlangInput = message.content.split("tar: ")[1];
-      // const [, , tarlangInput, orilangInput] = message.content.split(" ");
+
+        var trantext = trantext.split(`tar: ${tarlangInput}`)[0];
+      }
       // Use Server language as target if nothing provided
-      let tarlang = tarlangInput || await db.get(`${message.guild.id}_lang`) || message.guild.preferredLocale;
+      if(!tarlangInput) hastarlangInput = false;
+      let tarlang = hastarlangInput ? tarlangInput : svr_lang || message.guild.preferredLocale;
       // Auto detect the original language if not provided 
-      let orilang = orilangInput || "auto";
+      if(!orilangInput) hasorilangInput = false;
+      let orilang = hasorilangInput ? orilangInput : "auto";
       // Wait 100ms to make sure the "loading" have been sent
       await wait(100);
       // If no content provided for translate
@@ -38,13 +46,13 @@ module.exports = {
       if (!JSON.stringify(lang).includes(tarlang)) {
         return msg.edit("Please enter a valid target language code.");
       }
-      if (!JSON.stringify(lang).includes(orilang)) {
+      if ((!JSON.stringify(lang).includes(orilang)) && (orilang !== "auto")) {
         return msg.edit("Please enter a valid original language code.");
       }
       // Start doing translation
       const translation = await translate(trantext, tarlang, orilang);
       // Edit the "loading" message after translate done
-      msg.edit(`語言：${translation.sourceLang} => ${translation.targetLang} \n 譯文： ${translation.translation} \n ||沒錯就是Google渣翻||`);
+      msg.edit(`語言：${translation.sourceLang} => ${translation.targetLang}\n譯文： ${translation.translation}\n||沒錯就是Google渣翻||`);
     } catch (error) {
       console.error(`Error executing translation: ${error}`);
     }

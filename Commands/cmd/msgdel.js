@@ -1,7 +1,7 @@
 const { PermissionsBitField } = require('discord.js');
 
 module.exports = {
-  name: "msgdel",
+  name: "Purge",
   aliases: ["m", "msgdel"],
   description: 'purge message to delete (ONLY less than 14 days)',
   run: async (client, message, args, secret, prefix, trans, langc) => {

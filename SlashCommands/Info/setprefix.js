@@ -25,29 +25,14 @@ module.exports = {
     // self calling async function just to get async
     // Setting an object in the database:
     await db.set(`prefix_${interaction.guild.id}`, newprefix);
-    console.log(`prefix of ${interaction.guild.name} (${interaction.guild.id})has been set to ${newprefix}`)
-
     const author = "`" + interaction.user.tag + "`"
-
     await db.set(`c_${interaction.guild.id}`, author);
-    console.log(`prefix of ${interaction.guild.name} was set by ${author}`)
-
     await db.set(`t_${interaction.guild.id}`, Math.floor(new Date() / 1000));
-    console.log(`prefix of ${interaction.guild.name} was set at ${Math.floor(new Date() / 1000)}`)
-
-
 
     // Getting an object from the database:
     const a = await db.get(`prefix_${interaction.guild.id}`);
-    console.log(`${interaction.guild.name}'s newprefix was checked working: \n \n ${a}`)
-
     const aa = await db.get(`c_${interaction.guild.id}`);
-    console.log(`${interaction.guild.name} was checked set by: \n \n \ ${aa}`)
-
     const aaa = await db.get(`t_${interaction.guild.id}`);
-    console.log(`${interaction.guild.name} was checked set by: \n \n  ${aaa} `)
-
-
     const msg = `current prefix: ${a} \n set by ${aa} \n in <t:${aaa}>`
     interaction.reply(msg)
 

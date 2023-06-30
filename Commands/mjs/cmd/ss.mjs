@@ -5,7 +5,7 @@ export const description = 'screenshot website';
 export async function run(client, message, args, secret, prefix, trans) {
     var url = message?.content?.split(" ")[1] || args;
     if(!url.startsWith("http")) {
-        console.log(`not start with http! ${url}`);
+        console.log(`ss: Not start with http! ${url}`);
         var url = `https://${url}`
     }
     // if(message?.content?.split(" ")[2] === "full" || args) var tf = true;
