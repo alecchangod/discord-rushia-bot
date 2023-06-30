@@ -3,41 +3,54 @@ module.exports = {
   aliases: ["p"],
   description: 'log pm messages',
   run: async (client, message, secret, trans, langc) => {
-    client.channels.fetch(secret.PMlog).then(channel => {
-      if (message.stickers.size > 0) { channel.send('人:' + message.author.tag + ' , 訊息: 啊就貼圖(X ') }
-      else if (message.attachments.size > 0) {
-        var attachments = message.attachments;
-        for (let file of attachments) {
-          message.attachments.forEach(attachments => {
-            if (attachments.size > 10485760) {
-              if (message.content.length == 0) var data = `人: ${message.author.tag} , 附件: ${attachments.url}`
-              else if (message.content.length > 0) var data = `人: ${message.author.tag} , 訊息: ${message.content} , 附件: ${attachments.url}`
-              var channel1 = client.channels.fetch(secret.PMlog).then(channel1 => {
-                channel1.send({
-                  content: data
-                });
-              });
-            }
-            else var channel1 = client.channels.fetch(secret.PMlog).then(channel1 => {
-              if (message.content.length == 0) var data = `人: ${message.author.tag} , 附件:`
-              else if (message.content.length > 0) var data = `人: ${message.author.tag} , 訊息: ${message.content} , 附件:`
-              channel1.send({
-                files: Array.from(message.attachments.values()),
-                content: data
-              });
-            });
-          })
-        }
-      }
+    const channel = await client.channels.fetch(secret.PMlog);
+    const authorTag = message.author.tag;
+    const messageContent = message.content;
+    var str = `人: ${authorTag} (<@${message.author.id}>)`;
+    var files = [];
+    const hasContent = messageContent.length > 0;
 
-      else if (message.reference) {
-        const repliedTo = message.channel.messages.fetch(message.reference.messageId);
-        if (!repliedTo.author) return channel.send('人:' + message.author.tag + '訊息: ' + message.content, { split: true })
-        else channel.send('人:' + message.author.tag + ' , 前文(?: ' + repliedTo.author.tag + '\n ' + repliedTo.content + '訊息: ' + message.content, { split: true })
+    function split(str, channel, file) {
+      var partsArr = str.match(/[\s\S]{1,1900}/g) || [];
+      partsArr.forEach((part, i) => {
+        const content = `${part} \nPart ${i + 1} / ${partsArr.length}`;
+        channel.send(file ? content ? { content: `${content}, 檔案: `, files: Array.from(file) } : {content: `檔案: `, files: Array.from(file) } : content);
+      });
+    };
+
+    if (message.stickers.size > 0) {
+      const ext = "png";
+      const sck = message.stickers.first();
+      const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
+      str += hasContent ? `, \n 訊息: ${messageContent}` : '';
+      str += `, 貼圖： ${sticurl}`;
+
+      if (message.attachments.size > 0) {
+        message.attachments.forEach(attachment => {
+          const attachmentText = attachment.size > 10485760 ? `, \n 附件: ${attachment.url}` : ', \n 附件:';
+          str += attachmentText;
+          if (attachment.size <= 10485760) {
+            files = message.attachments.values();
+          }
+        });
       }
-      else {
-        channel.send('人:' + message.author.tag + '訊息: ' + message.content, { split: true })
-      }
-    })
+      split(str, channel, files);
+    } else if (message.attachments.size > 0) {
+      message.attachments.forEach(attachment => {
+        str += hasContent ? `, \n 訊息: ${messageContent}` : '';
+        str += attachment.size > 10485760 ? `, \n 附件: ${attachment.url}` : ', \n 附件:';
+        if (attachment.size <= 10485760) {
+          files = message.attachments.values();
+        }
+        split(str, channel, files);
+      });
+    } else if (message.reference?.messageId) {
+      const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
+      str += `,\n 訊息: ${messageContent}\n\n =================================== \n\n 前文: ${repliedTo.author.tag}\n 内容：${repliedTo.content}`;
+      split(str, channel);
+    } else {
+      str += `, \n 訊息: ${messageContent}`;
+      split(str, channel);
+    }
   }
-}
+};

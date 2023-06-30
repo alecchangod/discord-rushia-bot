@@ -32,7 +32,7 @@ function getRandomNumber(min, max) {
 //blocked word
 client.on('messageCreate', async message => {
   if (message.author.id === secret.botid) return;
-  var prefix = await db.get(`prefix_${message.guild.id}`)
+  var prefix = await db.get(`prefix_${message.guild?.id}`)
   if (prefix == null) {
     var prefix = PREFIX;
   } else {
@@ -40,8 +40,8 @@ client.on('messageCreate', async message => {
   }
   if ((message.content.startsWith(`${prefix}bl add`)) || (message.content.startsWith(`${prefix}bl del`))) return;
   var grp = await bl.get('group');
-  if (JSON.stringify(grp).includes(message.guild.id) === false) return;
-  var blocked = await bl.get(`${message.guild.id}`);
+  if (JSON.stringify(grp).includes(message.guild?.id) === false) return;
+  var blocked = await bl.get(`${message.guild?.id}`);
   for (var ct = 0; ct < blocked.length;) {
     if (message.content.includes(blocked[ct])) {
       message.delete();
@@ -54,14 +54,14 @@ client.on('messageCreate', async message => {
 client.on('messageCreate', async message => {
   if (message.author.bot) return;
   if (!message.guild) return;
-  var prefix = await db.get(`prefix_${message.guild.id}`)
+  var prefix = await db.get(`prefix_${message.guild?.id}`)
   if (prefix == null) {
     var prefix = PREFIX;
   } else {
     prefix = prefix
   }
   if (!message.content.startsWith(prefix)) return;
-  if (!message.member) message.member = await message.guild.members.fetch(message);
+  if (!message.member) message.member = await message.guild?.members.fetch(message);
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const cmd = args.shift().toLowerCase();
   if (cmd.length == 0) return;
@@ -71,9 +71,9 @@ client.on('messageCreate', async message => {
     return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`)
   };
   // Getting group language from the database
-  var langc = await svr.get(`${message.guild.id}_lang`);
+  var langc = await svr.get(`${message.guild?.id}_lang`);
   var langc = trans.filter(it => it.code === langc)[0]?.name;
-  if (langc == undefined) var langc = message.guild.preferredLocale;
+  if (langc == undefined) var langc = message.guild?.preferredLocale;
   if (command) try { command.run(client, message, args, secret, prefix, trans, langc) } catch (e) {
     console.error(e)
     message.channel.send(`${client.emotes.error} | Error: \`${e}\``)
@@ -88,9 +88,9 @@ client.on('messageCreate', async message => {
   let command = client.info.get(cmd)
   if (!command) command = client.info.get(client.aliases.get(cmd));
   // Getting group language from the database
-  var langc = await svr.get(`${message.guild.id}_lang`);
+  var langc = await svr.get(`${message.guild?.id}_lang`);
   var langc = trans.filter(it => it.code === langc)[0]?.name;
-  if (langc == undefined) var langc = message.guild.preferredLocale;
+  if (langc == undefined) var langc = message.guild?.preferredLocale;
   if (command) command.run(client, message, secret, trans, langc)
 });
 
@@ -102,9 +102,9 @@ client.on('messageCreate', async (message) => {
     let command = client.info.get(cmd)
     if (!command) command = client.info.get(client.aliases.get(cmd));
     // Getting group language from the database
-    var langc = await svr.get(`${message.guild.id}_lang`);
+    var langc = await svr.get(`${message.guild?.id}_lang`);
     var langc = trans.filter(it => it.code === langc)[0]?.name;
-    if (langc == undefined) var langc = message.guild.preferredLocale;
+    if (langc == undefined) var langc = message.guild?.preferredLocale;
     if (command) command.run(client, message, secret, trans, langc)
   }
 });
@@ -158,7 +158,7 @@ client.on('messageCreate', async message => {
 client.on('messageCreate', (message) => {
   try {
     if (message.author.id === secret.botid) return;
-    if ((message.author.id === secret.me) && (message.guild.id != "949153367609987124")) return;
+    if ((message.author.id === secret.me) && (message.guild?.id != "949153367609987124")) return;
     if (message.channel.id === secret.log_channel) return;
     if (message.channel.parent?.id === "946997221969240075") return;
     if (message.channel.parent?.id === "963763737683181568") return;
@@ -195,7 +195,7 @@ client.on('messageCreate', (message) => {
     }
 
     if (message.content.toLowerCase().includes('結婚') || message.content.toLowerCase().includes('窩璦妮')) {
-      if ((message.guild.id === secret.grp1) && (message.member.roles.cache.some(role => role.name == "元首"))) return;
+      if ((message.guild?.id === secret.grp1) && (message.member.roles.cache.some(role => role.name == "元首"))) return;
       message.channel.send('滾開點');
     }
 
@@ -208,7 +208,7 @@ client.on('messageCreate', (message) => {
     }
 
     if (message.content.toLowerCase().includes('床上玩') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('我') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('聖水') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('在') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('說') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('跟') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('會') || message.content.toLowerCase().includes('編故事') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('睡') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('來')) {
-      if (message.guild.id === '942625037498867722') message.channel.send('<#963807692839862352>, 謝謝')
+      if (message.guild?.id === '942625037498867722') message.channel.send('<#963807692839862352>, 謝謝')
       else { message.channel.send('<#950398610284097597>, 謝謝') };
     }
 

@@ -3,12 +3,12 @@ module.exports = {
     aliases: ["d"],
     description: 'log deleted message',
     run: async (client, message, secret, trans, langc) => {
-        var usr = message.author?.tag, mct = message.content
-        if (usr === undefined) { var usr = "\` \`", mct = "\` \`" }
-        let deleted = `**信息刪除了** \n ${usr} 在 <#${message.channel.id}> 的信息被刪除了 \n 信息内容:  \n \n ${mct} `
-        // Post in the server's log channel, by finding the accurate bot-log channel (SERVER ADMINS **MUST** CREATE THIS CHANNEL ON THEIR OWN, IF THEY WANT A LOG)
-        let log = message.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
-        if (!log) return;
-        log.send(deleted)
+        // Get user information
+        const usr = message.author?.tag || "";
+        const mct = message.content || "";
+        // Send to the "log" channel
+        const deleted = `**信息刪除了** \n ${usr} 在 <#${message.channel.id}> 的信息被刪除了 \n 信息内容:  \n \n ${mct} `;
+        const log = message.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
+        if (log) log.send(deleted);
     }
 }
