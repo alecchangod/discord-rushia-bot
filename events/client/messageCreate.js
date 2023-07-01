@@ -67,6 +67,7 @@ client.on('messageCreate', async message => {
   if (cmd.length == 0) return;
   let command = client.info.get(cmd) || client.cmd.get(cmd) || client.twitter.get(cmd) || client.music.get(cmd)
   if (!command) command = client.cmd.get(client.aliases.get(cmd)) || client.twitter.get(client.aliases.get(cmd)) || client.music.get(client.aliases.get(cmd));
+  if (!command) return message.reply("Command not found");
   if ((command.inVoiceChannel === true) && (message.member.voice.channel === null)) {
     return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`)
   };
