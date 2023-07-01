@@ -11,7 +11,7 @@ module.exports = {
         const member = message.guild.members.cache.get(message.author.id)
         if (!member.permissions.has(PermissionsBitField.Flags.ManageGuild)) return message.reply('笑死你沒權限');
         // Get prefix provided
-        const welcome = message.content.split(' ')[1];
+        let welcome = message.content.split(' ')[1];
         if (welcome.includes("#")) welcome = welcome.split("#")[1].split(">")[0];
         // If no channel provided
         // Return and told them to re-enter
