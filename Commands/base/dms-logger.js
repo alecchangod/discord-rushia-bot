@@ -1,7 +1,6 @@
 module.exports = {
-  name: "pm-logger",
-  aliases: ["p"],
-  description: 'log pm messages',
+  name: "DMs message logger",
+  description: 'Log DMs messages',
   run: async (client, message, secret, trans, langc) => {
     const channel = await client.channels.fetch(secret.PMlog);
     const authorTag = message.author.tag;

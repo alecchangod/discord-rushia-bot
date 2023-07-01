@@ -1,9 +1,8 @@
 const { EmbedBuilder } = require("@discordjs/builders")
 
 module.exports = {
-  name: "send-logger",
-  aliases: ["s"],
-  description: 'log message sent(owner only for now)',
+  name: "Message logger",
+  description: 'Log message sent in server (owner only for now)',
   run: async (client, message, secret, trans, langc) => {
     try {
       if (message.channel.id === '994459707580358656' || message.channel.name.toLowerCase().includes("log")) return;

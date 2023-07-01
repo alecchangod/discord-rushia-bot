@@ -1,9 +1,8 @@
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
-  name: "msgupdate",
-  aliases: ["m"],
-  description: 'Log message changes',
+  name: "Message updates",
+  description: 'Log messages changes',
   run: async (client, oldMessage, newMessage, secret, trans, langc) => {
     function split(str, channel) {
       const partsArr = str.match(/[\s\S]{1,1900}/g) || [];

@@ -2,8 +2,7 @@ const { QuickDB } = require("quick.db");
 const member = new QuickDB({ filePath: "database/members.sqlite" });
 
 module.exports = {
-  name: "mupdate",
-  aliases: ["m"],
+  name: "Member Updates",
   description: 'log member changes',
   run: async (client, oldMember, newMember, trans, langc) => {
     // Check if was saved at database

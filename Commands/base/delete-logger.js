@@ -1,7 +1,6 @@
 module.exports = {
-    name: "delete-logger",
-    aliases: ["d"],
-    description: 'log deleted message',
+    name: "Message delete logger",
+    description: 'Log all deleted message at "log" channel',
     run: async (client, message, secret, trans, langc) => {
         // Get user information
         const usr = message.author?.tag || "";

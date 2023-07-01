@@ -1,7 +1,6 @@
 module.exports = {
-    name: "pm-edit-logger",
-    aliases: ["p"],
-    description: 'log message edit in pm',
+    name: "DMs edit logger",
+    description: 'log messages edit in DMs',
     run: async (client, oldMessage, newMessage, secret, trans, langc) => {
         if (!oldMessage) var oldMessage = 'not recorded'
         let log = client.channels.fetch(secret.PMlog);

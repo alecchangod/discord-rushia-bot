@@ -2,9 +2,8 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/welcome.sqlite" });
 
 module.exports = {
-  name: "join",
-  aliases: ["j"],
-  description: 'send a message when user join(custom message soon)',
+  name: "Welcome new member",
+  description: 'Welsome new member(custom message soon)',
   run: async (client, secret, member, trans, langc) => {
     try {
       // Get the server welcome channel from database
