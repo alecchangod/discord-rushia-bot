@@ -32,7 +32,7 @@ module.exports = {
         const authorFromDb = await db.get(`prefix_c_${guildId}`);
         const timeFromDb = await db.get(`prefix_t_${guildId}`);
         // Give an reply after runnign the command
-        const msg = `current prefix: ${prefixFromDb} \n set by <@${authorFromDb}> \n in <t:${timeFromDb}>`
+        const msg = `New prefix: ${prefixFromDb} \n set by <@${authorFromDb}> \n at <t:${timeFromDb}>`
         message.reply(msg);
     }
 }
