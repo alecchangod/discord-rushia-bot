@@ -12,7 +12,7 @@ module.exports = {
             require: true
         }
     ],
-    run: async(client, interaction, args, secret, trans, guild) => {
+    run: async (client, interaction, args, secret, trans, langc, guild) => {
         var yourping = new Date().getTime() - interaction.createdTimestamp
         var botping = Math.round(client.ws.ping);
         interaction.reply({

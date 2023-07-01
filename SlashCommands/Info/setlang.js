@@ -18,7 +18,7 @@ module.exports = {
             require: true
         }
     ],
-    run: async(client, interaction, args, secret, trans, guild) => {
+    run: async (client, interaction, args, secret, trans, langc, guild) => {
       interaction.reply("loading...")
       var userMember = await message.guild.members.fetch(message.author)
       if(!userMember.permissions.has(PermissionsBitField.Flags.ManageGuild)) return interaction.editReply("You don't have permission to change the server language code. Ask help from admin or server owner.");

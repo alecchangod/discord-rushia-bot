@@ -21,7 +21,7 @@ module.exports = {
     }
   ],
 
-  run: async (client, interaction, args, secret, trans, guild) => {
+  run: async (client, interaction, args, secret, trans, langc, guild) => {
     // Parse Amount
     var usr = interaction.member;
     if (usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {

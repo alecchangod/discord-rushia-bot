@@ -20,7 +20,7 @@ module.exports = {
     }
   ],
   userPermissions: PermissionFlagsBits.ManageMessages,
-  run: async (client, interaction, args, secret, trans, guild) => {
+  run: async (client, interaction, args, secret, trans, langc, guild) => {
     try {
       const content = interaction.options.getString('content');
       const id = interaction.options.getString('id');

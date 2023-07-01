@@ -12,7 +12,7 @@ module.exports = {
             require: true
         }
     ],
-  run: async (client, interaction, args, secret, trans, guild) => {
+    run: async (client, interaction, args, secret, trans, langc, guild) => {
     // check if user have permission
     var usr = interaction.member;
     if (usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {

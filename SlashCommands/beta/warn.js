@@ -32,7 +32,7 @@ module.exports = {
   ],
   DefaultPermission: false,
   Permission: "Administrator",
-  run: async (client, interaction, args, secret, trans, guild) => {
+  run: async (client, interaction, args, secret, trans, langc, guild) => {
     try {
       await interaction.deferReply();
       if (!interaction.member.permissions.has('TIMEOUT_MEMBERS')) return interaction.editReply("笑死你沒權限")
