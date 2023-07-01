@@ -1,6 +1,5 @@
 const { readdirSync } = require('fs');
 const ascii = require('ascii-table');
-const wait = require('node:timers/promises').setTimeout;
 let table = new ascii("Commands");
 table.setHeading('COMMANDS', ' LOAD STATUS');
 
@@ -25,6 +24,5 @@ const loadCommands = (client, dir) => {
 module.exports = async (client) => {
     const dirs = ["cmd", "info", "music"];
     dirs.forEach(dir => loadCommands(client, dir));
-    await wait(1500);
     console.log(table.toString());
 };
