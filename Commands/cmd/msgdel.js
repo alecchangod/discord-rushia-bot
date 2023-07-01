@@ -34,7 +34,7 @@ module.exports = {
         amount -= fetchedMessages.size;
       } while (amount > 0);
       // Give an reply after deleting required message
-      message.channel.send(`@${message.author.id} I have deleted ${messagesDeleted} messages.`);
+      message.channel.send(`<@${message.author.id}> I have deleted ${messagesDeleted} messages.`);
 
     } catch (error) {
       console.error(`Error executing msgdel command: ${error}`);
