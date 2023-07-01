@@ -21,6 +21,6 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
     if (!command) command = client.info.get(client.aliases.get(cmd));
 
     // Get language code from database or use server's one
-    var langc = await db.get(`lang_${message.guild.id}`) || message.guild.preferredLocale;
+    var langc = await db.get(`lang_${newMessage.guild.id}`) || newMessage.guild.preferredLocale;
     if (command) command.run(client, oldMessage, newMessage, secret, trans, langc)
 });
