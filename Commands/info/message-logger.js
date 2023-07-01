@@ -26,7 +26,7 @@ function embed(str, channel, embed) {
   var partsArr = str.match(/[\s\S]{1,1900}/g) || [];
   partsArr.forEach((part, i) => {
     const content = `${part} \nPart ${i + 1} / ${partsArr.length}`;
-    try { channel.send(content ? { content, embeds: [embed] } : { embeds: [embed] }); } catch (e) {
+    try { channel.send(content ? { content, embeds: embed } : { embeds: embed }); } catch (e) {
       console.log(embed, "error sending embed:", e)
     }
   });
@@ -84,7 +84,7 @@ async function msgtype(message, channel) {
   }
   // if it have embed
   else if (message.embeds[0]) {
-    const receivedEmbed = message.embeds[0];
+    const receivedEmbed = message.embeds;
     const hasContent = message.content.length > 0;
     let type = hasContent ? 3 : 4;
     const str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 分類: ${message.channel.parent.name} ,\n 頻道: ${message.channel.name} ${hasContent ? `,\n 内容： ${message.content}` : ''} ,\n embed:`;
