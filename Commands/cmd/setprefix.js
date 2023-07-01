@@ -1,5 +1,5 @@
 const { QuickDB } = require("quick.db");
-const db = new QuickDB({ filePath: "database/prefix.sqlite" });
+const db = new QuickDB({ filePath: "database/server.sqlite" });
 const { PermissionsBitField } = require('discord.js');
 
 module.exports = {
@@ -19,20 +19,20 @@ module.exports = {
         if (newprefix.length > 5) return message.reply('前綴太長了w \n 5個字内, 謝謝');
         // Get message information
         const guildId = message.guild.id;
-        const author = `${message.author.tag}`;
+        const author = message.author.id;
         // Save the prefix
         await db.set(`prefix_${guildId}`, newprefix);
         // Save the user name which changed the prefix
-        await db.set(`c_${guildId}`, author);
+        await db.set(`prefix_c_${guildId}`, author);
         // Save the time for changing it
         const timestamp = Math.floor(Date.now() / 1000);
-        await db.set(`t_${guildId}`, timestamp);
+        await db.set(`prefix_t_${guildId}`, timestamp);
         // Check if it was saved
         const prefixFromDb = await db.get(`prefix_${guildId}`);
-        const authorFromDb = await db.get(`c_${guildId}`);
-        const timeFromDb = await db.get(`t_${guildId}`);
+        const authorFromDb = await db.get(`prefix_c_${guildId}`);
+        const timeFromDb = await db.get(`prefix_t_${guildId}`);
         // Give an reply after runnign the command
-        const msg = `current prefix: ${prefixFromDb} \n set by ${authorFromDb} \n in <t:${timeFromDb}>`
+        const msg = `current prefix: ${prefixFromDb} \n set by <@${authorFromDb}> \n in <t:${timeFromDb}>`
         message.reply(msg);
     }
 }

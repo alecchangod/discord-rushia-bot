@@ -4,9 +4,8 @@ const trans = require('../../trans.json')
 const PREFIX = '='
 const secret = require('../../config.json')
 const { QuickDB } = require("quick.db");
-const db = new QuickDB({ filePath: "database/prefix.sqlite" });
+const db = new QuickDB({ filePath: "database/server.sqlite" });
 const bl = new QuickDB({ filePath: "database/bad_word.sqlite" });
-const svr = new QuickDB({ filePath: "database/server.sqlite" });
 const { DisTube } = require('distube')
 const { SpotifyPlugin } = require('@distube/spotify')
 const { SoundCloudPlugin } = require('@distube/soundcloud')
@@ -72,7 +71,7 @@ client.on('messageCreate', async message => {
     return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`)
   };
   // Getting group language from the database
-  var langc = await svr.get(`${message.guild?.id}_lang`);
+  var langc = await db.get(`${message.guild?.id}_lang`);
   var langc = trans.filter(it => it.code === langc)[0]?.name;
   if (langc == undefined) var langc = message.guild?.preferredLocale;
   if (command) try { command.run(client, message, args, secret, prefix, trans, langc) } catch (e) {
@@ -89,7 +88,7 @@ client.on('messageCreate', async message => {
   let command = client.info.get(cmd)
   if (!command) command = client.info.get(client.aliases.get(cmd));
   // Getting group language from the database
-  var langc = await svr.get(`${message.guild?.id}_lang`);
+  var langc = await db.get(`${message.guild?.id}_lang`);
   var langc = trans.filter(it => it.code === langc)[0]?.name;
   if (langc == undefined) var langc = message.guild?.preferredLocale;
   if (command) command.run(client, message, secret, trans, langc)
@@ -103,7 +102,7 @@ client.on('messageCreate', async (message) => {
     let command = client.info.get(cmd)
     if (!command) command = client.info.get(client.aliases.get(cmd));
     // Getting group language from the database
-    var langc = await svr.get(`${message.guild?.id}_lang`);
+    var langc = await db.get(`${message.guild?.id}_lang`);
     var langc = trans.filter(it => it.code === langc)[0]?.name;
     if (langc == undefined) var langc = message.guild?.preferredLocale;
     if (command) command.run(client, message, secret, trans, langc)
