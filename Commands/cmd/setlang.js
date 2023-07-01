@@ -30,10 +30,10 @@ module.exports = {
         const timestamp = Math.floor(Date.now() / 1000);
         await db.set(`lang_t_${guildId}`, timestamp);
         // Check if it was saved
-        const langFromDb = await db.get(`prefix_${guildId}`);
-        const authorFromDb = await db.get(`prefix_c_${guildId}`);
-        const timeFromDb = await db.get(`prefix_t_${guildId}`);
-        const lang_name = lang.find(it => it.code === langFromDb)?.name;
+        const langFromDb = await db.get(`lang_${guildId}`);
+        const authorFromDb = await db.get(`lang_c_${guildId}`);
+        const timeFromDb = await db.get(`lang_t_${guildId}`);
+        const lang_name = lang.filter(it => it.code === langFromDb)[0]?.name;
         // Give a reply after saving the language code
         const replyMessage = `New preferred translate language was set to ${langFromDb} (${lang_name}) \n by <@${authorFromDb}> \n at <t:${timeFromDb}>`;
         await message.reply("loading...").then(async msg => {
