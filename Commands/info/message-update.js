@@ -13,7 +13,7 @@ module.exports = {
       var partsArr = str.match(/[\s\S]{1,1900}/g) || [];
       partsArr.forEach((part, i) => {
         const content = `${part} \nPart ${i + 1} / ${partsArr.length}`;
-        channel.send(content ? { content, embeds: [embed] } : { embeds: [embed] });
+        channel.send(content ? { content, embeds: embed } : { embeds: embed });
       });
     };
 
@@ -28,11 +28,11 @@ module.exports = {
     let channel = newMessage.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
 
     if (newMessage.embeds[0]?.description) {
-      const oreceivedEmbed = oldMessage.embeds[0];
-      const nreceivedEmbed = newMessage.embeds[0];
+      const oreceivedEmbed = oldMessage.embeds;
+      const nreceivedEmbed = newMessage.embeds;
 
       client.channels.fetch(secret.edit_log_channel).then(log => {
-        embed(`${logContent} ${omct}`, log, oreceivedEmbed ? [oreceivedEmbed] : []);
+        embed(`${logContent} ${omct}`, log, oreceivedEmbed ? oreceivedEmbed : []);
         embed(`鏈接：${link}\n${logContent} ${nmct}`, log, nreceivedEmbed);
       });
 
