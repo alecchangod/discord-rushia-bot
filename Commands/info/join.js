@@ -9,7 +9,7 @@ module.exports = {
     try {
       // Get the server welcome channel from database
       var channel;
-      var channelId = await db.get(`welcome_${message.guild.id}`);
+      var channelId = await db.get(`welcome_${member.guild.id}`);
       if (channelId) channel = member.guild.channels.fetch(channelId);
       // Welcome new user
       if (channel) channel.send('欸有新人~');
