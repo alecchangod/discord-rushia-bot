@@ -9,8 +9,8 @@ module.exports = {
       if ((message.channel.parent.id === "963763737683181568")) return;
       const channel = await client.channels.fetch(secret.log_channel);
       await msgtype(message, channel);
-    } catch (e) { 
-      console.log(e) 
+    } catch (e) {
+      console.log(e)
     }
   }
 };
@@ -18,7 +18,7 @@ function split(str, channel, file) {
   var partsArr = str.match(/[\s\S]{1,1900}/g) || [];
   partsArr.forEach((part, i) => {
     const content = `${part} \nPart ${i + 1} / ${partsArr.length}`;
-    channel.send(file ? content ? { content: `${content}, 檔案: `, files: Array.from(file) } : {content: `檔案: `, files: Array.from(file) } : content);
+    channel.send(file ? content ? { content: `${content}, 檔案: `, files: Array.from(file) } : { content: `檔案: `, files: Array.from(file) } : content);
   });
 };
 function embed(str, channel, embed) {
@@ -26,7 +26,9 @@ function embed(str, channel, embed) {
   var partsArr = str.match(/[\s\S]{1,1900}/g) || [];
   partsArr.forEach((part, i) => {
     const content = `${part} \nPart ${i + 1} / ${partsArr.length}`;
-    channel.send(content ? { content, embeds: [embed] } : {embeds: [embed]});
+    try { channel.send(content ? { content, embeds: [embed] } : { embeds: [embed] }); } catch (e) {
+      console.log(embed, "error sending embed:", e)
+    }
   });
 };
 // msgtype
@@ -59,7 +61,7 @@ async function msgtype(message, channel) {
     }
     else {
       const hasContent = message.content.length > 0;
-      str = `人: ${message.author.tag} ,\n${hasContent ? ` 訊息: ${message.content} ,` : ''} \n 群: ${message.guild.name} ,\n 分類: ${message.channel.parent.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}`; 
+      str = `人: ${message.author.tag} ,\n${hasContent ? ` 訊息: ${message.content} ,` : ''} \n 群: ${message.guild.name} ,\n 分類: ${message.channel.parent.name} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}`;
       split(str, channel);
     }
     let type = 0;
@@ -87,7 +89,7 @@ async function msgtype(message, channel) {
     let type = hasContent ? 3 : 4;
     const str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ,\n 分類: ${message.channel.parent.name} ,\n 頻道: ${message.channel.name} ${hasContent ? `,\n 内容： ${message.content}` : ''} ,\n embed:`;
     embed(str, channel, receivedEmbed);
-}
+  }
   // if it was a reply
   else if (message.reference?.messageId) {
     tries++;
@@ -95,7 +97,7 @@ async function msgtype(message, channel) {
     let type = 5;
     const str = `前文(?: ${repliedTo.author.tag}\n 内容：${repliedTo.content} \n ======================================== \n 人:${message.author.tag} , 訊息: ${message.content} ,\n 群:${message.guild.name} ,\n 分類: ${message.channel.parent.name} ,\n 頻道:${message.channel.name}`;
     split(str, channel);
-}
+  }
   // normal message
   else {
     var str = `人:${message.author.tag},\n 訊息: ${message.content} ,\n 群:${message.guild.name} ,\n 分類: ${message.channel.parent.name} ,\n 頻道:${message.channel.name}`, type = 6;
