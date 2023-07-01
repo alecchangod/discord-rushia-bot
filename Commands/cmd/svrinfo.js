@@ -1,5 +1,6 @@
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/server.sqlite" });
+const lang = require("../../lang.json")
 
 module.exports = {
     name: 'Server Info',
@@ -17,7 +18,7 @@ module.exports = {
         const welcome_author = await db.get(`welcome_c_${guildId}`);
         const welcome_time = await db.get(`welcome_t_${guildId}`);
         // Getting group language from the database
-        let lanh = trans.filter(it => it.code === langc)[0]?.name || message.guild.preferredLocale;
+        let lanh = `${langc}(${lang.filter(it => it.code === langc)[0]?.name})` || message.guild.preferredLocale;
         // Make prefix information into a string
         let pret = pre ? `\`\`${pre}\`\` \n Set by <@${author}> \n At <t:${time}>` : `\`\`=\`\`(Default)`;
         // Make welcome channel information into a string
