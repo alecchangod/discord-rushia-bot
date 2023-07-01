@@ -31,7 +31,7 @@ module.exports = {
         const authorFromDb = await db.get(`c_${guildId}`);
         const timeFromDb = await db.get(`t_${guildId}`);
         // Give an reply after runnign the command
-        const msg = `New welcome channel: ${prefixFromDb} \n set by ${authorFromDb} \n at <t:${timeFromDb}>`
+        const msg = `New welcome channel: ${channelFromDb} \n set by ${authorFromDb} \n at <t:${timeFromDb}>`
         message.reply(msg);
     }
 }
