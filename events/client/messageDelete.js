@@ -10,7 +10,7 @@ client.on('messageDelete', async (message) => {
     if (!message.guild) return;
     const cmd = 'delete-logger';
     let command = client.info.get(cmd)
-    if (!command) command = client.commands.get(client.aliases.get(cmd));
+    if (!command) command = client.info.get(client.aliases.get(cmd));
     // Getting group language from the database
     var langc = await db.get(`lang_${message.guild.id}`);
     var langc = trans.filter(it => it.code === langc)[0]?.name;
