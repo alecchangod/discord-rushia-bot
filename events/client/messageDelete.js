@@ -21,7 +21,7 @@ client.on('messageDelete', async (message) => {
 //dm delete detect
 client.on('messageDelete', async (message) => {
     if (message.channel.type == 1) {
-        const cmd = 'pm-delete-logger';
+        const cmd = 'dm-delete-logger';
         let command = client.info.get(cmd)
         if (!command) command = client.info.get(client.aliases.get(cmd));
         // Getting group language from the database

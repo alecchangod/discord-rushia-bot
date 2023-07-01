@@ -2,6 +2,7 @@ const { EmbedBuilder } = require("@discordjs/builders")
 
 module.exports = {
   name: "Message logger",
+  aliases: ["send-logger"],
   description: 'Log message sent in server (owner only for now)',
   run: async (client, message, secret, trans, langc) => {
     try {

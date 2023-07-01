@@ -1,5 +1,6 @@
 module.exports = {
     name: "DMs edit logger",
+    aliases: ["dm-edit-logger"],
     description: 'log messages edit in DMs',
     run: async (client, oldMessage, newMessage, secret, trans, langc) => {
         if (!oldMessage) var oldMessage = 'not recorded'

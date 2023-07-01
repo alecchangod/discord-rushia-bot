@@ -1,5 +1,6 @@
 module.exports = {
     name: "DMs message delete logger",
+    aliases: ["dm-delete-logger"],
     description: 'Log messages deleted in DMs',
     run: async (client, message, secret, trans, langc) => {
         let channel = client.channels.fetch(secret.PMlog);

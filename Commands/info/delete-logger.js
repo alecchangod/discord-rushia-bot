@@ -1,5 +1,6 @@
 module.exports = {
     name: "Message delete logger",
+    aliases: ["delete-logger"],
     description: 'Log all deleted message at "log" channel',
     run: async (client, message, secret, trans, langc) => {
         // Get user information

@@ -3,6 +3,7 @@ const member = new QuickDB({ filePath: "database/members.sqlite" });
 
 module.exports = {
   name: "Member Updates",
+  aliases: ["member-update"],
   description: 'log member changes',
   run: async (client, oldMember, newMember, trans, langc) => {
     // Check if was saved at database

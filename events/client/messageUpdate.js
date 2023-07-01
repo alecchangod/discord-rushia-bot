@@ -8,7 +8,7 @@ const svr = new QuickDB({ filePath: "database/server.sqlite" });
 //message edit
 client.on('messageUpdate', async (oldMessage, newMessage) => {
   if (!newMessage.guildId) return;
-  const cmd = 'msgupdate';
+  const cmd = 'message-update';
   let command = client.info.get(cmd)
   if (!command) command = client.info.get(client.aliases.get(cmd));
   // Getting group language from the database
@@ -21,7 +21,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 //dm edit detect
 client.on('messageUpdate', async (oldMessage, newMessage) => {
   if (newMessage.channel.type == 1) {
-    const cmd = 'pm-edit-logger';
+    const cmd = 'dm-edit-logger';
     let command = client.info.get(cmd)
     if (!command) command = client.info.get(client.aliases.get(cmd));
     // Getting group language from the database

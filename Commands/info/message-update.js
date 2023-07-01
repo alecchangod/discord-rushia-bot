@@ -2,6 +2,7 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   name: "Message updates",
+  aliases: ["message-update"],
   description: 'Log messages changes',
   run: async (client, oldMessage, newMessage, secret, trans, langc) => {
     function split(str, channel) {

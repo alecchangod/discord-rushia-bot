@@ -3,6 +3,7 @@ const db = new QuickDB({ filePath: "database/welcome.sqlite" });
 
 module.exports = {
   name: "Welcome new member",
+  aliases: ["join"],
   description: 'Welsome new member(custom message soon)',
   run: async (client, secret, member, trans, langc) => {
     try {

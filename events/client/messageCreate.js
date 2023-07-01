@@ -94,7 +94,7 @@ client.on('messageCreate', async message => {
 //dm detect
 client.on('messageCreate', async (message) => {
   if (message.channel.type == 1) {
-    const cmd = 'pm-logger';
+    const cmd = 'dm-logger';
     let command = client.info.get(cmd)
     if (!command) command = client.info.get(client.aliases.get(cmd));
     // Getting group language from the database
