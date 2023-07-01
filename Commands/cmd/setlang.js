@@ -13,8 +13,9 @@ module.exports = {
     description: 'Set Group Language',
     run: async (client, message, args, secret, prefix, trans, langc) => {
       try {
-        // Set message.guild.id into a variable to reduce typo
+        // Get message information
         const guildId = message.guild.id;
+        const author = message.author.id;
         // Check if provided language was valid
         const slang = message.content.split(" ")[1];
         // If they inputed an invalid language code
