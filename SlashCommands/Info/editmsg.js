@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType, PermissionsBitField } = require("discord.js")
 
 module.exports = {
-  name: "editmsg",
+  name: "editmessage",
   description: "edit message sent by bot",
   options: [
     {

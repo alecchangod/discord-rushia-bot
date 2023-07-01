@@ -1,38 +1,43 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders")
-const { ApplicationCommandOptionType, ButtonStyle, PermissionsBitField } = require("discord.js")
+const { PermissionsBitField, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
-  name: "msgdel", 
-  description: 'purge message to delete',
-  options: [
-        {
-            name: 'amount',
-            description: 'enter the amount of message that you want to delete',
-            type: 3,
-            require: true
-        }
+    name: "msgdel",
+    description: 'purge message to delete (ONLY less than 14 days)',
+    options: [
+      {
+        name: 'amount',
+        type: ApplicationCommandOptionType.Integer,
+        description: 'The number of messages to delete',
+        required: true
+      }
     ],
-    run: async (client, interaction, args, secret, trans, langc, guild) => {
-    // check if user have permission
-    var usr = interaction.member;
-    if (usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
-    // Parse Amount
-    var amount = Number(interaction.options.getString('amount'));
-    if (amount === "NaN") return interaction.reply({ content: ("please provide a valid number."), ephemeral: true });
-    if (amount > 100) return interaction.reply({ content: ("max amount of message to delete allowed is 100."), ephemeral: true });
-    // Fetch messages (will be filtered and lowered up to max amount requested)
-    interaction.channel.messages.fetch({
-      limit: amount,
-    }).then((msg) => {
-    //  if (user) {
-    //  const filterBy = user ? user.id : Client.user.id;
-    //  msg = new Array(msg)
-    //  msg = msg.filter(m => m.author.id === filterBy).slice(0, amount);
-    //  }
-     interaction.channel.bulkDelete(msg).catch(error => console.log(error.stack));
-     interaction.reply({ content: (`I have deleted ${amount} messages in <#${interaction.channel.id}> .`), ephemeral: true });
-    });
+  run: async (client, interaction, args, secret, trans, langc, guild) => {
+    try {
+      const user = interaction.member;
+      // Check if user has permission to delete message
+      if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
+        return interaction.reply("笑死你沒權限");
+      }
+
+      // Get amount to delete from interaction
+      let amount = interaction.options.getInteger('amount');
+
+      // Start counting
+      let messagesDeleted = 0;
+      let fetchedMessages;
+
+      do {
+        fetchedMessages = await interaction.channel.messages.fetch({ limit: Math.min(amount, 100) });
+        interaction.channel.bulkDelete(fetchedMessages).catch(error => console.log(error.stack));
+        messagesDeleted += fetchedMessages.size;
+        amount -= fetchedMessages.size;
+      } while (amount > 0);
+
+      // Give a reply after deleting required message
+      interaction.reply(`<@${interaction.user.id}> I have deleted ${messagesDeleted} messages.`);
+
+    } catch (error) {
+      console.error(`Error executing purge command: ${error}`);
+    }
   }
-  else message.reply("笑死你沒權限")
-}
-}
+};
