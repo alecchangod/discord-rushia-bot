@@ -7,27 +7,21 @@ const db = new QuickDB({ filePath: "database/server.sqlite" });
 
 //message delete log
 client.on('messageDelete', async (message) => {
-    if (!message.guild) return;
-    const cmd = 'delete-logger';
+    let cmd;
+    // For server messages
+    if (message.guild) {
+        cmd = 'delete-logger';
+    } else if (message.channel.type == 1) {
+    // For DMs
+        cmd = 'dm-delete-logger';
+    } else {
+        return;
+    }
+
     let command = client.info.get(cmd)
     if (!command) command = client.info.get(client.aliases.get(cmd));
-    // Getting group language from the database
-    var langc = await db.get(`lang_${message.guild.id}`);
-    var langc = trans.filter(it => it.code === langc)[0]?.name;
-    if (langc == undefined) var langc = message.guild.preferredLocale;
-    if (command) command.run(client, message, secret, trans, langc)
-});
 
-//dm delete detect
-client.on('messageDelete', async (message) => {
-    if (message.channel.type == 1) {
-        const cmd = 'dm-delete-logger';
-        let command = client.info.get(cmd)
-        if (!command) command = client.info.get(client.aliases.get(cmd));
-        // Getting group language from the database
-        var langc = await db.get(`lang_${message.guild.id}`);
-        var langc = trans.filter(it => it.code === langc)[0]?.name;
-        if (langc == undefined) var langc = message.guild.preferredLocale;
-        if (command) command.run(client, message, secret, trans, langc)
-    }
+    // Get language code from database or use server's one
+    var langc = await db.get(`lang_${message.guild.id}`) || message.guild.preferredLocale;
+    if (command) command.run(client, message, secret, trans, langc)
 });
