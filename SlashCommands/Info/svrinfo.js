@@ -12,7 +12,6 @@ module.exports = {
             time = await db.get(`t_${interaction.guild.id}`);
 
         // Getting group language from the database
-        const langc = await db.get(`${interaction.guild.id}_lang`);
         var lanh = lang.filter(it => it.code === langc)[0]?.name;
         if (lanh == undefined) var lanh = interaction.guild.preferredLocale;
         var pret = `\`\`${pre}\`\` \n Set by \`\`${author}\`\` \n At <t:${time}>`
