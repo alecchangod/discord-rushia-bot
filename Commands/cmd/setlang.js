@@ -20,8 +20,8 @@ module.exports = {
         if (!lang.some(it => it.code === slang)) return message.reply("please input a valid language code.");
         // If it was valid
         // Save the language code
-        await db.set(`${message.guild.id}_lang`, slang);
-        const nlang = await db.get(`${message.guild.id}_lang`);
+        await db.set(`lang_${message.guild.id}`, slang);
+        const nlang = await db.get(`lang_${message.guild.id}`);
         const nlangn = lang.find(it => it.code === nlang)?.name;
         // Give a reply after saving the language code
         const replyMessage = `New preferred translate language was set to ${nlangn} (${nlang}).`;

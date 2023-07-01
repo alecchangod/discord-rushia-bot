@@ -9,7 +9,7 @@ module.exports = {
   aliases: ["tl"],
   description: 'translate a message',
   run: async (client, message, args, secret, prefix, trans, langc) => {
-    let svr_lang = await db.get(`${message.guild.id}_lang`);
+    let svr_lang = await db.get(`lang_${message.guild.id}`);
     var hastarlangInput = true, hasorilangInput = true;
     try {
       // Send a "loading" first

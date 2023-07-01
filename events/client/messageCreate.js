@@ -71,7 +71,7 @@ client.on('messageCreate', async message => {
     return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`)
   };
   // Getting group language from the database
-  var langc = await db.get(`${message.guild?.id}_lang`) || message.guild?.preferredLocale;
+  var langc = await db.get(`lang_${message.guild.id}`) || message.guild?.preferredLocale;
   if (command) try { command.run(client, message, args, secret, prefix, trans, langc) } catch (e) {
     console.error(e)
     message.channel.send(`${client.emotes.error} | Error: \`${e}\``)
@@ -86,7 +86,7 @@ client.on('messageCreate', async message => {
   let command = client.info.get(cmd)
   if (!command) command = client.info.get(client.aliases.get(cmd));
   // Getting group language from the database
-  var langc = await db.get(`${message.guild?.id}_lang`) || message.guild?.preferredLocale;
+  var langc = await db.get(`lang_${message.guild.id}`) || message.guild?.preferredLocale;
   if (command) command.run(client, message, secret, trans, langc)
 });
 
@@ -98,7 +98,7 @@ client.on('messageCreate', async (message) => {
     let command = client.info.get(cmd)
     if (!command) command = client.info.get(client.aliases.get(cmd));
     // Getting group language from the database
-  var langc = await db.get(`${message.guild?.id}_lang`) || message.guild?.preferredLocale;
+  var langc = await db.get(`lang_${message.guild.id}`) || message.guild?.preferredLocale;
     if (command) command.run(client, message, secret, trans, langc)
   }
 });
