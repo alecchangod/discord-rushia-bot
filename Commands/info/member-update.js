@@ -13,7 +13,7 @@ module.exports = {
     if (!rolehasRecord) {
       newMember.roles.cache.forEach(async role => {
         const hasrole = await member.get(`${newMember.guild.id}_roles_${newMember.user.id}`);
-        if (((!hasrole) || (!hasrole.includes(role.id))) && (role.id)) {
+        if (((!hasrole) || (!hasrole.includes(role.id))) && (role.id) && (newMember.guild)) {
           (async () => {
             await member.push(`${newMember.guild.id}_roles_${newMember.user.id}`, role.id);
           })();
