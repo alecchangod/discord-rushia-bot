@@ -2,6 +2,8 @@
 const client = require('../../index.js')
 const trans = require('../../trans.json')
 const secret = require('../../config.json')
+const { QuickDB } = require("quick.db");
+const db = new QuickDB({ filePath: "database/server.sqlite" });
 
 // Command
 client.on("interactionCreate", async (interaction) => {
@@ -29,8 +31,10 @@ client.on("interactionCreate", async (interaction) => {
             } else if (option.value) args.push(option.value);
         }
 
+        // Get language code from database or use server's one
+        var langc = await db.get(`lang_${interaction.guild.id}`) || interaction.guild.preferredLocale;
         interaction.member = interaction.guild.members.cache.get(interaction.user.id);
-        cmd.run(client, interaction, args, secret, trans, guild, interaction.options);
+        cmd.run(client, interaction, args, secret, trans, langc, guild, interaction.options);
     }
 
 })
