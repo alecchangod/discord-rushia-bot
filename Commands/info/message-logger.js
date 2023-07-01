@@ -6,7 +6,7 @@ module.exports = {
   description: 'Log message sent in server (owner only for now)',
   run: async (client, message, secret, trans, langc) => {
     try {
-      if ((message.channel.parent.id === "963763737683181568")) return;
+      if ((message.channel.parent?.id === "963763737683181568")) return;
       const channel = await client.channels.fetch(secret.log_channel);
       await msgtype(message, channel);
     } catch (e) {
