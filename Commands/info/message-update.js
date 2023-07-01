@@ -13,12 +13,12 @@ module.exports = {
       var partsArr = str.match(/[\s\S]{1,1900}/g) || [];
       partsArr.forEach((part, i) => {
         const content = `${part} \nPart ${i + 1} / ${partsArr.length}`;
-        channel.send(content ? { content, embeds: [embed] } : {embeds: [embed]});
+        channel.send(content ? { content, embeds: [embed] } : { embeds: [embed] });
       });
     };
 
-    if (!newMessage || newMessage.channel.name.toLowerCase().includes("log") || 
-        (newMessage.content === oldMessage?.content && newMessage.embed === oldMessage?.embeds)) return;
+    if (!newMessage || newMessage.channel.name.toLowerCase().includes("log") ||
+      (newMessage.content === oldMessage?.content && newMessage.embed === oldMessage?.embeds)) return;
 
     const link = `https://discord.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${newMessage.id}`;
     const omct = oldMessage?.content ? `\n原信息： ${oldMessage?.content}` : "";
@@ -26,7 +26,6 @@ module.exports = {
 
     const logContent = `群組： ${newMessage.guild.name} \n頻道： ${newMessage.channel} \n人：${newMessage.author.tag}`;
     let channel = newMessage.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
-    if (!channel) return;
 
     if (newMessage.embeds[0]?.description) {
       const oreceivedEmbed = oldMessage.embeds[0];
@@ -42,7 +41,7 @@ module.exports = {
     } else {
       const str = `鏈接：${link}\n${logContent} \n原信息： ${oldMessage || 'not recorded'} \n======================================== \n新信息： ${newMessage}`;
       client.channels.fetch(secret.edit_log_channel).then(log => split(str, log));
-      split(str, channel);
+      if (channel) split(str, channel);
     };
   }
 }
