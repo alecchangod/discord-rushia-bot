@@ -30,270 +30,236 @@ function getRandomNumber(min, max) {
 
 //blocked word
 client.on('messageCreate', async message => {
+  // Ignore messages from the bot itself
   if (message.author.id === secret.botid) return;
-  var prefix = await db.get(`prefix_${message.guild?.id}`)
-  if (prefix == null) {
-    var prefix = PREFIX;
-  } else {
-    prefix = prefix
-  }
-  if ((message.content.startsWith(`${prefix}bl add`)) || (message.content.startsWith(`${prefix}bl del`))) return;
+
+  // Get the prefix from the database or use the default
+  var prefix = await db.get(`prefix_${message.guild?.id}`) || PREFIX;
+
+  // Ignore commands for adding or deleting blocked words
+  if (message.content.startsWith(`${prefix}bl add`) || message.content.startsWith(`${prefix}bl del`)) return;
+
+  // Check if the guild has blocked words
   var grp = await bl.get('group');
-  if (JSON.stringify(grp).includes(message.guild?.id) === false) return;
+  if (!JSON.stringify(grp).includes(message.guild?.id)) return;
+
+  // Get the list of blocked words for this guild
   var blocked = await bl.get(`${message.guild?.id}`);
-  for (var ct = 0; ct < blocked.length;) {
-    if (message.content.includes(blocked[ct])) {
+
+  // Delete the message if it contains a blocked word
+  blocked.forEach(word => {
+    if (message.content.includes(word)) {
       message.delete();
     }
-    ct++;
-  }
+  });
 });
 
 //command
 client.on('messageCreate', async message => {
-  if (message.author.bot) return;
-  if (!message.guild) return;
-  var prefix = await db.get(`prefix_${message.guild?.id}`)
-  if (prefix == null) {
-    var prefix = PREFIX;
-  } else {
-    prefix = prefix
-  }
+  // Ignore bot messages and DMs messages
+  if (message.author.bot || !message.guild) return;
+
+  // Get the prefix from the database or use the default
+  var prefix = await db.get(`prefix_${message.guild.id}`) || PREFIX;
   if (!message.content.startsWith(prefix)) return;
-  if (!message.member) message.member = await message.guild?.members.fetch(message);
+
+  // Fetch message author
+  if (!message.member) message.member = await message.guild.members.fetch(message);
+
+  // Split message for future use
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
+
+  // Check for command inputed
   const cmd = args.shift().toLowerCase();
   if (cmd.length == 0) return;
-  let command = client.info.get(cmd) || client.cmd.get(cmd) || client.twitter.get(cmd) || client.music.get(cmd)
-  if (!command) command = client.cmd.get(client.aliases.get(cmd)) || client.twitter.get(client.aliases.get(cmd)) || client.music.get(client.aliases.get(cmd));
+
+  // Get command
+  let command = client.info.get(cmd)
+    || client.cmd.get(cmd)
+    || client.twitter.get(cmd)
+    || client.music.get(cmd)
+    || client.cmd.get(client.aliases.get(cmd))
+    || client.twitter.get(client.aliases.get(cmd))
+    || client.music.get(client.aliases.get(cmd));
+
+  // Return if command not found
   if (!command) return message.reply("Command not found");
-  if ((command.inVoiceChannel === true) && (message.member.voice.channel === null)) {
-    return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`)
-  };
-  // Getting group language from the database
-  var langc = await db.get(`lang_${message.guild.id}`) || message.guild?.preferredLocale;
-  if (command) try { command.run(client, message, args, secret, prefix, trans, langc) } catch (e) {
-    console.error(e)
-    message.channel.send(`${client.emotes.error} | Error: \`${e}\``)
+
+  // Check if it was a music command
+  if (command.inVoiceChannel && !message.member.voice.channel) {
+    return message.channel.send(`${client.emotes.error} | You must be in a voice channel!`);
+  }
+
+  // Get language code from database or use server's one
+  var langc = await db.get(`lang_${message.guild.id}`) || message.guild.preferredLocale;
+
+  // Run the command and catch error
+  if (command) {
+    try {
+      command.run(client, message, args, secret, prefix, trans, langc);
+    } catch (e) {
+      console.error(e);
+      message.channel.send(`${client.emotes.error} | Error: \`${e}\``);
+    }
   }
 });
 
+// Common function to fetch command and execute it
+async function fetchAndRunCommand(message, cmd) {
+  let command = client.info.get(cmd) || client.info.get(client.aliases.get(cmd));
+  var langc = await db.get(`lang_${message.guild?.id}`) || message.guild?.preferredLocale;
+  if (command) command.run(client, message, secret, trans, langc);
+}
 
 //message log
 client.on('messageCreate', async message => {
   if (!message.guild) return;
-  const cmd = 'send-logger';
-  let command = client.info.get(cmd)
-  if (!command) command = client.info.get(client.aliases.get(cmd));
-  // Getting group language from the database
-  var langc = await db.get(`lang_${message.guild.id}`) || message.guild?.preferredLocale;
-  if (command) command.run(client, message, secret, trans, langc)
+  fetchAndRunCommand(message, 'send-logger');
 });
-
 
 //dm detect
 client.on('messageCreate', async (message) => {
   if (message.channel.type == 1) {
-    const cmd = 'dm-logger';
-    let command = client.info.get(cmd)
-    if (!command) command = client.info.get(client.aliases.get(cmd));
-    // Getting group language from the database
-  var langc = await db.get(`lang_${message.guild.id}`) || message.guild?.preferredLocale;
-    if (command) command.run(client, message, secret, trans, langc)
+    fetchAndRunCommand(message, 'dm-logger');
   }
 });
 
-
-//self protect
+// Self-protect
 client.on('messageCreate', async message => {
   try {
-    if (message.author.id === secret.botid) return;
-    if (message.reference.messageId) {
-      if ((message.content.toLowerCase().includes('滾')) || (message.content.toLowerCase().includes('閉嘴')) || (message.content.toLowerCase().includes('草')) || (message.content.toLowerCase().includes('幹')) || (message.content.toLowerCase().includes('操')) || (message.content.toLowerCase().includes('安靜')) || (message.content.toLowerCase().includes('賣插')) || (message.content.toLowerCase().includes('賣吵')) || (message.content.toLowerCase().includes('麥插')) || (message.content.toLowerCase().includes('麥吵'))) {
-        const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
-        if (repliedTo.author.id === secret.botid) {
-          message.reply('蛤')
-        };
+    // Ignore bot message and non-reply messages
+    if (message.author.id === secret.botid || !message.reference?.messageId) return;
 
-      }
-      if ((message.content.toLowerCase().includes('早安'))) {
-        const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
-        if (repliedTo.author.id === secret.botid) {
-          message.reply('早安')
-        };
+    // Check who is they replying
+    const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
+    if (repliedTo.author.id !== secret.botid) return;
 
-      }
-      if ((message.content.toLowerCase().includes('怎麽了'))) {
-        const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
-        if (repliedTo.author.id === secret.botid) {
-          message.reply('不知道')
-        };
+    // Reply
+    const content = message.content.toLowerCase();
+    const responses = {
+      '滾': '蛤',
+      '草': '蛤',
+      '幹': '蛤',
+      '操': '蛤',
+      '安靜': '蛤',
+      '賣插': '蛤',
+      '賣吵': '蛤',
+      '麥插': '蛤',
+      '麥吵': '蛤',
+      '閉嘴': '蛤',
+      '蛤三小': '早安 <:RushiaYandere:948941963170828328>',
+      '早安': '早安',
+      '蛤': '早安',
+      '怎麽了': '不知道',
+    };
 
-      }
-      if ((message.content.toLowerCase().includes('蛤三小'))) {
-        const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
-        if (repliedTo.author.id === secret.botid) {
-          message.reply('早安 <:RushiaYandere:948941963170828328>')
-        };
-
-      }
-      else if ((message.content.toLowerCase().includes('蛤'))) {
-        const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
-        if (repliedTo.author.id === secret.botid) {
-          message.reply('早安')
-        };
-
+    for (const key in responses) {
+      if (content.includes(key)) {
+        return message.reply(responses[key]);
       }
     }
-  } catch (e) { }
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 //don't sleep
-client.on('messageCreate', (message) => {
+client.on('messageCreate', async (message) => {
   try {
     if (message.author.id === secret.botid) return;
-    if ((message.author.id === secret.me) && (message.guild?.id != "949153367609987124")) return;
-    if (message.channel.id === secret.log_channel) return;
-    if (message.channel.parent?.id === "946997221969240075") return;
-    if (message.channel.parent?.id === "963763737683181568") return;
-    if (message.channel.parent?.id === "974997417315414016") return;
-    if (message.channel.parent?.id === "951150838657744937") return;
-    if (message.channel.parent?.id === "948101203202543696") return;
-    if (message.channel.parent?.id === "949597072343068714") return;
-    if (message.channel.parent?.id === "942625037956030504") return;
-    // if (message.channel.parent?.id === "969408256768344066") return; //bot testing channel
-    if (message.content.toLowerCase().includes('老ㄆㄛˊ') || message.content.toLowerCase().includes('waifu')) {
-      message.reply('醒')
-    }
+    if ((message.author.id === secret.me) && (message.guild?.id != "949153367609987124")) return; // Only blacklist my message at testing group
+    if (message.channel.parent?.id === "946997221969240075") return; // Rushia chin server board
+    if (message.channel.parent?.id === "963763737683181568") return; // Bot log channel
+    if (message.channel.parent?.id === "974997417315414016") return; // Kiyu bro channel
+    if (message.channel.parent?.id === "951150838657744937") return; // Rushia chin server admin parent
+    if (message.channel.parent?.id === "948101203202543696") return; // Rushia chin server as you wish
+    if ((message.channel.parent?.id === "949597072343068714") || (message.channel.parent?.id === "998293310244388864")) return; // Rushia chin server notify (mikeneko)
+    if (message.channel.parent?.id === "942625037956030504") return; // Rushia chin small server (2) board
 
-    if (message.content.toLowerCase().includes('wife')) {
-      message.reply('wake up damn');
-    }
+    // Ignore bot message
+    if (message.author.bot) { return; }
 
-    if (message.content.toLowerCase().includes('愛你')) {
-      if (message.member.roles.cache.some(role => role.name == "元首")) return;
-      if (message.author.bot) { return; }
-      message.reply('我不愛你');
-    }
+    // Fetch message author
+    if (!message.member) message.member = await message.guild.members.fetch(message);
 
-    if (message.content.toLowerCase().includes('ちゃんは大好きだよ') || message.content.toLowerCase().includes('ちゃんとけっこんしました') || message.content.toLowerCase().includes('妻になって') || message.content.toLowerCase().includes('はの夫') || message.content.toLowerCase().includes('一緒に寝る') || message.content.toLowerCase().includes('俺の嫁')) {
-      message.channel.send('消え失せろ');
-    }
+    // Don't reply for my big bro
+    const roleCheck = message.member.roles.cache.some(role => role.name == "元首");
+    if (roleCheck) return;
 
-    if (message.content.toLowerCase().includes('床上玩') || message.content.toLowerCase().includes('るーちゃん') && message.content.toLowerCase().includes('我') || message.content.toLowerCase().includes('るーちゃん') && message.content.toLowerCase().includes('聖水') || message.content.toLowerCase().includes('るーちゃん') && message.content.toLowerCase().includes('在') || message.content.toLowerCase().includes('るーちゃん') && message.content.toLowerCase().includes('說') || message.content.toLowerCase().includes('るーちゃん') && message.content.toLowerCase().includes('跟') || message.content.toLowerCase().includes('るーちゃん') && message.content.toLowerCase().includes('會') || message.content.toLowerCase().includes('るーちゃん') && message.content.toLowerCase().includes('睡') || message.content.toLowerCase().includes('るーちゃん') && message.content.toLowerCase().includes('來') || message.content.toLowerCase().includes('るーちゃん') && message.content.toLowerCase().includes('和')) {
-      message.channel.send('消え失せろ');
-    }
+    // Check messages
+    const includesAny = (str, substrings) => substrings.some(substring => str.includes(substring));
 
-    if (message.content.toLowerCase().includes('床上玩') || message.content.toLowerCase().includes('みけねこちゃん') && message.content.toLowerCase().includes('我') || message.content.toLowerCase().includes('みけねこちゃん') && message.content.toLowerCase().includes('聖水') || message.content.toLowerCase().includes('みけねこちゃん') && message.content.toLowerCase().includes('在') || message.content.toLowerCase().includes('みけねこちゃん') && message.content.toLowerCase().includes('說') || message.content.toLowerCase().includes('みけねこちゃん') && message.content.toLowerCase().includes('跟') || message.content.toLowerCase().includes('みけねこちゃん') && message.content.toLowerCase().includes('會') || message.content.toLowerCase().includes('みけねこちゃん') && message.content.toLowerCase().includes('睡') || message.content.toLowerCase().includes('みけねこちゃん') && message.content.toLowerCase().includes('來') || message.content.toLowerCase().includes('みけねこちゃん') && message.content.toLowerCase().includes('和')) {
-      message.channel.send('消え失せろ');
-    }
-
-    if (message.content.toLowerCase().includes('結婚') || message.content.toLowerCase().includes('窩璦妮')) {
-      if ((message.guild?.id === secret.grp1) && (message.member.roles.cache.some(role => role.name == "元首"))) return;
-      message.channel.send('滾開點');
-    }
-
-    if (message.content.toLowerCase().includes('平板')) {
-      message.reply('https://cdn.discordapp.com/attachments/946997403578404864/957699560967376966/FB_IMG_1643680126724.jpg');
-    }
-
-    if (message.content.toLowerCase().includes('pettan')) {
-      message.reply('https://cdn.discordapp.com/attachments/946997403578404864/957914419852111922/FB_IMG_1643680110105.jpg');
-    }
-
-    if (message.content.toLowerCase().includes('床上玩') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('我') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('聖水') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('在') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('說') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('跟') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('會') || message.content.toLowerCase().includes('編故事') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('睡') || message.content.toLowerCase().includes('露') && message.content.toLowerCase().includes('來')) {
-      if (message.guild?.id === '942625037498867722') message.channel.send('<#963807692839862352>, 謝謝')
-      else { message.channel.send('<#950398610284097597>, 謝謝') };
-    }
-
-    if (message.content.toLowerCase().includes('找其他人') || message.content.toLowerCase().includes('外遇')) {
-      message.reply('你再說一次？<:RushiaYandere:948941963170828328>');
-    }
-
-    if (message.content.toLowerCase().includes('女') && message.content.toLowerCase().includes('友') || message.content.toLowerCase().includes('彼') && message.content.toLowerCase().includes('女')) {
-      message.channel.send('醒');
-    }
-
-    if (message.content.toLowerCase().includes('胸')) {
-      message.reply('https://cdn.discordapp.com/attachments/946997403578404864/957911151394586624/FB_IMG_1638487832614.jpg');
-    }
-
-    if ((message.content.toLowerCase().includes('砧板')) || (message.content.toLowerCase().includes('まな板'))) {
-      message.reply('https://cdn.discordapp.com/attachments/946997403578404864/957914420502212698/FB_IMG_1643680054229.jpg');
-    }
-
-    if (message.content.toLowerCase().includes('婆')) {
-      var msg = message.content.split("婆");
-      if (msg[2] != undefined) return message.reply("https://cdn.discordapp.com/attachments/956867669959794728/1037586158877679636/unknown.png");
-      var a = (`https://media.discordapp.net/attachments/956867669959794728/960943560117596221/FB_IMG_1628385959138.jpg`);
-      var b = (`醒`);
-      let n = getRandomNumber(0, 2);
-      if (n == 1) {
-        message.reply(a);
+    // Reply
+    const subStrings = ['我', '聖水', '在', '說', '跟', '會', '睡', '來', '和'];
+    if (message.content.includes('るーちゃん') || message.content.includes('みけねこちゃん')) {
+      if (includesAny(message.content, subStrings)) {
+        message.reply('消え失せろ');
       }
-      else { message.reply(b); }
     }
 
-    if (message.content.toLowerCase().includes('清潔')) {
-      message.reply('https://media.discordapp.net/attachments/956867669959794728/961972142487007232/Screenshot_20220320-210121_Markup.png').then(msg => {
-        setTimeout(() => msg.delete(), 1000);
-      })
-    }
+    const replies = [
+      { words: ['老ㄆㄛˊ'], reply: 'https://cdn.discordapp.com/attachments/946997403578404864/957699560967376966/FB_IMG_1643680126724.jpg' },
+      { words: ['pettan'], reply: 'https://cdn.discordapp.com/attachments/946997403578404864/957914419852111922/FB_IMG_1643680110105.jpg' },
+      { words: ['胸'], reply: 'https://cdn.discordapp.com/attachments/946997403578404864/957911151394586624/FB_IMG_1638487832614.jpg' },
+      { words: ['砧板', 'まな板'], reply: 'https://cdn.discordapp.com/attachments/946997403578404864/957914420502212698/FB_IMG_1643680054229.jpg' },
+      { words: ['boing'], reply: 'https://media.discordapp.net/attachments/956867669959794728/963813505750954054/FB_IMG_1648803227500.jpg', react: '<a:3994rushiahappy:948938443218649090>' },
+      { words: ['找其他人', '外遇'], reply: '你再說一次？<:RushiaYandere:948941963170828328>' },
+      { words: ['清潔'], reply: 'https://media.discordapp.net/attachments/956867669959794728/961972142487007232/Screenshot_20220320-210121_Markup.png', autoDelete: true },
+      {
+        words: ['婆'], reply: msg => {
+          var splitMsg = msg.split("婆");
+          if (splitMsg[2] != undefined) return "https://cdn.discordapp.com/attachments/956867669959794728/1037586158877679636/unknown.png";
+          return Math.random() < 0.5 ? "https://media.discordapp.net/attachments/956867669959794728/960943560117596221/FB_IMG_1628385959138.jpg" : "醒";
+        }
+      },
+      { words: ['女友', '彼女', '老ㄆㄛˊ', 'waifu'.toLowerCase()], reply: '醒' },
+      { words: ['床上玩', '露我', '露聖水', '露在', '露說', '露跟', '露會', '編故事', '露睡', '露來'], reply: `${(message.guild?.id === '942625037498867722') ? '<#963807692839862352>' : '<#950398610284097597>'}, 謝謝` },
+      { words: ['愛你'], reply: '我不愛你' },
+      { words: ['ちゃんは大好きだよ', 'ちゃんとけっこんしました', '妻になって', 'はの夫', '一緒に寝る', '俺の嫁'], reply: '消え失せろ' },
+      { words: ['結婚', '窩璦妮'], reply: '滾開點' },
+      { words: ['wife'.toLowerCase()], reply: 'wake up damn' },
+    ];
 
-    if (message.content.toLowerCase().includes('boing')) {
-      if (message.content.toLowerCase().includes('not')) return message.reply('你再說一次？<:RushiaYandere:948941963170828328>');
-      message.reply('https://media.discordapp.net/attachments/956867669959794728/963813505750954054/FB_IMG_1648803227500.jpg');
-      message.react('<a:3994rushiahappy:948938443218649090>');
-    }
+    replies.forEach(({ words, reply, react, autoDelete }) => {
+      if (includesAny(message.content, words)) {
+        const response = typeof reply === "function" ? reply(message.content) : reply;
+        const sentMessage = message.reply(response);
+        if (react) message.react(react);
+        if (autoDelete) {
+          sentMessage.then(msg => {
+            setTimeout(() => msg.delete(), 1000);
+          })
+        }
+      }
+    });
+
   } catch (e) { console.log(e) }
 });
 
 
-// music
-
-const status = queue =>
+// Music commands
+const status = (queue) => 
   `Volume: \`${queue.volume}%\` | Filter: \`${queue.filters.names.join(', ') || 'Off'}\` | Loop: \`${queue.repeatMode ? (queue.repeatMode === 2 ? 'All Queue' : 'This Song') : 'Off'
-  }\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``
-client.distube
-  .on('playSong', (queue, song) =>
-    queue.textChannel.send(
-      `${client.emotes.play} | Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user
-      }\n${status(queue)}`
-    )
-  )
-  .on('addSong', (queue, song) =>
-    queue.textChannel.send(
-      `${client.emotes.success} | Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`
-    )
-  )
-  .on('addList', (queue, playlist) =>
-    queue.textChannel.send(
-      `${client.emotes.success} | Added \`${playlist.name}\` playlist (${playlist.songs.length
-      } songs) to queue\n${status(queue)}`
-    )
-  )
-  .on('error', (channel, e) => {
-    if (channel) channel.send(`${client.emotes.error} | An error encountered: ${e.toString().slice(0, 1974)}`)
-    else console.error(e)
-  })
-  .on('empty', channel => channel.send('Voice channel is empty! Leaving the channel...'))
-  .on('searchNoResult', (message, query) =>
-    message.channel.send(`${client.emotes.error} | No result found for \`${query}\`!`)
-  )
-  .on('finish', queue => queue.textChannel.send('Finished!'))
-  .on("searchResult", (message, result) => {
-    let i = 0
-    message.channel.send(
-      `**Choose an option from below**\n${result
-        .map(song => `**${++i}**. ${song.name} - \`${song.formattedDuration}\``)
-        .join("\n")}\n*Enter anything else or wait 60 seconds to cancel*`
-    )
-  })
-  .on("searchCancel", message => message.channel.send(`${client.emotes.error} | Searching canceled`))
-  .on("searchInvalidAnswer", message =>
-    message.channel.send(
-      `${client.emotes.error} | Invalid answer! You have to enter the number in the range of the results`
-    )
-  )
-  .on("searchDone", () => { })
+  }\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``;
 
+const handlers = {
+  'playSong': (queue, song) => queue.textChannel.send(`${client.emotes.play} | Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${song.user}\n${status(queue)}`),
+  'addSong': (queue, song) => queue.textChannel.send(`${client.emotes.success} | Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`),
+  'addList': (queue, playlist) => queue.textChannel.send(`${client.emotes.success} | Added \`${playlist.name}\` playlist (${playlist.songs.length} songs) to queue\n${status(queue)}`),
+  'error': (channel, e) => {
+    if (channel) channel.send(`${client.emotes.error} | An error encountered: ${e.toString().slice(0, 1974)}`);
+    else console.error(e);
+  },
+  'empty': (channel) => channel.send('Voice channel is empty! Leaving the channel...'),
+  'searchNoResult': (message, query) => message.channel.send(`${client.emotes.error} | No result found for \`${query}\`!`),
+  'finish': (queue) => queue.textChannel.send('Finished!'),
+  "searchResult": (message, result) => {
+    let i = 0;
+    message.channel.send(`**Choose an option from below**\n${result.map(song => `**${++i}**. ${song.name} - \`${song.formattedDuration}\``).join("\n")}\n*Enter anything else or wait 60 seconds to cancel*`);
+  },
+  "searchCancel": (message) => message.channel.send(`${client.emotes.error} | Searching canceled`),
+  "searchInvalidAnswer": (message) => message.channel.send(`${client.emotes.error} | Invalid answer! You have to enter the number in the range of the results`),
+  "searchDone": () => {}
+};
+
+Object.entries(handlers).forEach(([event, handler]) => client.distube.on(event, handler));
