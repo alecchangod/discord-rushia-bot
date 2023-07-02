@@ -5,6 +5,7 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/prefix.sqlite" }); 
 const { Permissions } = require('discord.js');
 module.exports = {
+    data: {
     name : 'setprefix', 
     aliases : ['sp'], 
     description : 'set prefix/serer', 
@@ -16,7 +17,8 @@ module.exports = {
             require: true
         }
     ],
-    run: async (client, interaction, args, secret, trans, langc, guild) => {
+},
+    async execute(client, interaction, args, secret, trans, langc, guild) {
         const member = interaction.guild.members.cache.get(interaction.user.id)
         if(!member.permissions.has('ADMINISTRATOR')) return interaction.reply('笑死你沒權限');
          var newprefix = interaction.options.getString('prefix');

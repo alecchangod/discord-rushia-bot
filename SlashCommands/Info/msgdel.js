@@ -1,6 +1,7 @@
 const { PermissionsBitField, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
+  data: {
     name: "msgdel",
     description: 'purge message to delete (ONLY less than 14 days)',
     options: [
@@ -11,7 +12,9 @@ module.exports = {
         required: true
       }
     ],
-  run: async (client, interaction, args, secret, trans, langc, guild) => {
+    userPermissions: PermissionsBitField.Flags.ManageMessages,
+  },
+  async execute(client, interaction, args, secret, trans, langc, guild) {
     try {
       const user = interaction.member;
       // Check if user has permission to delete message

@@ -3,6 +3,7 @@ const { ApplicationCommandOptionType, ButtonStyle, PermissionsBitField } = requi
 const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
+  data: {
   name: "spam",
   description: "spam",
   required: true,
@@ -20,8 +21,8 @@ module.exports = {
       require: false
     }
   ],
-
-  run: async (client, interaction, args, secret, trans, langc, guild) => {
+},
+  async execute(client, interaction, args, secret, trans, langc, guild) {
     // Parse Amount
     var usr = interaction.member;
     if (usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {

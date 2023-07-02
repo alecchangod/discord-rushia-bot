@@ -1,9 +1,11 @@
 const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js');
 module.exports = {
+  data: {
     name: "status",
     description: "server status",
     userPermissions: PermissionsBitField.Flags.Administrator,
-    run: async (client, interaction, args, secret, trans, langc, guild) => {
+  },
+    async execute(client, interaction, args, secret, trans, langc, guild) {
         if (interaction.user.id !== '574194910459199489') {
             return interaction.reply(`~~笑死這功能 <@574194910459199489> 專用~~`);
         }

@@ -7,6 +7,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = req
       lang = require('../../lang.json');
 
 module.exports = {
+  data: {
     name: 'tl',
     description: 'tl',
     options: [
@@ -29,7 +30,8 @@ module.exports = {
             require: true
         }
     ],
-    run: async (client, interaction, args, secret, trans, langc, guild) => {
+},
+    async execute(client, interaction, args, secret, trans, langc, guild) {
         interaction.reply({
             content: "loading"
         })

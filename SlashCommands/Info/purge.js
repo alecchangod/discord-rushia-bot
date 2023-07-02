@@ -2,7 +2,8 @@ const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.j
 const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
-        name: "spurge",
+  data: {
+    name:  "spurge",
         description: 'Purge messages after a message (ONLY less than 14 days)',
         options: [{
             name: 'messageid',
@@ -11,7 +12,8 @@ module.exports = {
             required: true,
         }],
     userPermissions: PermissionsBitField.Flags.ManageMessages,
-    run: async (client, interaction, args, secret, trans, langc, guild) => {
+  },
+    async execute(client, interaction, args, secret, trans, langc, guild) {
         try {
             // Check if the interaction author have permission to delete message
             if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {

@@ -3,6 +3,7 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/bad_word.sqlite" });
 
 module.exports = {
+  data: {
     name: 'blacklist',
     description: 'Ban words in a group (case sensitive)',
     options: [
@@ -30,7 +31,8 @@ module.exports = {
         }
     ],
     userPermissions: PermissionsBitField.Flags.ManageGuild,
-    run: async (client, interaction, args, secret, trans, langc, guild) => {
+},
+    async execute(client, interaction, args, secret, trans, langc, guild) {
         try {
             const user = interaction.member;
             const missing_permission = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "missing_permission")[0].trans;

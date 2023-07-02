@@ -4,6 +4,7 @@ const trans = require('../../trans.json')
 const secret = require('../../config.json')
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/server.sqlite" });
+const { PermissionsBitField, ApplicationCommandOptionType } = require('discord.js');
 
 // Command
 client.on("interactionCreate", async (interaction) => {
@@ -23,7 +24,7 @@ client.on("interactionCreate", async (interaction) => {
         const args = [];
 
         for (let option of interaction.options.data) {
-            if (option.type === "SUB_COMMAND") {
+            if (option.type === ApplicationCommandOptionType.Subcommand) {
                 if (option.name) args.push(option.name);
                 option.options?.forEach((x) => {
                     if (x.value) args.push(x.value);
@@ -34,7 +35,7 @@ client.on("interactionCreate", async (interaction) => {
         // Get language code from database or use server's one
         var langc = await db.get(`lang_${interaction.guild.id}`) || interaction.guild.preferredLocale;
         interaction.member = interaction.guild.members.cache.get(interaction.user.id);
-        cmd.run(client, interaction, args, secret, trans, langc, guild, interaction.options);
+        cmd.execute(client, interaction, args, secret, trans, langc, guild, interaction.options);
     }
 
 })

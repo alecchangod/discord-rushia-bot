@@ -1,6 +1,7 @@
 const { ApplicationCommandOptionType, PermissionsBitField } = require("discord.js")
 
 module.exports = {
+  data: {
   name: "editmessage",
   description: "edit message sent by bot",
   options: [
@@ -18,7 +19,8 @@ module.exports = {
     }
   ],
   userPermissions: PermissionsBitField.Flags.ManageMessages,
-  run: async (client, interaction, args, secret, trans, langc, guild) => {
+},
+  async execute(client, interaction, args, secret, trans, langc, guild) {
     try {
       const content = interaction.options.getString('content');
       const id = interaction.options.getString('id');
