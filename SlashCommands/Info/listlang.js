@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders");
-const { ApplicationCommandOptionType, ButtonStyle, Message, CommandInteraction } = require("discord.js");
+const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js");
 const wait = require('node:timers/promises').setTimeout;
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/server.sqlite" });
