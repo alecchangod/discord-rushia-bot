@@ -36,7 +36,7 @@ module.exports = {
         embed(`鏈接：${link}\n${logContent} ${nmct}`, log, nreceivedEmbed);
       });
 
-      embed(`${logContent} ${omct}`, channel, oreceivedEmbed ? [oreceivedEmbed] : []);
+      embed(`${logContent} ${omct}`, channel, oreceivedEmbed ? oreceivedEmbed : []);
       embed(`鏈接：${link}\n${logContent} ${nmct}`, channel, nreceivedEmbed);
     } else {
       const str = `鏈接：${link}\n${logContent} \n原信息： ${oldMessage || 'not recorded'} \n======================================== \n新信息： ${newMessage}`;
