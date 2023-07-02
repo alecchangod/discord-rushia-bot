@@ -9,14 +9,27 @@ module.exports = {
     var str = `人: ${authorTag} (<@${message.author.id}>)`;
     var files = [];
     const hasContent = messageContent.length > 0;
-
     function split(str, channel, file) {
-      var partsArr = str.match(/[\s\S]{1,1900}/g) || [];
-      partsArr.forEach((part, i) => {
-        const content = `${part} \nPart ${i + 1} / ${partsArr.length}`;
+      let startPos = 0;
+      let partNumber = 1;
+      let totalParts = Math.ceil(str.length / 1850);
+      while (startPos < str.length) {
+        let endPos = startPos + 1900;
+        if (endPos < str.length) {
+          const lastSpacePos = str.lastIndexOf(' ', endPos);
+          const lastNewLinePos = str.lastIndexOf('\n', endPos);
+          endPos = Math.max(lastSpacePos, lastNewLinePos);
+        }
+        const part = str.substring(startPos, endPos);
+        startPos = endPos + 1;
+    
+        const content = `${part} \nPart ${partNumber} / ${totalParts}`;
         channel.send(file ? content ? { content: `${content}, 檔案: `, files: Array.from(file) } : {content: `檔案: `, files: Array.from(file) } : content);
-      });
+      
+        partNumber++;
+      }
     };
+
 
     if (message.stickers.size > 0) {
       const ext = "png";
