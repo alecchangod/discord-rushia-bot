@@ -28,7 +28,7 @@ module.exports = {
     let channel = newMessage.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
 
     if (newMessage.embeds[0]?.description) {
-      const oreceivedEmbed = oldMessage.embeds;
+      const oreceivedEmbed = oldMessage?.embeds;
       const nreceivedEmbed = newMessage.embeds;
 
       client.channels.fetch(secret.edit_log_channel).then(log => {
