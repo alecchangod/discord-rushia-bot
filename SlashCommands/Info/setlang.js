@@ -1,32 +1,58 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders")
-const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders");
+const { ApplicationCommandOptionType, ButtonStyle, Message, CommandInteraction } = require("discord.js");
 const wait = require('node:timers/promises').setTimeout;
 const { QuickDB } = require("quick.db");
-const db = new QuickDB({ filePath: "database/server.sqlite" }); 
+const db = new QuickDB({ filePath: "database/server.sqlite" });
 const { translate } = require("@almeidx/translate");
-const lang = require('../../lang.json')
-
+const lang = require('../../lang.json');
 
 module.exports = {
-    name: 'setlang',
+  data: {
+    name: "setlang",
     description: 'Set Group Language',
     options: [
-        {
-            name: 'lang',
-            description: 'enter target language',
-            type: ApplicationCommandOptionType.String,
-            require: true
-        }
+      {
+        name: 'language',
+        type: ApplicationCommandOptionType.String,
+        description: 'Language code to be set',
+        required: true,
+      },
     ],
-    run: async (client, interaction, args, secret, trans, langc, guild) => {
-      interaction.reply("loading...")
-      var userMember = await message.guild.members.fetch(message.author)
-      if(!userMember.permissions.has(PermissionsBitField.Flags.ManageGuild)) return interaction.editReply("You don't have permission to change the server language code. Ask help from admin or server owner.");
-      var slang = interaction.options.getString('lang');
-      if(JSON.stringify(lang).includes(slang) === false) return await wait(2000), interaction.editReply("please input a valid language code.");
-      await db.set(`${interaction.guild.id}_lang`, slang);
-      var nlang = await db.get(`${interaction.guild.id}_lang`);
+  },
+  
+  async execute(client, interaction, args, secret, trans, langc, guild) {
+    try {
+      // Get interaction information
+      const guildId = interaction.guildId;
+      const author = interaction.user.id;
+      // Check if provided language was valid
+      const slang = interaction.options.getString('language');
+      // If they inputed an invalid language code
+      // Return and make them to re-enter a valid code
+      if (!lang.some(it => it.code === slang)) return interaction.reply({ content: "please input a valid language code.", ephemeral: true });
+      // If it was valid
+      // Save the language code
+      await db.set(`lang_${guildId}`, slang);
+      // Save the user name which changed the language
+      await db.set(`lang_c_${guildId}`, author);
+      // Save the time for changing it
+      const timestamp = Math.floor(Date.now() / 1000);
+      await db.set(`lang_t_${guildId}`, timestamp);
+      // Check if it was saved
+      const langFromDb = await db.get(`lang_${guildId}`);
+      const authorFromDb = await db.get(`lang_c_${guildId}`);
+      const timeFromDb = await db.get(`lang_t_${guildId}`);
+      const lang_name = lang.filter(it => it.code === langFromDb)[0]?.name;
+      // Give a reply after saving the language code
+      const replyMessage = `New preferred translate language was set to ${langFromDb} (${lang_name}) \n by <@${authorFromDb}> \n at <t:${timeFromDb}>`;
+      
+      await interaction.reply("loading...");
       await wait(2000);
-      interaction.editReply(`new preferred translate language was setted to ${nlang} .`)
+      await interaction.editReply(replyMessage);
+      
+    } catch (e) {
+      console.log(e);
+      await interaction.channel.send({ content: 'An error occurred while executing the command.'});
     }
-}
+  },
+};
