@@ -1,42 +1,58 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders")
-const { ApplicationCommandOptionType, ButtonStyle } = require("discord.js")
-
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders");
+const { ApplicationCommandOptionType, ButtonStyle, PermissionsBitField } = require("discord.js");
 const { QuickDB } = require("quick.db");
-const db = new QuickDB({ filePath: "database/prefix.sqlite" }); 
-const { Permissions } = require('discord.js');
+const db = new QuickDB({ filePath: "database/server.sqlite" });
+
 module.exports = {
-    data: {
-    name : 'setprefix', 
-    aliases : ['sp'], 
-    description : 'set prefix/serer', 
+  data: {
+    name: "setprefix",
+    description: 'Set server prefix',
     options: [
-        {
-            name: 'prefix',
-            description: 'enter the new prefix',
-            type: ApplicationCommandOptionType.String,
-            require: true
-        }
+      {
+        name: 'new_prefix',
+        type: ApplicationCommandOptionType.String,
+        description: 'New prefix to be set',
+        required: true,
+      },
     ],
-},
-    async execute(client, interaction, args, secret, trans, langc, guild) {
-        const member = interaction.guild.members.cache.get(interaction.user.id)
-        if(!member.permissions.has('ADMINISTRATOR')) return interaction.reply('笑死你沒權限');
-         var newprefix = interaction.options.getString('prefix');
-         if(newprefix.length > 5) return interaction.reply('前綴太長了w \n 5個字内, 謝謝');
+  },
+  userPermissions: PermissionsBitField.Flags.ManageGuild,  
+  async execute(client, interaction, args, secret, prefix, trans, langc) {
+    try {
+      // Check if user have permission
+      if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) return interaction.reply('You do not have permission.');
 
-    // self calling async function just to get async
-    // Setting an object in the database:
-    await db.set(`prefix_${interaction.guild.id}`, newprefix);
-    const author = "`" + interaction.user.tag + "`"
-    await db.set(`c_${interaction.guild.id}`, author);
-    await db.set(`t_${interaction.guild.id}`, Math.floor(new Date() / 1000));
+      // Get prefix provided
+      const newprefix = interaction.options.getString('new_prefix');
+      
+      // Limit prefix to 5 letters
+      if (newprefix.length > 5) return interaction.reply('Prefix is too long. Please keep it under 5 characters.');
 
-    // Getting an object from the database:
-    const a = await db.get(`prefix_${interaction.guild.id}`);
-    const aa = await db.get(`c_${interaction.guild.id}`);
-    const aaa = await db.get(`t_${interaction.guild.id}`);
-    const msg = `current prefix: ${a} \n set by ${aa} \n in <t:${aaa}>`
-    interaction.reply(msg)
+      // Get interaction information
+      const guildId = interaction.guildId;
+      const author = interaction.user.id;
 
-}
-}
+      // Save the prefix
+      await db.set(`prefix_${guildId}`, newprefix);
+      // Save the user name which changed the prefix
+      await db.set(`prefix_c_${guildId}`, author);
+
+      // Save the time for changing it
+      const timestamp = Math.floor(Date.now() / 1000);
+      await db.set(`prefix_t_${guildId}`, timestamp);
+
+      // Check if it was saved
+      const prefixFromDb = await db.get(`prefix_${guildId}`);
+      const authorFromDb = await db.get(`prefix_c_${guildId}`);
+      const timeFromDb = await db.get(`prefix_t_${guildId}`);
+
+      // Give an reply after running the command
+      const msg = `New prefix: ${prefixFromDb} \n set by <@${authorFromDb}> \n at <t:${timeFromDb}>`
+      interaction.reply(msg);
+      
+    } catch (e) {
+      console.log(e);
+      await interaction.channel.send({ content: 'An error occurred while executing the command.'});
+    }
+  },
+};
