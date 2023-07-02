@@ -51,7 +51,7 @@ module.exports = {
         embed(`${logContent} ${omct}`, log, oreceivedEmbed ? oreceivedEmbed : []);
         embed(`鏈接：${link}\n${logContent} ${nmct}`, log, nreceivedEmbed);
       });
-
+      if (!channel) return;
       embed(`${logContent} ${omct}`, channel, oreceivedEmbed ? oreceivedEmbed : []);
       embed(`鏈接：${link}\n${logContent} ${nmct}`, channel, nreceivedEmbed);
     } else {
