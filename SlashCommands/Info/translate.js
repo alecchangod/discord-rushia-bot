@@ -1,13 +1,9 @@
-const { translate } = require("@almeidx/translate");
-const lang = require('../../lang.json');
-const { QuickDB } = require("quick.db");
-const db = new QuickDB({ filePath: "database/server.sqlite" });
 const { ApplicationCommandOptionType } = require("discord.js");
 const slashtranslate = require('../../function/slash/translate.js');
 
 module.exports = {
   data: {
-    name: "tl",
+    name: "translate",
     description: "Translate a message",
     options: [
       {
