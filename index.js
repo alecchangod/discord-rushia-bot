@@ -1,13 +1,13 @@
 // Imports the client library
 const { Routes } = require('discord-api-types/v10');
 const fs = require('fs')
-const { MessageAttachment } = require('discord.js');
-const keep_alive = require('./keep_alive.js')
-const secret = require('./config.json')
+const keep_alive = require('./keep_alive.js');
+const secret = require('./config.json');
 // Creates clients
 const {
-  Client, ComponentType, REST, Intents, Embed, Embedbuilder, EnumResolvers, GatewayIntendBits, Partials, ApplicationCommandType, ApplicationCommandOptionType, ButtonStyle, Colors, Collection, MessageEmbed, ButtonBuilder
+  Client, ComponentType, REST, Intents, Embed, Embedbuilder, EnumResolvers, GatewayIntendBits, Partials, ApplicationCommandType, ApplicationCommandOptionType, ButtonStyle, Colors, Collection, MessageEmbed, MessageAttachment, ButtonBuilder
 } = require('discord.js');
+
 const client = new Client({
   messageCacheLifetime: 60,
   fetchAllMembers: false,
@@ -47,24 +47,24 @@ const client = new Client({
     'MessageContent']
 });
 
-process.setMaxListeners(50)
+client.setMaxListeners(50);
+process.setMaxListeners(50);
 
-client.info = new Collection();
-client.cmd = new Collection();
-client.twitter = new Collection();
-client.music = new Collection();
-client.aliases = new Collection();
+for (const collection of ["info", "cmd", "twitter", "music", "aliases", "categories", "events", "slashCommands"]) {
+  client[collection] = new Collection();
+}
+
 client.categories = fs.readdirSync("./Commands");
-client.events = new Collection();
-client.slashCommands = new Collection();
 
+// Export
 module.exports = client;
+
 
 ["command", "mjs", "event", 'slash'].forEach(handler => {
   require(`./structures/${handler}`)(client);
 });
 
-// emoji
+// Emoji
 client.emotes = {
     "play": "▶️",
     "stop": "⏹️",
@@ -74,20 +74,12 @@ client.emotes = {
     "error": "❌"
 }
 
-// current date
+// Show time
 let date_ob = new Date();
-let date = ("0" + date_ob.getDate()).slice(-2); // adjust 0 before single digit date
-let month = ("0" + (date_ob.getMonth() + 1)).slice(-2); // current month
-let year = date_ob.getFullYear(); // current year
-let hours = date_ob.getHours(); // current hours
-let minutes = date_ob.getMinutes(); // current minutes
-let seconds = date_ob.getSeconds(); // current seconds
-var full_date = year + "-" + month + "-" + date; // prints date in YYYY-MM-DD format
-var date_time = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds; // prints date & time in YYYY-MM-DD HH:MM:SS format
-var time = hours + ":" + minutes; // prints time in HH:MM format
-console.log(`${full_date}\n${date_time}\n${time}`)
-
-client.setMaxListeners(50)
+let full_date = date_ob.toISOString().split('T')[0];
+let date_time = date_ob.toISOString().replace('T', ' ').split('.')[0];
+let time = date_ob.toTimeString().split(' ')[0];
+console.log(`${full_date}\n${date_time}\n${time}`);
 
 // if there are errors, log them
 client.on("disconnect", () => console.log("Bot is disconnecting...", "warn"))
@@ -105,5 +97,5 @@ process.on('unhandledRejection', err => {
   })
 });
 
-//login
-client.login(secret.token)
+// Login
+client.login(secret.token);
