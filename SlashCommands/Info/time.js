@@ -1,10 +1,15 @@
 module.exports = {
   data: {
   name: "time",
-  description: "get current time",
+  aliases: ["time"],
+  description: 'get current time',
   },
   async execute(client, interaction, args, secret, trans, langc, guild) {
-    var tt = trans.filter(it => it.name === "time")[0].lang.filter(it => it.code === langc)[0].trans;
-    interaction.reply(`${tt}<t:${Math.floor(new Date() / 1000)}>`)
+    // Get translations
+    const { trans: current_time } = trans.find(it => it.name === "time")
+                                           .lang.find(it => it.code === langc)
+                                           .strings.find(it => it.name === "current_time");
+    // Give reply about the current time
+    interaction.reply(`${current_time}<t:${Math.floor(Date.now() / 1000)}>`);
   }
 }
