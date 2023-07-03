@@ -57,8 +57,6 @@ module.exports = {
         const content = interaction.options.getString('content');
         const messageId = interaction.options.getSubcommand() === 'reply' ? interaction.options.getString('messageid') : null;
 
-        console.log("allowed");
-
         // Check if the user was replying to another message
         // If they were, send the message as a reply
         if (messageId) {
