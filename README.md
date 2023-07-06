@@ -13,56 +13,59 @@ If you have any suggestion or found bug please tell me in the [discord support c
 
 ### Current feature 
 
-#### Use with prefix + {command name}
+#### Chatbox command
+- Check [wiki](https://github.com/alecchangod/discord-rushia-bot/wiki/Command-Useage) for useage
 Example: =ping
 By default, the prefix is "=". You can change that with the setprefix command.
 
 - bl - blacklist some words and delete it when detected
 REQUIRE MANAGE MESSAGES PERMISSION TO USE
-- Useage: {prefix}bl add/del {word}
-- getprefix - get your current prefix detail. (who set it, when, what is it)
+- getprefix - get detail about your server's prefix
 - help - get commands name and description(still working on it right now)
 - ping - get the ping of the bot
-- say - send something as the bot
-- Useage: {prefix}say {content}
+- purge - delete all message after the specific message. **DUE TO DISCORD API LIMIT, BOT CAN ONLY DELETE MESSAGE WHICH ISN'T OLDER THAN 14 DAYS**
+REQUIRE MANAGE MESSAGES PERMISSION TO USE
+- say - send something as the bot (only for approved user)
+- setwelcome - set the welcome channel to welcome new user
+REQUIRE MANAGE GUILD PERMISSION TO USE
 - msgdel - delete multiple message at once
 REQUIRE MANAGE MESSAGES PERMISSION TO USE
-- Useage: {prefix}msgdel {amount}
 - svrinfo - get current server information (Language, prefix)
 - setlang - set group language
+REQUIRE MANAGE MESSAGES GUILD TO USE
 - setprefix - change your server prefix(in 5 char)
-REQUIRE ADMIN PERMISSION TO USE
-- Useage: {current prefix}setprefix {new prefix}
+REQUIRE MANAGE MESSAGES GUILD TO USE
+- ss - screenshot of provided website (might disblae later due to security issue)
 - spam - spam message in a channel.
 REQUIRE MANAGE MESSAGES PERMISSION TO USE
-- Useage: {prefix}spam {amount} {content}
 - time - get current time(yeah it is just such a useless command)
 - tl - translate something to another language
-(if you want to translate something that have a space inside use the slash command version instead)
-- Useage: {prefix}tl {content} {target language code} {original language code(check lang.json for the code. If any code wan't there, please tell me inside the support channel or just open a issue in github page.)}
 - warn - warn a user(can't warn admin)
-REQUIRE ADMIN/TIMEOUT MEMBERS PERMISSION TO USE
-- Useage: {prefix} warn {tag the target user here} {reason for warning}
+REQUIRE MODERATE MEMBERS PERMISSION TO USE
 
 #### Use with slash command
 Give the bot permission to create slash command and just type "/" in the chat box and command will appear.
 You can choose opition for the command.
 
 ##### music
-- music command was done already, will add usage soon
+- Already done, check `help` command for their name. Will update here soon :)
+
+#### And more soon
 
 ### Feature planned to add.
 - log - log message deletion/update to a log channel(if you have a channel named "log" then it is forced to enable by now. Will add command to change later. 
-- more accurate role change 
-- language per server (done but only for message translating, more work needed for this features to work on all command)
+- more accurate role change
+- language per server (done but only for message translating and some command, more work needed for this features to work on all command)
 - calculator 
-- join message 
-- twitter(track/untrack/delete/ping role/translate) (done but was broken due to twitter api changes)
-- bot status 
+- custom welcoming message
+- bot status (owner only)
 - leave server logging 
 - manage role 
-- count message sent by a user(if discord api allow) 
+- count message sent by a user (high chance that it won't be implented due to discord api limit)
 - leveling system(rank for user) 
-- schedule message 
+- schedule message (done but need a command to add and delete it)
+
+### Dropped feature
+- twitter (track/untrack/delete/ping role/translate) **dropped and won't add back due to twitter api changes**
 
 ### If you have any suggestion plesase tell me in the support channel. Thanks a lot!
