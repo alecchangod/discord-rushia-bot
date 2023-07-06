@@ -10,10 +10,10 @@ module.exports = {
     const rolehasRecord = await member.get(`${newMember.guild.id}_roles_${newMember.user.id}`);
     const namehasRecord = await member.get(`${newMember.guild.id}_${newMember.user.id}`);
     // Save if not yet saved
-    if (!rolehasRecord) {
+    if ((!rolehasRecord) && (newMember.guild.id)) {
       newMember.roles.cache.forEach(async role => {
         const hasrole = await member.get(`${newMember.guild.id}_roles_${newMember.user.id}`);
-        if (((!hasrole) || (!hasrole.includes(role.id))) && (role.id) && (newMember.guild)) {
+        if (((!hasrole) || (!hasrole.includes(role.id))) && (role.id)) {
           (async () => {
             await member.push(`${newMember.guild.id}_roles_${newMember.user.id}`, role.id);
           })();
