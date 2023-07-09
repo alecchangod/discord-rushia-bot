@@ -2,8 +2,8 @@ const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.j
 const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
-  data: {
-    name:  "spurge",
+    data: {
+        name: "spurge",
         description: 'Purge messages after a message (ONLY less than 14 days)',
         options: [{
             name: 'messageid',
@@ -11,8 +11,8 @@ module.exports = {
             description: 'ID of the message after which messages should be purged',
             required: true,
         }],
-    userPermissions: PermissionsBitField.Flags.ManageMessages,
-  },
+        userPermissions: PermissionsBitField.Flags.ManageMessages,
+    },
     async execute(client, interaction, args, secret, trans, langc, guild) {
         try {
             // Check if the interaction author have permission to delete message
@@ -22,6 +22,9 @@ module.exports = {
 
             // Get message id provided
             const messageId = interaction.options.getString('messageid');
+
+            // Reply first
+            await interaction.reply({ content: `Deleting message after https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messageId}`, ephemeral: true })
 
             let messagesDeleted = 0;
             let fetchedMessages;
@@ -62,7 +65,7 @@ module.exports = {
                 await wait(1000);
             };
 
-            interaction.reply(`I have deleted ${messagesDeleted} messages after message ID https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messageId}(${messageId}).`);
+            interaction.edieReply(`I have deleted ${messagesDeleted} messages after message ID https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messageId}(${messageId}).`);
         } catch (error) {
             console.error(`Error executing spurge command: ${error}`);
         }

@@ -25,6 +25,9 @@ module.exports = {
       // Get amount to delete from interaction
       let amount = interaction.options.getInteger('amount');
 
+      // Reply first
+      await interaction.reply({content: `Deleting ${amount} message.`, ephemeral: true})
+
       // Start counting
       let messagesDeleted = 0;
       let fetchedMessages;
@@ -37,7 +40,7 @@ module.exports = {
       } while (amount > 0);
 
       // Give a reply after deleting required message
-      interaction.reply(`<@${interaction.user.id}> I have deleted ${messagesDeleted} messages.`);
+      await interaction.editReply(`<@${interaction.user.id}> I have deleted ${messagesDeleted} messages.`);
 
     } catch (error) {
       console.error(`Error executing purge command: ${error}`);
