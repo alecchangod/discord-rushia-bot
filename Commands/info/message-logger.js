@@ -106,7 +106,7 @@ async function msgtype(message, channel) {
     embed(str, channel, receivedEmbed);
   }
   // if it was a reply
-  else if (message.reference?.messageId) {
+  else if (message.reference.messageId) {
     tries++;
     const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
     let type = 5;
