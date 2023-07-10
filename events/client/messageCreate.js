@@ -128,7 +128,7 @@ client.on('messageCreate', async (message) => {
 client.on('messageCreate', async message => {
   try {
     // Ignore bot message and non-reply messages
-    if (message.author.id === secret.botid || !message.reference.messageId) return;
+    if (message.author.id === secret.botid || !message.reference || !message.reference.messageId) return;
 
     // Check who is they replying
     const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
