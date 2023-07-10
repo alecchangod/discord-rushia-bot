@@ -9,7 +9,7 @@ const { PermissionsBitField, ApplicationCommandOptionType } = require('discord.j
 // Command
 client.on("interactionCreate", async (interaction) => {
     // Log slash usage
-    client.channels.fetch('1076853031682965517').then(async channel => {
+    client.channels.fetch(secret.slash_log_channel).then(async channel => {
         channel.send(`Guild: ${interaction.guild?.name} \n Channel parent: ${interaction.channel.parent.name} \n Channel: ${interaction.channel.name} \n User: ${interaction.member} ${interaction.user.tag} \n Command: ${interaction.commandName}`)
     }
     );
