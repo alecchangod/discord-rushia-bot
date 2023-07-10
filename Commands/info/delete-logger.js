@@ -29,6 +29,9 @@ module.exports = {
         // Send to the "log" channel
         const deleted = `**信息刪除了** \n ${usr} 在 <#${message.channel.id}> 的信息被刪除了 \n 信息内容:  \n \n ${mct} `;
         client.channels.fetch(secret.delete_log_channel).then(log => split(deleted, log));
+
+        // Don't log message deleted in the "log"
+        if (message.channel.name.includes("log")) return;
         const log = message.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
         if (log) split(deleted, log);
     }
