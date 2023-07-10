@@ -83,7 +83,7 @@ client.on('messageCreate', async message => {
     || client.music.get(client.aliases.get(cmd));
 
   // Return if command not found
-  if (!command) return message.reply("Command not found");
+  if (!command) return;
 
   // Check if it was a music command
   if (command.inVoiceChannel && !message.member.voice.channel) {
