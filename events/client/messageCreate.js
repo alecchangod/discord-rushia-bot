@@ -73,6 +73,12 @@ client.on('messageCreate', async message => {
   const cmd = args.shift().toLowerCase();
   if (cmd.length == 0) return;
 
+  // Log command useage
+  client.channels.fetch(secret.cmd_log_channel).then(async channel => {
+    channel.send(`Guild: ${message.guild?.name} \n Channel parent: ${message.channel.parent.name} \n Channel: ${message.channel.name} \n User: <@${message.author.id}> ${message.author.tag} \n Message: ${message.content}`)
+}
+);
+
   // Get command
   let command = client.info.get(cmd)
     || client.cmd.get(cmd)
