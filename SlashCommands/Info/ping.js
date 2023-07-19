@@ -9,7 +9,7 @@ module.exports = {
       var yourping = new Date().getTime() - interaction.createdTimestamp
       var botping = Math.round(client.ws.ping)
       // Report ping to the user
-      interaction.channel.send(`Your ping: ${yourping} \nBots ping: ${botping}`)
+      interaction.reply(`Your ping: ${yourping} \nBots ping: ${botping}`)
     }
   }
   
