@@ -92,6 +92,40 @@
         ]
     },
     {
+        "name": "command",
+        "lang": [
+            {
+                "code": "en-US",
+                "strings": [
+                    {
+                        "name": "missing_permission",
+                        "trans": "You don't have require permission for running this command!"
+                    },
+                    {
+                        "name": "already_banned",
+                        "trans": "Word already banned!"
+                    },
+                    {
+                        "name": "banned",
+                        "trans": "was now banned. Try to send it"
+                    },
+                    {
+                        "name": "no_word_banned",
+                        "trans": "No words were banned in this server yet!"
+                    },
+                    {
+                        "name": "not_banned",
+                        "trans": "Word not yet banned."
+                    },
+                    {
+                        "name": "unbanned",
+                        "trans": " was now unbanned."
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "name": "time",
         "lang": [
             {
