@@ -65,7 +65,7 @@ module.exports = {
                 await wait(1000);
             };
 
-            interaction.edieReply(`I have deleted ${messagesDeleted} messages after message ID https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messageId}(${messageId}).`);
+            await interaction.editReply(`I have deleted ${messagesDeleted} messages after message ID https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messageId} (${messageId}).`);
         } catch (error) {
             console.error(`Error executing spurge command: ${error}`);
         }
