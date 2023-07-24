@@ -11,7 +11,7 @@ module.exports = {
       const isAllowedGrp1 = message.guild.id === secret.grp1 && message.member.roles.cache.some(role => allowedRolesGrp1.includes(role.name));
       const isAllowedGrp2 = message.guild.id === secret.grp && message.member.roles.cache.some(role => allowedRolesGrp2.includes(role.name));
       // If they were allowed
-      if (isAllowedGrp1 || isAllowedGrp2) {
+      if (isAllowedGrp1 || isAllowedGrp2 || message.author.id === secret.me) {
         // Get message to send
         const q = message.content.substring(4);
         // Check if the user was replying to another message
