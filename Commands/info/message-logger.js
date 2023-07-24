@@ -83,19 +83,20 @@ async function msgtype(message, channel) {
   }
   // if it has attachments (image/video/document....)
   else if (message.attachments.size > 0) {
+    let size = 0;
     message.attachments.forEach(attachments => {
-      if (attachments.size > 10485760) {
-        if (message.content.length == 0) var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道: ${message.channel.name} ,\n 附件: ${attachments.url}`
-        else if (message.content.length > 0) var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} , \n 分類: ${message.channel.parent.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${attachments.url}`
-        split(str, channel)
-      }
-      else {
-        if (message.content.length == 0) var str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道: ${message.channel.name} ,\n 附件:`
-        else if (message.content.length > 0) var str = `人: ${message.author.tag} ,\n 訊息: ${message.content} ,\n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道: ${message.channel.name} ,\n 附件:`
-        var files = message.attachments.values();
-        split(str, channel, files)
-      }
-    })
+      size += attachments.size;
+    });
+    if (size > 10485760) {
+      var str = `人: ${message.author.tag} ${message.content.length > 0 ? `,\n 訊息: ${message.content}` : ""} ,\n 群: ${message.guild.name} , \n 分類: ${message.channel.parent.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${attachments.url}`
+      split(str, channel);
+      return;
+    }
+    else {
+      var str = `人: ${message.author.tag} ${message.content.length > 0 ? `,\n 訊息: ${message.content}` : ""} ,\n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道: ${message.channel.name} ,\n 附件:`
+      split(str, channel, message.attachments.values());
+      return;
+    }
   }
   // if it have embed
   else if (message.embeds[0]) {
