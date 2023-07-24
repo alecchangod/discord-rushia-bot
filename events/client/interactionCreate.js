@@ -8,9 +8,10 @@ const { PermissionsBitField, ApplicationCommandOptionType } = require('discord.j
 
 // Command
 client.on("interactionCreate", async (interaction) => {
+    console.log(interaction.options?._hoistedOptions);
     // Log slash usage
     client.channels.fetch(secret.slash_log_channel).then(async channel => {
-        channel.send(`Guild: ${interaction.guild?.name} \n Channel parent: ${interaction.channel.parent.name} \n Channel: ${interaction.channel.name} \n User: ${interaction.member} ${interaction.user.tag} \n Command: ${interaction.commandName}`)
+        channel.send(`Guild: ${interaction.guild?.name} \n ${interaction.channel.parent ? `Channel parent: ${interaction.channel.parent.name}` : ""} \n Channel: ${interaction.channel.name} \n User: ${interaction.member} ${interaction.user.tag} \n Command: ${interaction.commandName}`)
     }
     );
 
