@@ -2,8 +2,6 @@
 const client = require('../../index.js');
 const secret = require('../../config.json');
 const cron = require('cron');
-const { QuickDB } = require("quick.db");
-const db = new QuickDB({ filePath: "database/group.sqlite" });
 
 // Define function
 // Schedule Messages
@@ -46,13 +44,14 @@ client.on('ready', async () => {
   // Rushia is now online!
   let str = `${client.user.tag} is ready on ${client.guilds.cache.size} servers.`
   console.log(str);
+  // Online logging
   const log = await client.channels.fetch(secret.online_log_channel);
   str += `\n\`\`\``;
+  // Show which group Rushia was in
   client.guilds.cache.forEach(guild => {
     let channel = `${guild.name}(${guild.id}), ${guild.memberCount} users, ${guild.roles.cache.size} roles, ${guild.channels.cache.size} channels`;
     console.log(channel);
     str += `\n${channel}`;
-    db.set(guild.name, guild.id);
   });
   // Send to log channel
   log.send(`**${client.user.tag} was now online!** \n<t:${Math.floor(Date.now() / 1000)}>\n\n${str}\`\`\``);
