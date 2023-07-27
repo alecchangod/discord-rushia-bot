@@ -48,8 +48,10 @@ module.exports = {
             const status = interaction.options.getSubcommand();
             const word = interaction.options.getString('word');
 
+            const group = await db.get('group');
+
             if (status === "ban") {
-                await db.push('group', interaction.guild.id);
+                if (!JSON.stringify(group).includes(interaction.guild.id)) await db.push('group', interaction.guild.id);
                 const now = await db.get(interaction.guild.id);
                 const already_banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "already_banned")[0].trans;
 
@@ -64,10 +66,9 @@ module.exports = {
             }
 
             if (status === "unban") {
-                const grp = await db.get('group');
                 const no_word_banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "no_word_banned")[0].trans;
 
-                if (!JSON.stringify(grp).includes(interaction.guild.id)) {
+                if (!JSON.stringify(group).includes(interaction.guild.id)) {
                     return interaction.reply(no_word_banned);
                 }
 
