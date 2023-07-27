@@ -8,27 +8,31 @@ module.exports = {
     description: 'Ban words in a group (case sensitive)',
     options: [
         {
-            name: 'status',
-            type: ApplicationCommandOptionType.String,
-            description: 'Add or delete a word',
-            required: true,
-            choices: [
-                {
-                    name: 'Add',
-                    value: 'add'
-                },
-                {
-                    name: 'Delete',
-                    value: 'del'
-                }
-            ]
-        },
-        {
-            name: 'word',
-            type: ApplicationCommandOptionType.String,
-            description: 'The word to ban or unban',
-            required: true
-        }
+            name: 'ban',
+            type: ApplicationCommandOptionType.Subcommand,
+            description: 'Ban a word',
+            options: [
+              {
+                name: 'word',
+                type: ApplicationCommandOptionType.String,
+                description: 'The word to ban or unban',
+                required: true,
+              },
+            ],
+          },
+          {
+            name: 'unban',
+            type: ApplicationCommandOptionType.Subcommand,
+            description: 'Unban a word',
+            options: [
+              {
+                name: 'word',
+                type: ApplicationCommandOptionType.String,
+                description: 'The word to ban or unban',
+                required: true,
+              },
+            ],
+          },
     ],
     userPermissions: PermissionsBitField.Flags.ManageGuild,
 },
@@ -41,10 +45,10 @@ module.exports = {
                 return interaction.reply(missing_permission);
             }
 
-            const status = interaction.options.getString('status');
+            const status = interaction.options.getSubcommand();
             const word = interaction.options.getString('word');
 
-            if (status === "add") {
+            if (status === "ban") {
                 await db.push('group', interaction.guild.id);
                 const now = await db.get(interaction.guild.id);
                 const already_banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "already_banned")[0].trans;
@@ -59,7 +63,7 @@ module.exports = {
                 interaction.reply(`\`\`\`${word}\`\`\` ${banned} <a:isis:963826754328330300>`);
             }
 
-            if (status === "del") {
+            if (status === "unban") {
                 const grp = await db.get('group');
                 const no_word_banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "no_word_banned")[0].trans;
 
