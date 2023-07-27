@@ -76,8 +76,8 @@ client.on('messageCreate', async message => {
   // Log command useage
   client.channels.fetch(secret.cmd_log_channel).then(async channel => {
     channel.send(`Guild: ${message.guild?.name} \n Channel parent: ${message.channel.parent.name} \n Channel: ${message.channel.name} \n User: <@${message.author.id}> ${message.author.tag} \n Message: ${message.content}`)
-}
-);
+  }
+  );
 
   // Get command
   let command = client.info.get(cmd)
@@ -134,7 +134,8 @@ client.on('messageCreate', async (message) => {
 client.on('messageCreate', async message => {
   try {
     // Ignore bot message and non-reply messages
-    if (message.author.id === secret.botid || !message.reference || !message.reference.messageId) return;
+    if (message.author.id === secret.botid || !message.reference) return;
+    if ((!message.reference.messageId) || (!await message.channel.messages.fetch(message.reference.messageId))) return;
 
     // Check who is they replying
     const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
@@ -167,6 +168,53 @@ client.on('messageCreate', async message => {
   } catch (e) {
     console.error(e);
   }
+});
+
+// Webhook
+client.on('messageCreate', async (message) => {
+  // Check if user has enabled webhook in the channel
+  var ch = await db.get(`webhook_${message.channel.id}`);
+  if ((!ch) || (!JSON.stringify(ch).includes(message.author.id))) return;
+
+  if (message.author.id != secret.me) return; // Ignore messages from others
+  if (message.reference?.messageId) return;
+  let emoji = true;
+  if (((message.content.includes("<:")) || (message.content.includes("<a:"))) && (message.content.includes(">"))) {
+    const emoji_id = message.content.includes("<a:") ? message.content.split("<a:")[1].split(":")[1].split(">")[0] : message.content.split("<:")[1].split(":")[1].split(">")[0];
+    emoji = client.emojis.cache.get(emoji_id);
+  };
+  if (message.stickers.size >= 1 || message.attachments.size >= 1) return;
+  if ((!message.content) || (message.content.length < 1)) return;
+
+  // Find webhook that the bot can use
+  const webhookClient = await message.channel.fetchWebhooks();
+  var webhook = webhookClient.find(wh => wh.token);
+
+  if (!webhook) {
+    console.log('No webhook was found that I can use!');
+    console.log("Now I'll create a new one.")
+    var webhook = await message.channel.createWebhook({
+      name: 'Rushia'
+    });
+  }
+
+  // Check if the bot has access to the emoji
+  if (!emoji) return console.log("I don't have access to that emoji :(");
+  // Resend user message as a webhook
+  try {
+    console.log(`Resent message as webhook: ${await webhook.send({
+      content: message.content.toString(),
+      username: message.author.username,
+      avatarURL: message.author.displayAvatarURL(),
+    }).then(async () => await message.delete())}`)
+  } catch (error) {
+    console.log(error)
+    console.log(message)
+    console.log(message.content)
+    console.log(message.content.length)
+  }
+
+  // console.log(`Resent message as webhook: ${webhookMessage}`);
 });
 
 //don't sleep
@@ -244,7 +292,7 @@ client.on('messageCreate', async (message) => {
 
 
 // Music commands
-const status = (queue) => 
+const status = (queue) =>
   `Volume: \`${queue.volume}%\` | Filter: \`${queue.filters.names.join(', ') || 'Off'}\` | Loop: \`${queue.repeatMode ? (queue.repeatMode === 2 ? 'All Queue' : 'This Song') : 'Off'
   }\` | Autoplay: \`${queue.autoplay ? 'On' : 'Off'}\``;
 
@@ -265,7 +313,7 @@ const handlers = {
   },
   "searchCancel": (message) => message.channel.send(`${client.emotes.error} | Searching canceled`),
   "searchInvalidAnswer": (message) => message.channel.send(`${client.emotes.error} | Invalid answer! You have to enter the number in the range of the results`),
-  "searchDone": () => {}
+  "searchDone": () => { }
 };
 
 Object.entries(handlers).forEach(([event, handler]) => client.distube.on(event, handler));
