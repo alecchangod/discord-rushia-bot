@@ -44,7 +44,7 @@ module.exports = {
       // Allow these roles in server (1) and (2)
       // const allowedRolesGrp1 = ["test", "元首", "管理員", "神志不清的天才寶特瓶"]; // rushia chin server
       // const allowedRolesGrp2 = ["大哥", "管理員"]; // bot testing group
-      const allowedUser = [secret.me, "805785752074977300"];
+      const allowedUser = [secret.me, "805785752074977300", "1122862133043015751", "737133459222298694"];
 
       // Check if user was allowed to run this command. If not, their interaction will be ignored.
       let isAllowed = allowedUser.includes(interaction.member.id)
