@@ -5,7 +5,7 @@ const keep_alive = require('./keep_alive.js');
 const secret = require('./config.json');
 // Creates clients
 const {
-  Client, ComponentType, REST, Intents, Embed, Embedbuilder, EnumResolvers, GatewayIntendBits, Partials, ApplicationCommandType, ApplicationCommandOptionType, ButtonStyle, Colors, Collection, MessageEmbed, MessageAttachment, ButtonBuilder
+  Client, ComponentType, REST, Intents, Embed, Embedbuilder, EnumResolvers, GatewayIntendBits, Partials, ApplicationCommandType, ApplicationCommandOptionType, ButtonStyle, Colors, Collection, MessageEmbed, MessageAttachment, ButtonBuilder, WebhookClient
 } = require('discord.js');
 
 const client = new Client({
@@ -66,12 +66,12 @@ module.exports = client;
 
 // Emoji
 client.emotes = {
-    "play": "▶️",
-    "stop": "⏹️",
-    "queue": "📄",
-    "success": "☑️",
-    "repeat": "🔁",
-    "error": "❌"
+  "play": "▶️",
+  "stop": "⏹️",
+  "queue": "📄",
+  "success": "☑️",
+  "repeat": "🔁",
+  "error": "❌"
 }
 
 // Show time
