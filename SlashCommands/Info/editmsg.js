@@ -46,8 +46,7 @@ module.exports = {
           });
         }
         // Edit the message
-        const editedMessage = await webhook.editMessage(id, { content: content });
-        console.log("Edited webhook message: ", editedMessage)
+        await webhook.editMessage(id, { content: content });
       }
       else {
         if (!id || id.length !== 19) {

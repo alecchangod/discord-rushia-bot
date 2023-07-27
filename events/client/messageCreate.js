@@ -202,11 +202,11 @@ client.on('messageCreate', async (message) => {
   if (!emoji) return console.log("I don't have access to that emoji :(");
   // Resend user message as a webhook
   try {
-    console.log(`Resent message as webhook: ${await webhook.send({
+    await webhook.send({
       content: message.content.toString(),
       username: message.author.username,
       avatarURL: message.author.displayAvatarURL(),
-    }).then(async () => await message.delete())}`)
+    }).then(async () => await message.delete())
   } catch (error) {
     console.log(error)
     console.log(message)
