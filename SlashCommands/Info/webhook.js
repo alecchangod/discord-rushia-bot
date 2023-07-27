@@ -3,30 +3,30 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/server.sqlite" });
 
 module.exports = {
-  data: {
-    name: 'webhook',
-    description: '[WIP]Resend all your message as webhook',
-    options: [
-        {
-            name: 'status',
-            type: ApplicationCommandOptionType.String,
-            description: 'Add or delete a word',
-            required: true,
-            choices: [
-                {
-                    name: 'enable',
-                    value: 'enable'
-                },
-                {
-                    name: 'disable',
-                    value: 'disbale'
-                }
-            ]
-        },
-        
-    ],
-    userPermissions: PermissionsBitField.Flags.ManageGuild,
-},
+    data: {
+        name: 'webhook',
+        description: '[WIP]Resend all your message as webhook',
+        options: [
+            {
+                name: 'status',
+                type: ApplicationCommandOptionType.String,
+                description: 'Add or delete a word',
+                required: true,
+                choices: [
+                    {
+                        name: 'enable',
+                        value: 'enable'
+                    },
+                    {
+                        name: 'disable',
+                        value: 'disbale'
+                    }
+                ]
+            },
+
+        ],
+        userPermissions: PermissionsBitField.Flags.ManageGuild,
+    },
     async execute(client, interaction, args, secret, trans, langc, guild) {
         try {
             const user = interaction.member;
@@ -42,23 +42,23 @@ module.exports = {
             if (status === "enable") {
 
                 if ((now) && (JSON.stringify(now).includes(interaction.member.id))) {
-                    return interaction.reply("You already have webhook enabled.");
+                    return interaction.reply({ content: "You already have webhook enabled.", ephemeral: true });
                 }
 
                 await db.push(`webhook_${interaction.channel.id}`, interaction.member.id);
 
-                interaction.reply(`You have enabled webhook. Now all your message will be resent as webhook once detected.`);
+                interaction.reply({ content: `You have enabled webhook. Now all your message will be resent as webhook once detected.`, ephemeral: true });
             }
 
             else {
 
                 if ((now) && (!JSON.stringify(now).includes(interaction.member.id))) {
-                    return interaction.reply("You haven't enabled webhook yet.");
+                    return interaction.reply({ content: "You haven't enabled webhook yet.", ephemeral: true });
                 }
 
                 await db.pull(`webhook_${interaction.channel.id}`, interaction.member.id);
 
-                interaction.reply(`You have disabled webhook. Now all your message will not be resent as webhook.`);
+                interaction.reply({ content: `You have disabled webhook. Now all your message will not be resent as webhook.`, ephemeral: true });
             }
 
         } catch (error) {
