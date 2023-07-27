@@ -24,7 +24,7 @@ module.exports = {
       const word = det[2];
 
     //   Ban a word
-      if (status === "add") {
+      if (status === "ban") {
         // Save server ID
         await db.push('group', message.guild.id);
         // Check if it was already banned
@@ -41,7 +41,7 @@ module.exports = {
       }
 
     //   Unban a word
-      if (status === "del") {
+      if (status === "unban") {
         // Check if it was banned
         const grp = await db.get('group');
         // If no word were banned in the server
