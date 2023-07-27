@@ -59,6 +59,10 @@ client.on('messageCreate', async message => {
   // Ignore bot messages and DMs messages
   if (message.author.bot || !message.guild) return;
 
+  // Ignore message sent in disabled channel
+  const disabled = await db.get("no_commands");
+  if (JSON.stringify(disabled)?.includes(message.channel.id)) return;
+
   // Get the prefix from the database or use the default
   var prefix = await db.get(`prefix_${message.guild.id}`) || PREFIX;
   if (!message.content.startsWith(prefix)) return;
