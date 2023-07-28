@@ -6,18 +6,56 @@ module.exports = {
         name: "reaction",
         description: "React to a message",
         options: [
+
+
             {
-                name: 'reaction',
-                description: 'The emoji to react',
-                type: ApplicationCommandOptionType.String,
-                required: true
+                name: 'add',
+                type: ApplicationCommandOptionType.Subcommand,
+                description: 'Ban a word',
+                options: [
+                    {
+                        name: 'reaction',
+                        description: 'The emoji to react',
+                        type: ApplicationCommandOptionType.String,
+                        required: true
+                    },
+                    {
+                        name: 'messageid',
+                        description: 'The message to react',
+                        type: ApplicationCommandOptionType.String,
+                        required: true
+                    },
+                ],
             },
             {
-                name: 'messageid',
-                description: 'The message to react',
-                type: ApplicationCommandOptionType.String,
-                required: true
+                name: 'remove',
+                type: ApplicationCommandOptionType.Subcommand,
+                description: 'Unban a word',
+                options: [
+                    {
+                        name: 'reaction',
+                        description: 'The emoji to react',
+                        type: ApplicationCommandOptionType.String,
+                        required: true
+                    },
+                    {
+                        name: 'messageid',
+                        description: 'The message to react',
+                        type: ApplicationCommandOptionType.String,
+                        required: true
+                    },
+                    {
+                        name: 'user',
+                        description: 'User to remove',
+                        type: ApplicationCommandOptionType.User,
+                        required: false
+                    },
+                ],
             },
+
+
+
+
         ],
     },
     async execute(client, interaction, args, secret, trans, langc, guild) {
@@ -25,11 +63,21 @@ module.exports = {
         try {
             var reaction = await interaction.options.getString('reaction');
             var messageid = await interaction.options.getString("messageid");
-            await interaction.reply({ content: `Sending ${reaction}`, ephemeral: true, })
+            var status = interaction.options.getSubcommand();
+
+            const reactionid = reaction.includes("<a:") ? reaction.split("<a:")[1].split(":")[1].split(">")[0] : reaction.split("<:")[1].split(":")[1].split(">")[0];
+
             const guild = client.guilds.cache.get(interaction.guildId);
             const message = await guild.channels.cache.get(interaction.channelId).messages.fetch(messageid);
-            message.react(reaction);
-
+            if (status === "add") {
+                await interaction.reply({ content: `Sending ${reaction}`, ephemeral: true, })
+                message.react(reaction);
+            }
+            else {
+                await interaction.reply({ content: `Removing ${reaction}`, ephemeral: true, })
+                const member = interaction.options.getMember('user') || secret.bot;
+                message.reactions.cache.get(reactionid).users.remove(member);
+            }
         } catch (err) {
             console.error(err);
             await wait(1000);
