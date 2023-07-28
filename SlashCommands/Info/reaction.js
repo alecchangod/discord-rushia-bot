@@ -65,16 +65,21 @@ module.exports = {
             var messageid = await interaction.options.getString("messageid");
             var status = interaction.options.getSubcommand();
 
+            let emoji = true;
             const reactionid = reaction.includes("<a:") ? reaction.split("<a:")[1].split(":")[1].split(">")[0] : reaction.split("<:")[1].split(":")[1].split(">")[0];
+            emoji = client.emojis.cache.get(reactionid);
 
             const guild = client.guilds.cache.get(interaction.guildId);
             const message = await guild.channels.cache.get(interaction.channelId).messages.fetch(messageid);
+
             if (status === "add") {
+                if ((!emoji) && (!message.reactions.cache.find(v => v._emoji.id == reactionid))) return interaction.reply({ content: `I don't have access to ${reaction}`, ephemeral: true })
                 await interaction.reply({ content: `Sending ${reaction}`, ephemeral: true, })
                 message.react(reaction);
             }
             else {
-                await interaction.reply({ content: `Removing ${reaction}`, ephemeral: true, })
+                if ((!emoji) && (!message.reactions.cache.find(v => v._emoji.id == reactionid))) return interaction.reply({ content: `I don't have access to ${reaction}`, ephemeral: true })
+                await interaction.reply({ content: `Removing ${reaction}`, ephemeral: true })
                 const member = interaction.options.getMember('user') || secret.bot;
                 message.reactions.cache.get(reactionid).users.remove(member);
             }
