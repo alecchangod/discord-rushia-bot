@@ -30,10 +30,10 @@ module.exports = {
     async execute(client, interaction, args, secret, trans, langc, guild) {
         try {
             const user = interaction.member;
-            const missing_permission = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "missing_permission")[0].trans;
+            // const missing_permission = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "missing_permission")[0].trans;
 
-            if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
-                return interaction.reply(missing_permission);
+            if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
+                return interaction.reply("笑死你沒權限 <a:isis:963826754328330300>");
             }
 
             const status = interaction.options.getString('status');

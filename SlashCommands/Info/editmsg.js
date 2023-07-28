@@ -29,6 +29,10 @@ module.exports = {
   async execute(client, interaction, args, secret, trans, langc, guild) {
     try {
 
+      if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
+        return interaction.reply("笑死你沒權限 <a:isis:963826754328330300>");
+      }
+
       const content = interaction.options.getString('content');
       const id = interaction.options.getString('id');
       const channel = await client.channels.fetch(interaction.channelId);

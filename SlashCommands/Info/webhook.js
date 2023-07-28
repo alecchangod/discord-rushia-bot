@@ -30,11 +30,12 @@ module.exports = {
     async execute(client, interaction, args, secret, trans, langc, guild) {
         try {
             const user = interaction.member;
-            const missing_permission = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "missing_permission")[0].trans;
+            const missing_permission = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "missing_permission")[0].trans || trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === "en-US")[0].strings.filter(it => it.name === "missing_permission")[0].trans;
 
-            if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
-                return interaction.reply(missing_permission);
+            if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
+                return interaction.reply({ content: missing_permission, ephemeral: true });
             }
+            console.log("permission pass")
 
             const status = interaction.options.getString('status');
             const now = await db.get(`webhook_${interaction.channel.id}`);

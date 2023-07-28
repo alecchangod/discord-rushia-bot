@@ -34,8 +34,10 @@ module.exports = {
   userPermissions: PermissionsBitField.Flags.ManageGuild,  
   async execute(client, interaction, args, secret, prefix, trans, langc) {
     try {
-      // Check if user have permission
-      if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) return interaction.reply('You do not have permission.');
+            // Check if the interaction author have permission to delete message
+            if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild) && (interaction.member.id != secret.me)) {
+              return interaction.reply("You don't have the required permissions.");
+          }
 
       // Get provided channel
       const channel = interaction.options.getChannel('channel');

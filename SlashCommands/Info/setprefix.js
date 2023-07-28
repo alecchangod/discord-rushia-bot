@@ -16,15 +16,17 @@ module.exports = {
       },
     ],
   },
-  userPermissions: PermissionsBitField.Flags.ManageGuild,  
+  userPermissions: PermissionsBitField.Flags.ManageGuild,
   async execute(client, interaction, args, secret, prefix, trans, langc) {
     try {
-      // Check if user have permission
-      if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) return interaction.reply('You do not have permission.');
+      // Check if the interaction author have permission to delete message
+      if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild) && (interaction.member.id != secret.me)) {
+        return interaction.reply("You don't have the required permissions.");
+      }
 
       // Get prefix provided
       const newprefix = interaction.options.getString('new_prefix');
-      
+
       // Limit prefix to 5 letters
       if (newprefix.length > 5) return interaction.reply('Prefix is too long. Please keep it under 5 characters.');
 
@@ -49,10 +51,10 @@ module.exports = {
       // Give an reply after running the command
       const msg = `New prefix: ${prefixFromDb} \n set by <@${authorFromDb}> \n at <t:${timeFromDb}>`
       interaction.reply(msg);
-      
+
     } catch (e) {
       console.log(e);
-      await interaction.channel.send({ content: 'An error occurred while executing the command.'});
+      await interaction.channel.send({ content: 'An error occurred while executing the command.' });
     }
   },
 };

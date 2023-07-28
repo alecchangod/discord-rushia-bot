@@ -25,12 +25,16 @@ module.exports = {
       },
     ],
   },
-    userPermissions: PermissionsBitField.Flags.ManageMessages,
-    async execute(client, interaction, args, secret, trans, langc, guild) {
+  userPermissions: PermissionsBitField.Flags.ManageMessages,
+  async execute(client, interaction, args, secret, trans, langc, guild) {
     const targetUser = interaction.options.getUser('target');
     const deleteCount = interaction.options.getInteger('count');
     let time = interaction.options.getInteger('time');
     time = time * 60000;
+
+    if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
+      return interaction.reply("笑死你沒權限 <a:isis:963826754328330300>");
+    }
 
     // Filter for MessageCollector - only collect messages of target user
     const filter = m => m.author.id === targetUser.id;

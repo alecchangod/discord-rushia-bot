@@ -18,7 +18,7 @@ module.exports = {
     try {
       const user = interaction.member;
       // Check if user has permission to delete message
-      if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
+      if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
         return interaction.reply("笑死你沒權限");
       }
 

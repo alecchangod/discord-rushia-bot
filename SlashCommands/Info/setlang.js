@@ -19,9 +19,14 @@ module.exports = {
       },
     ],
   },
-  
+
   async execute(client, interaction, args, secret, trans, langc, guild) {
     try {
+      // Check if the interaction author have permission to delete message
+      if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
+        return interaction.reply("You don't have the required permissions.");
+      }
+
       // Get interaction information
       const guildId = interaction.guildId;
       const author = interaction.user.id;
@@ -45,14 +50,14 @@ module.exports = {
       const lang_name = lang.filter(it => it.code === langFromDb)[0]?.name;
       // Give a reply after saving the language code
       const replyMessage = `New preferred translate language was set to ${langFromDb} (${lang_name}) \n by <@${authorFromDb}> \n at <t:${timeFromDb}>`;
-      
+
       await interaction.reply("loading...");
       await wait(2000);
       await interaction.editReply(replyMessage);
-      
+
     } catch (e) {
       console.log(e);
-      await interaction.channel.send({ content: 'An error occurred while executing the command.'});
+      await interaction.channel.send({ content: 'An error occurred while executing the command.' });
     }
   },
 };

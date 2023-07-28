@@ -16,7 +16,7 @@ module.exports = {
     async execute(client, interaction, args, secret, trans, langc, guild) {
         try {
             // Check if the interaction author have permission to delete message
-            if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
+            if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
                 return interaction.reply("You don't have the required permissions.");
             }
 
