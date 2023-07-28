@@ -14,7 +14,7 @@ function startScheduledMessage(time, server, channelid, contents) {
   scheduledMessage.start();
 }
 // Self-role
-async function handleSelfRole(guildid, channel, messageid, reaction) {
+async function handleSelfRole(guildid, channel, messageid, reaction, roleid) {
   const sr_log = await client.channels.fetch(secret.self_role_log_channel);
   const guild = client.guilds.cache.get(guildid);
   const message = await guild.channels.cache.get(channel).messages.fetch(messageid);
@@ -25,7 +25,7 @@ async function handleSelfRole(guildid, channel, messageid, reaction) {
   });
   collector.on('collect', async (reaction, user) => {
     const link = `https://discord.com/channels/${reaction.message.guildId}/${reaction.message.channelId}/${reaction.message.id}`;
-    const role = guild.roles.cache.get('964140235401355304');
+    const role = guild.roles.cache.get(roleid);
     const member = guild.members.cache.get(user.id);
     if (member.roles.cache.has(role.id)) {
       await member.roles.remove(role);
@@ -64,5 +64,7 @@ client.on('ready', async () => {
   startScheduledMessage("00 30 07 * * *", "980650812499963914", "1022785038259064842", "@yanlin2011 夠時間睡覺了給我起床（X");
   startScheduledMessage("00 30 07 * * *", "980650812499963914", "1022785038259064842", "@yanlin2011 給我起床睡覺（X");
   // Start to handle self-role
-  await handleSelfRole("949153367609987124", "963802334482284595", "963802394045583370", "<:makaneko_surprise:958407417559908382>");
+  await handleSelfRole("949153367609987124", "963802334482284595", "963802394045583370", "<:makaneko_surprise:958407417559908382>", "964140235401355304");
+
+  await handleSelfRole("980650812499963914", "1134402614721794129", "1134572336339763330", "<:489D6EAF6E5B4589AFB4C55F50681656:1132672127984742490>", "1025995347455119361");
 });
