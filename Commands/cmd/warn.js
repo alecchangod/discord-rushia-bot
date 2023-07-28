@@ -40,7 +40,7 @@ module.exports = {
       let channel_id = message.guild.id === secret.grp ? secret.warn : secret.warn1;
       // Send message to the warning channel
       const channel = await client.channels.fetch(channel_id);
-      channel.send(`人:<@${member}> <:bananaV3:958346989597241344>\n原因:${reason}\n時間: 5分鐘`).catch(console.log);
+      channel.send(`**Timeout**\n人:<@${member}> <:bananaV3:958346989597241344>\n原因:${reason}\n時間: 5分鐘`).catch(console.log);
 
     } catch (e) {
       console.log(e)
