@@ -88,7 +88,7 @@ async function msgtype(message, channel) {
       size += attachments.size;
     });
     if (size > 10485760) {
-      var str = `人: ${message.author.tag} ${message.content.length > 0 ? `,\n 訊息: ${message.content}` : ""} ,\n 群: ${message.guild.name} , \n 分類: ${message.channel.parent.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${attachments.url}`
+      var str = `人: ${message.author.tag} ${message.content.length > 0 ? `,\n 訊息: ${message.content}` : ""} ,\n 群: ${message.guild.name} , \n 分類: ${message.channel.parent.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${message.attachments.url}`
       split(str, channel);
       return;
     }
