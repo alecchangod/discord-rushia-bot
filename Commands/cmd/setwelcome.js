@@ -26,6 +26,11 @@ module.exports = {
         // Save the time for changing it
         const timestamp = Math.floor(Date.now() / 1000);
         await db.set(`welcome_t_${guildId}`, timestamp);
+
+        // Set need_welcome
+        const haveenabled = await db.get(`need_welcome`);
+        if (!JSON.stringify(haveenabled)?.includes(message.guild.id)) db.push("need_welcome", message.guild.id);
+
         // Check if it was saved
         const channelFromDb = await db.get(`welcome_${guildId}`);
         const authorFromDb = await db.get(`welcome_c_${guildId}`);

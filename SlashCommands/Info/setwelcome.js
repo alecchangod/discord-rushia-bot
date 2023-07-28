@@ -13,6 +13,22 @@ module.exports = {
         description: 'Channel to be set as welcome channel',
         required: true,
       },
+      {
+        name: 'status',
+        type: ApplicationCommandOptionType.String,
+        description: 'Enable or disable in this server',
+        required: false,
+        choices: [
+            {
+                name: 'enable',
+                value: 'enable'
+            },
+            {
+                name: 'disable',
+                value: 'disbale'
+            }
+        ]
+    },
     ],
   },
   userPermissions: PermissionsBitField.Flags.ManageGuild,  
@@ -27,6 +43,17 @@ module.exports = {
       // Get interaction information
       const guildId = interaction.guildId;
       const author = interaction.user.id;
+
+      // Check enable or disable
+      const status = interaction.options.getString('status');
+      if ((!status) || (status === "enable")) {
+        const haveenabled = await db.get(`need_welcome`);
+        if (!JSON.stringify(haveenabled)?.includes(interaction.guild.id)) db.push("need_welcome", interaction.guild.id);
+      }
+      else if ((status === "disable")) {
+        const haveenabled = await db.get(`need_welcome`);
+        if (JSON.stringify(haveenabled)?.includes(interaction.guild.id)) db.pull("need_welcome", interaction.guild.id);
+      }
 
       // Save the channel
       await db.set(`welcome_${guildId}`, channel.id);
