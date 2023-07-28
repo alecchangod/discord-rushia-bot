@@ -13,10 +13,10 @@ module.exports = {
       // Ignore new member in disabled server
       const enabled = await db.get("need_welcome");
       if (!JSON.stringify(enabled)?.includes(member.guild.id)) return;
-      channelId = channelId ? channelId : member.guild.systemChannelId;
-      if (channelId) channel = member.guild.channels.fetch(channelId);
+      let wchannelId = channelId ? channelId : member.guild.systemChannelId;
+      if (wchannelId) channel = await client.channels.fetch(wchannelId);
       // Welcome new user
-      if (channel) channel.send(`欸有新人~ \n ${member}`);
+      if (channel) await channel.send(`欸有新人~ \n ${member}`);
     } catch (e) {
       console.log(e)
     }
