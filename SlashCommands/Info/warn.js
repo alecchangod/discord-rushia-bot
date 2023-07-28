@@ -64,7 +64,8 @@ module.exports = {
 
             interaction.reply(`${member} 誰讓你在這裡廢話？滾, ${time} 分鐘後再回來（X <:bananaV3:958346989597241344>`);
 
-            let channel_id = warn_channel ? warn_channel.id : interaction.guild.id === secret.grp ? secret.warn : secret.warn1;
+            let channel_id = warn_channel ? warn_channel.id : interaction.guild.id === secret.grp ? secret.warn : secret.grp1 ? secret.warn1 : null;
+            if (!channel_id) return;
 
             if (channel_id) {
                 const channel = await client.channels.fetch(channel_id);

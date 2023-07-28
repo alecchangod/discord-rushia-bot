@@ -37,7 +37,8 @@ module.exports = {
         .catch(console.log);
       // If there is a warning channel
       // Working on a command to set it. For now, was hardcoded and for private use only.
-      let channel_id = message.guild.id === secret.grp ? secret.warn : secret.warn1;
+      let channel_id = message.guild.id === secret.grp ? secret.warn : message.guild.id === secret.grp1 ? secret.warn1 : null;
+      if (!channel_id) return;
       // Send message to the warning channel
       const channel = await client.channels.fetch(channel_id);
       channel.send(`**Timeout**\n人:<@${member}> <:bananaV3:958346989597241344>\n原因:${reason}\n時間: 5分鐘`).catch(console.log);
