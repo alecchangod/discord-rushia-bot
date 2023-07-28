@@ -59,6 +59,10 @@ client.on('ready', async () => {
   client.user.setPresence({ activities: [{ name: "誰在做夢", type: 3 }], status: 'idle', clientStatus: "PS5" });
   // Start schedule messages
   startScheduledMessage("00 00 12 * * *", secret.grp2, secret.channelID2, "你各位別當死魚堆");
+
+  startScheduledMessage("00 30 07 * * *", "980650812499963914", "1022785038259064842", "@yanlin2011 給我起床（X");
+  startScheduledMessage("00 30 07 * * *", "980650812499963914", "1022785038259064842", "@yanlin2011 夠時間睡覺了給我起床（X");
+  startScheduledMessage("00 30 07 * * *", "980650812499963914", "1022785038259064842", "@yanlin2011 給我起床睡覺（X");
   // Start to handle self-role
   await handleSelfRole("949153367609987124", "963802334482284595", "963802394045583370", "<:makaneko_surprise:958407417559908382>");
 });
