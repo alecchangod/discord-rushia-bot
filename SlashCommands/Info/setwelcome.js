@@ -19,25 +19,25 @@ module.exports = {
         description: 'Enable or disable in this server',
         required: false,
         choices: [
-            {
-                name: 'enable',
-                value: 'enable'
-            },
-            {
-                name: 'disable',
-                value: 'disbale'
-            }
+          {
+            name: 'enable',
+            value: 'enable'
+          },
+          {
+            name: 'disable',
+            value: 'disbale'
+          }
         ]
-    },
+      },
     ],
   },
-  userPermissions: PermissionsBitField.Flags.ManageGuild,  
+  userPermissions: PermissionsBitField.Flags.ManageGuild,
   async execute(client, interaction, args, secret, prefix, trans, langc) {
     try {
-            // Check if the interaction author have permission to delete message
-            if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild) && (interaction.member.id != secret.me)) {
-              return interaction.reply("You don't have the required permissions.");
-          }
+      // Check if the interaction author have permission to delete message
+      if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild) && (interaction.member.id != secret.me)) {
+        return interaction.reply("You don't have the required permissions.");
+      }
 
       // Get provided channel
       const channel = interaction.options.getChannel('channel');
@@ -74,10 +74,10 @@ module.exports = {
       // Give an reply after running the command
       const msg = `New welcome channel: <#${channelFromDb}> \n set by <@${authorFromDb}> \n at <t:${timeFromDb}>`
       interaction.reply(msg);
-      
+
     } catch (e) {
       console.log(e);
-      await interaction.channel.send({ content: 'An error occurred while executing the command.'});
+      await interaction.channel.send({ content: 'An error occurred while executing the command.' });
     }
   },
 };

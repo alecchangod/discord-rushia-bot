@@ -29,6 +29,7 @@ module.exports = {
   async execute(client, interaction, args, secret, trans, langc, guild) {
     try {
 
+      const user = interaction.member;
       if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
         return interaction.reply("笑死你沒權限 <a:isis:963826754328330300>");
       }
