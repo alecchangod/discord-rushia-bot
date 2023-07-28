@@ -57,18 +57,18 @@ module.exports = {
             // Check if the bot has the required permission
             if(!interaction.guild.members.me.permissions.has(PermissionsBitField.Flags.ModerateMembers)) return interaction.reply('你確定要叫一個沒權限禁言的人來幫你?');
 
-            let time = interaction.options.getMember('time') || 5;
-            let warn_channel = interaction.options.getMember('time');
+            let time = interaction.options.getInteger('time') || 5;
+            let warn_channel = interaction.options.getChannel('channel');
 
             member.timeout(1000 * 60 * time);
 
-            interaction.reply("<@" + member + "> 誰讓你在這裡廢話？滾, 5分鐘後再回來（X <:bananaV3:958346989597241344>");
+            interaction.reply(`${member} 誰讓你在這裡廢話？滾, ${time} 分鐘後再回來（X <:bananaV3:958346989597241344>`);
 
-            let channel_id = warn_channel || interaction.guild.id === secret.grp ? secret.warn : secret.warn1;
+            let channel_id = warn_channel ? warn_channel.id : interaction.guild.id === secret.grp ? secret.warn : secret.warn1;
 
             if (channel_id) {
                 const channel = await client.channels.fetch(channel_id);
-                channel.send(`人: ${member} <:bananaV3:958346989597241344>\n原因:${reason}\n時間: 5分鐘`).catch(console.log);
+                channel.send(`人: ${member} <:bananaV3:958346989597241344>\n原因:${reason}\n時間: ${time}分鐘`).catch(console.log);
             }
         } catch (e) {
             console.log(e)
