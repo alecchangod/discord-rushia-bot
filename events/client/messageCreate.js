@@ -180,6 +180,8 @@ client.on('messageCreate', async (message) => {
   var ch = await db.get(`webhook_${message.channel.id}`);
   if ((!ch) || (!JSON.stringify(ch).includes(message.author.id))) return;
 
+  if (message.content == 0) var message = await channel.messages.fetch(message.id).catch(() => null);
+
   if (message.author.id != secret.me) return; // Ignore messages from others
   if (message.reference?.messageId) return;
   let emoji = true;
