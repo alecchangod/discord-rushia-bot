@@ -4,7 +4,7 @@ module.exports = {
     description: 'Log messages deleted in DMs',
     run: async (client, message, secret, trans, langc) => {
         let channel = client.channels.fetch(secret.PMlog);
-        let deleted = `**信息刪除了** \n ${message.author.tag} 的信息被刪除了 \n 信息内容: \n \n  ${message} `
+        let deleted = `**信息刪除了** \n ${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} 的信息被刪除了 \n 信息内容: \n \n  ${message} `
         channel.send(deleted);
     }
 }

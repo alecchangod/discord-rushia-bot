@@ -79,7 +79,7 @@ client.on('messageCreate', async message => {
 
   // Log command useage
   client.channels.fetch(secret.cmd_log_channel).then(async channel => {
-    channel.send(`Guild: ${message.guild?.name} \n Channel parent: ${message.channel.parent.name} \n Channel: ${message.channel.name} \n User: <@${message.author.id}> ${message.author.tag} \n Message: ${message.content}`)
+    channel.send(`Guild: ${message.guild?.name} \n Channel parent: ${message.channel.parent.name} \n Channel: ${message.channel.name} \n User: <@${message.author.id}> ${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} \n Message: ${message.content}`)
   }
   );
 

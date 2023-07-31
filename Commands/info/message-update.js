@@ -40,7 +40,7 @@ module.exports = {
     const omct = oldMessage?.content ? `\n原信息： ${oldMessage?.content}` : "";
     const nmct = newMessage.content ? `\n新信息： ${newMessage.content}` : "";
 
-    const logContent = `群組： ${newMessage.guild.name} \n頻道： ${newMessage.channel} \n人：${newMessage.author.tag}`;
+    const logContent = `群組： ${newMessage.guild.name} \n頻道： ${newMessage.channel} \n人：${newMessage.author.discriminator === '0' ? "@" : ""}${newMessage.author.username}${newMessage.author.discriminator === '0' ? "" : `#${newMessage.author.discriminator}`}`;
     let channel = newMessage.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
 
     if (newMessage.embeds[0]?.description) {

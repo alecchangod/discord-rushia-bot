@@ -4,9 +4,9 @@ module.exports = {
   description: 'Log DMs messages',
   run: async (client, message, secret, trans, langc) => {
     const channel = await client.channels.fetch(secret.PMlog);
-    const authorTag = message.author.tag;
+    const authorTag = `${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`}`;
     const messageContent = message.content;
-    var str = `人: ${authorTag} (<@${message.author.id}>)`;
+    var str = `${authorTag} (<@${message.author.id}>)`;
     var files = [];
     const hasContent = messageContent.length > 0;
     function split(str, channel, file) {

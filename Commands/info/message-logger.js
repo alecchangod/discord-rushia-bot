@@ -67,7 +67,7 @@ async function msgtype(message, channel) {
       message.attachments.forEach(attachment => {
         const hasContent = message.content.length > 0;
         const attachmentText = attachment.size > 10485760 ? `, \n 附件: ${attachment.url}` : ', \n 附件:';
-        str = `人: ${message.author.tag} ,\n${hasContent ? ` 訊息: ${message.content} ,` : ''} \n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}${attachmentText}`;
+        str = `人：${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} ,\n${hasContent ? ` 訊息: ${message.content} ,` : ''} \n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}${attachmentText}`;
         if (attachment.size <= 10485760) {
           files = message.attachments.values();
         }
@@ -76,7 +76,7 @@ async function msgtype(message, channel) {
     }
     else {
       const hasContent = message.content.length > 0;
-      str = `人: ${message.author.tag} ,\n${hasContent ? ` 訊息: ${message.content} ,` : ''} \n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}`;
+      str = `人：${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} ,\n${hasContent ? ` 訊息: ${message.content} ,` : ''} \n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}`;
       split(str, channel);
     }
     let type = 0;
@@ -88,12 +88,12 @@ async function msgtype(message, channel) {
       size += attachments.size;
     });
     if (size > 10485760) {
-      var str = `人: ${message.author.tag} ${message.content.length > 0 ? `,\n 訊息: ${message.content}` : ""} ,\n 群: ${message.guild.name} , \n 分類: ${message.channel.parent.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${message.attachments.url}`
+      var str = `人：${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} ${message.content.length > 0 ? `,\n 訊息: ${message.content}` : ""} ,\n 群: ${message.guild.name} , \n 分類: ${message.channel.parent.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${message.attachments.url}`
       split(str, channel);
       return;
     }
     else {
-      var str = `人: ${message.author.tag} ${message.content.length > 0 ? `,\n 訊息: ${message.content}` : ""} ,\n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道: ${message.channel.name} ,\n 附件:`
+      var str = `人：${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} ${message.content.length > 0 ? `,\n 訊息: ${message.content}` : ""} ,\n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道: ${message.channel.name} ,\n 附件:`
       split(str, channel, message.attachments.values());
       return;
     }
@@ -103,7 +103,7 @@ async function msgtype(message, channel) {
     const receivedEmbed = message.embeds;
     const hasContent = message.content.length > 0;
     let type = hasContent ? 3 : 4;
-    const str = `人: ${message.author.tag} ,\n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道: ${message.channel.name} ${hasContent ? `,\n 内容： ${message.content}` : ''} ,\n embed:`;
+    const str = `人：${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} ,\n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道: ${message.channel.name} ${hasContent ? `,\n 内容： ${message.content}` : ''} ,\n embed:`;
     embed(str, channel, receivedEmbed);
   }
   // if it was a reply
@@ -111,12 +111,12 @@ async function msgtype(message, channel) {
     tries++;
     const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
     let type = 5;
-    const str = `前文(?: ${repliedTo.author.tag}\n 内容：${repliedTo.content} \n ======================================== \n 人:${message.author.tag} , 訊息: ${message.content} ,\n 群:${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道:${message.channel.name}`;
+    const str = `前文(?: ${repliedTo.author.tag}\n 内容：${repliedTo.content} \n ======================================== \n 人: ${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} , 訊息: ${message.content} ,\n 群:${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道:${message.channel.name}`;
     split(str, channel);
   }
   // normal message
   else {
-    var str = `人:${message.author.tag},\n 訊息: ${message.content} ,\n 群:${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道:${message.channel.name}`, type = 6;
+    var str = `人: ${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`},\n 訊息: ${message.content} ,\n 群:${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道:${message.channel.name}`, type = 6;
     split(str, channel)
   }
 }
