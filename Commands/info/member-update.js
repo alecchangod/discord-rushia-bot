@@ -13,7 +13,7 @@ module.exports = {
     if ((!rolehasRecord) && (newMember.guild.id)) {
       newMember.roles.cache.forEach(async role => {
         const hasrole = await member.get(`${newMember.guild.id}_roles_${newMember.user.id}`);
-        if (((!hasrole) || (!hasrole.includes(role.id))) && (role.id)) {
+        if (((!hasrole) || (!JSON.stringify(hasrole).includes(role.id))) && (role.id)) {
           (async () => {
             await member.push(`${newMember.guild.id}_roles_${newMember.user.id}`, role.id);
           })();
@@ -46,7 +46,7 @@ module.exports = {
 
     // Check for username changes
     // Save new username
-    if ((!namehasRecord) || (namehasRecord != newMember.user.tag)) {
+    if ((!namehasRecord) || (JSON.stringify(namehasRecord) != newMember.user.tag)) {
       (async () => {
         await member.set(`${newMember.guild.id}_${newMember.user.id}`, newMember.user.tag);
       })();
