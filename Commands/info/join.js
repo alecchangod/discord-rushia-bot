@@ -16,7 +16,7 @@ module.exports = {
       let wchannelId = channelId ? channelId : member.guild.systemChannelId;
       if (wchannelId) channel = await client.channels.fetch(wchannelId);
       // Welcome new user
-      if (channel) await channel.send(`欸有新人~ \n ${member}`);
+      if (channel) await channel.send(`欸有新人~\n${member}`);
     } catch (e) {
       console.log(e)
     }
