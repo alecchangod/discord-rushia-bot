@@ -5,7 +5,7 @@ async function checkmodperm(client, interaction, args, secret, trans, guild, mem
     if (!interaction.member.permissions.has(PermissionsBitField.Flags.ModerateMembers) && (interaction.member.id != secret.me))
         return interaction.reply(`${missing_permission} <a:isis:963826754328330300>`);
 
-    const bot = trans.strings.find(it => it.name === "missing_permission").trans;
+    const bot = trans.strings.find(it => it.name === "bot").trans;
     if (interaction.user.bot)
         return interaction.reply(`${bot} <:pekora_whatwrongwithyou:976146270743855217>`);
 
