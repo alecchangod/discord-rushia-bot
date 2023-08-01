@@ -184,7 +184,6 @@ client.on('messageCreate', async (message) => {
 
   if (message.content == 0) var message = await channel.messages.fetch(message.id).catch(() => null);
 
-  if (message.author.id != secret.me) return; // Ignore messages from others
   if (message.reference?.messageId) return;
   let emoji = true;
   if (((message.content.includes("<:")) || (message.content.includes("<a:"))) && (message.content.includes(">"))) {
@@ -208,11 +207,16 @@ client.on('messageCreate', async (message) => {
 
   // Check if the bot has access to the emoji
   if (!emoji) return console.log("I don't have access to that emoji :(");
+
+  // Send with nickname if set
+  const user = await message.guild.members.fetch (message.author.id);
+  let uname = user.nickname ? user.nickname : message.author.username;
+
   // Resend user message as a webhook
   try {
     await webhook.send({
       content: message.content.toString(),
-      username: message.author.username,
+      username: uname,
       avatarURL: message.author.displayAvatarURL(),
     }).then(async () => await message.delete())
   } catch (error) {
