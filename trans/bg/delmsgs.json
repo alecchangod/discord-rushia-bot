@@ -1,0 +1,16 @@
+{
+    "strings": [
+        {
+            "name": "missing_permission",
+            "trans": "You don't have require permission for running this command!"
+        },
+        {
+            "name": "started",
+            "trans": "Started deleting"
+        },
+        {
+            "name": "msg",
+            "trans": "'s messages."
+        }
+    ]
+}

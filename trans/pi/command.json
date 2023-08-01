@@ -1,0 +1,24 @@
+{
+    "strings": [
+        {
+            "name": "missing_permission",
+            "trans": "You don't have require permission for running this command!"
+        },
+        {
+            "name": "alr_enabled",
+            "trans": "Chatbox command was already enabled in this channel."
+        },
+        {
+            "name": "enabled",
+            "trans": "You have enabled chatbox command. Now all command sent in this channel will not get ignored."
+        },
+        {
+            "name": "alr_disabled",
+            "trans": "You have already disabled chstbox command in this channel."
+        },
+        {
+            "name": "disabled",
+            "trans": "You have disabled chatbox command. Now all command sent in this channel will be ignored."
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+    "strings": [
+        {
+            "name": "missing_permission",
+            "trans": "You don't have require permission for running this command!"
+        },
+        {
+            "name": "no_amount",
+            "trans": "Must specify an amount to delete!"
+        },
+        {
+            "name": "msg_del",
+            "trans": "I have deleted messages"
+        },
+        {
+            "name": "deleting",
+            "trans": "Deleting message"
+        }
+    ]
+}

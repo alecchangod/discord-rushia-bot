@@ -1,0 +1,16 @@
+{
+    "strings": [
+        {
+            "name": "loading",
+            "trans": "loading..."
+        },
+        {
+            "name": "available_lang",
+            "trans": "Available languages"
+        },
+        {
+            "name": "ended",
+            "trans": "Language listing ended."
+        }
+    ]
+}

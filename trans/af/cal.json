@@ -1,0 +1,16 @@
+{
+    "strings": [
+        {
+            "name": "no_exec",
+            "trans": "Please provide an execution for it."
+        },
+        {
+            "name": "result",
+            "trans": "The result of"
+        },
+        {
+            "name": "is",
+            "trans": "is"
+        }
+    ]
+}

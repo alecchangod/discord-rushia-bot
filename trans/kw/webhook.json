@@ -1,0 +1,24 @@
+{
+    "strings": [
+        {
+            "name": "missing_permission",
+            "trans": "You don't have require permission for running this command!"
+        },
+        {
+            "name": "alr_enabled",
+            "trans": "You already have webhook enabled."
+        },
+        {
+            "name": "enabled",
+            "trans": "You have enabled webhook. Now all your message will be resent as webhook once detected."
+        },
+        {
+            "name": "alr_disabled",
+            "trans": "You haven't enabled webhook yet."
+        },
+        {
+            "name": "disabled",
+            "trans": "You have disabled webhook. Now all your message will not be resent as webhook."
+        }
+    ]
+}

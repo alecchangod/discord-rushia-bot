@@ -1,0 +1,32 @@
+{
+    "strings": [
+        {
+            "name": "user",
+            "trans": "User"
+        },
+        {
+            "name": "old_msg",
+            "trans": "Old message"
+        },
+        {
+            "name": "new_msg",
+            "trans": "New message"
+        },
+        {
+            "name": "not_recorded",
+            "trans": "No record"
+        },
+        {
+            "name": "link_t",
+            "trans": "Link"
+        },
+        {
+            "name": "server",
+            "trans": "Server"
+        },
+        {
+            "name": "channel",
+            "trans": "Channel"
+        }
+    ]
+}

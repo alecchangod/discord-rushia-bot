@@ -1,0 +1,20 @@
+{
+    "strings": [
+        {
+            "name": "deleted",
+            "trans": "Message deleted"
+        },
+        {
+            "name": "message",
+            "trans": "'s message in'"
+        },
+        {
+            "name": "was_deleted",
+            "trans": "was deleted."
+        },
+        {
+            "name": "msg_cont",
+            "trans": "Message content"
+        }
+    ]
+}

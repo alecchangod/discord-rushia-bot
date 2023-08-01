@@ -1,0 +1,32 @@
+{
+    "strings": [
+        {
+            "name": "adding",
+            "trans": "was now adding to record."
+        },
+        {
+            "name": "m_add",
+            "trans": "was added to"
+        },
+        {
+            "name": "m_rm",
+            "trans": "was removed from"
+        },
+        {
+            "name": "added",
+            "trans": "have been added to record"
+        },
+        {
+            "name": "r_changed",
+            "trans": "Role changes"
+        },
+        {
+            "name": "now_is",
+            "trans": "changed username to"
+        },
+        {
+            "name": "u_change",
+            "trans": "Changed username"
+        }
+    ]
+}

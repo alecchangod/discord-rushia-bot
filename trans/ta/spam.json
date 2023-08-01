@@ -1,0 +1,24 @@
+{
+    "strings": [
+        {
+            "name": "not_integer",
+            "trans": "Please enter a valid number."
+        },
+        {
+            "name": "no_cont_amount",
+            "trans": "Must specify content and amount!"
+        },
+        {
+            "name": "missing_permission",
+            "trans": "You don't have the required permission."
+        },
+        {
+            "name": "now_sending",
+            "trans": "Now sending"
+        },
+        {
+            "name": "to",
+            "trans": "to"
+        }
+    ]
+}

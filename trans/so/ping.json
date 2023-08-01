@@ -1,0 +1,12 @@
+{
+    "strings": [
+        {
+            "name": "your_ping",
+            "trans": "Your ping"
+        },
+        {
+            "name": "bot_ping",
+            "trans": "Bot ping"
+        }
+    ]
+}

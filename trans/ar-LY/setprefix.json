@@ -1,0 +1,28 @@
+{
+    "strings": [
+        {
+            "name": "missing_permission",
+            "trans": "You don't have require permission for running this command!"
+        },
+        {
+            "name": "no_prefix",
+            "trans": "Please provide a prefix!"
+        },
+        {
+            "name": "tooooo_long", 
+            "trans": "Maximum length for prefix is 5."
+        },
+        {
+            "name": "new_prefix", 
+            "trans": "New prefix"
+        },
+        {
+            "name": "set_by", 
+            "trans": "Set by"
+        },
+        {
+            "name": "at",
+            "trans": "At"
+        }
+    ]
+}

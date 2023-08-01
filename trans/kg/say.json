@@ -1,0 +1,20 @@
+{
+    "strings": [
+        {
+            "name": "no_text",
+            "trans": "Please provide content to say."
+        },
+        {
+            "name": "sent",
+            "trans": "has been sent to"
+        },
+        {
+            "name": "invalid_id",
+            "trans": "Please provide a valid message id."
+        },
+        {
+            "name": "no_perm",
+            "trans": "You are not allowed to run this command."
+        }
+    ]
+}

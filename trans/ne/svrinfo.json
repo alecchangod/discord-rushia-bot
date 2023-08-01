@@ -1,0 +1,40 @@
+{
+    "strings": [
+        {
+            "name": "set_by",
+            "trans": "Set by"
+        },
+        {
+            "name": "at",
+            "trans": "At"
+        },
+        {
+            "nmae": "using_default",
+            "trans": "Default"
+        },
+        {
+            "nmae": "server_default",
+            "trans": "Using discord server provided"
+        },
+        {
+            "name": "not_set",
+            "trans": "Not set"
+        },
+        {
+            "name": "info",
+            "trans": "Info for"
+        },
+        {
+            "nmae": "group_lang",
+            "trans": "Group Language"
+        },
+        {
+            "name": "cur_prefix",
+            "trans": "Current prefix"
+        },
+        {
+            "name": "svr_wel_ch",
+            "trans": "Server welcome channel"
+        }
+    ]
+}
