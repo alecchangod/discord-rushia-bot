@@ -46,6 +46,6 @@ module.exports = {
         const min = trans.strings.find(it => it.name === "min").trans;
         interaction.reply(`${member} ${stfu} ${time} ${min} <:bananaV3:958346989597241344>`);
 
-        await warnch(client, interaction, args, secret, trans, guild, member, "warn");
+        await warnch(client, interaction, args, secret, trans, guild, member);
     }
 }

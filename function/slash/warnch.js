@@ -1,4 +1,4 @@
-async function warnch(client, interaction, args, secret, trans, guild, member, status) {
+async function warnch(client, interaction, args, secret, trans, guild, member) {
 
     const doing = trans.strings.find(it => it.name === "status").trans;
 

@@ -40,6 +40,6 @@ module.exports = {
 
         await tombstonegen(client, interaction, args, secret, trans, guild, member);
 
-        await warnch(client, interaction, args, secret, trans, guild, member, "kick");
+        await warnch(client, interaction, args, secret, trans, guild, member);
     }
 }
