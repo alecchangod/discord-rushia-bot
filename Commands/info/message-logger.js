@@ -33,7 +33,7 @@ module.exports = {
         const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
         const rauthorTag = `${repliedTo.author.discriminator === '0' ? "@" : ""}${repliedTo.author.username}${repliedTo.author.discriminator === '0' ? "" : `#${repliedTo.author.discriminator}`}`;
         str += `${p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
-        const rhasContent = repliedTo.length > 0;
+        const rhasContent = repliedTo.content.length > 0;
         str += rhasContent ? `\n${cont}: ${repliedTo.content}` : '';
 
         if (repliedTo.stickers.size > 0) {

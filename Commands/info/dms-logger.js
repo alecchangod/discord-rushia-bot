@@ -42,7 +42,7 @@ module.exports = {
     if (message.reference?.messageId) {
       const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
       str += `${p_msg}: ${repliedTo.author.tag}\n`;
-      const rhasContent = repliedTo.length > 0;
+      const rhasContent = repliedTo.content.length > 0;
       str += rhasContent ? `\n${cont}: ${repliedTo.content}` : '';
 
       if (repliedTo.stickers.size > 0) {
