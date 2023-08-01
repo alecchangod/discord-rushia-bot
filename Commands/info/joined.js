@@ -5,7 +5,7 @@ module.exports = {
   name: "Welcome new member",
   aliases: ["joined"],
   description: 'Welsome new member(custom message soon)',
-  run: async (client, secret, member, trans, langc) => {
+  run: async (client, secret, member, trans, b_trans) => {
     try {
       // Get the server welcome channel from database
       var channel;

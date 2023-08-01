@@ -2,27 +2,27 @@
     "strings": [
         {
             "name": "missing_permission",
-            "trans": "You don't have require permission for running this command!"
+            "trans": "笑死你沒權限"
         },
         {
             "name": "already_banned",
-            "trans": "Word already banned!"
+            "trans": "已經禁止了!"
         },
         {
             "name": "banned",
-            "trans": "was now banned. Try to send it"
+            "trans": "已被禁止，試試發來看看w"
         },
         {
             "name": "no_word_banned",
-            "trans": "No words were banned in this server yet!"
+            "trans": "伺服器沒有任何已禁止的單字🤔"
         },
         {
             "name": "not_banned",
-            "trans": "Word not yet banned."
+            "trans": "單詞未被禁止"
         },
         {
             "name": "unbanned",
-            "trans": " was now unbanned."
+            "trans": " 已取消禁止"
         }
     ]
 }

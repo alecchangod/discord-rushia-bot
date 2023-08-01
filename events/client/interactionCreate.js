@@ -1,6 +1,5 @@
 // Imports the client library
 const client = require('../../index.js')
-// const trans = require('../../trans.json')
 const secret = require('../../config.json')
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/server.sqlite" });
