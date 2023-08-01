@@ -2,20 +2,123 @@ const { EmbedBuilder } = require("@discordjs/builders")
 
 module.exports = {
   name: "Message logger",
-  aliases: ["send-logger"],
+  aliases: ["message-logger"],
   description: 'Log message sent in server (owner only for now)',
-  run: async (client, message, secret, trans, langc) => {
+  run: async (client, message, secret, trans) => {
     try {
       if ((message.channel.parent?.id === "963763737683181568")) return;
       const channel = await client.channels.fetch(secret.log_channel);
-      await msgtype(message, channel);
+      const messageContent = message.content;
+      const hasContent = messageContent.length > 0;
+      let hasParent = message.channel.parent;
+      var files = [];
+      var receivedEmbed = [];
+      // Get translations
+      const file_t = trans.strings.find(it => it.name === "file").trans;
+      const p_msg = trans.strings.find(it => it.name === "p_msg").trans;
+      const cont = trans.strings.find(it => it.name === "cont").trans;
+      const sti_t = trans.strings.find(it => it.name === "sti_t").trans;
+      const server = trans.strings.find(it => it.name === "server").trans;
+      const parent = trans.strings.find(it => it.name === "parent").trans;
+      const ch = trans.strings.find(it => it.name === "channel").trans;
+      const em = trans.strings.find(it => it.name === "embed").trans;
+      const u = trans.strings.find(it => it.name === "user").trans;
+
+      // Start logging
+      const authorTag = `${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`}`;
+      var str = `${server}: ${message.guild.name} ${hasParent ? `\n${parent}: ${message.channel.parent.name}` : ''}\n${ch}:${message.channel.name}\n`;
+
+      // Is reply?
+      if (message.reference?.messageId) {
+        const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
+        const rauthorTag = `${repliedTo.author.discriminator === '0' ? "@" : ""}${repliedTo.author.username}${repliedTo.author.discriminator === '0' ? "" : `#${repliedTo.author.discriminator}`}`;
+        str += `${p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
+        const rhasContent = repliedTo.length > 0;
+        str += rhasContent ? `\n${cont}: ${repliedTo.content}` : '';
+
+        if (repliedTo.stickers.size > 0) {
+          const ext = "png";
+          const sck = repliedTo.stickers.first();
+          const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
+          str += `\n,${sti_t}: ${sticurl}`;
+
+        }
+        if (repliedTo.attachments.size > 0) {
+          let size = 0;
+          repliedTo.attachments.forEach(attachments => {
+            size += attachments.size;
+          });
+          str += size > 10485760 ? `,\n${file_t}: ${attachment.url}` : `,\n${file_t}:`;
+          if (size <= 10485760) {
+            files = repliedTo.attachments.values();
+          }
+        }
+        if (repliedTo.embeds[0]) {
+          receivedEmbed = repliedTo.embeds;
+          str += `\n${em}:`
+        }
+
+        str += `\n\n===================================\n\n`;
+
+        str += `${u}: ${authorTag} (<@${message.author.id}>)\n`;
+        str += hasContent ? `\n${cont}: ${message.content}` : '';
+
+        if (message.stickers.size > 0) {
+          const ext = "png";
+          const sck = message.stickers.first();
+          const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
+          str += `\n,${sti_t}: ${sticurl}`;
+        }
+        if (message.attachments.size > 0) {
+          let size = 0;
+          message.attachments.forEach(attachments => {
+            size += attachments.size;
+          });
+          str += size > 10485760 ? `,\n${file_t}: ${attachment.url}` : `,\n${file_t}:`;
+          if (size <= 10485760) {
+            files = message.attachments.values();
+          }
+        }
+        if (message.embeds[0]) {
+          receivedEmbed = message.embeds;
+          str += `\n${em}:`
+        }
+
+      } else { // Normal message
+        str += `${u}: ${authorTag} (<@${message.author.id}>)\n`;
+        str += hasContent ? `\n${cont}: ${message.content}` : '';
+
+        if (message.stickers.size > 0) {
+          const ext = "png";
+          const sck = message.stickers.first();
+          const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
+          str += `\n,${sti_t}: ${sticurl}`;
+        }
+        if (message.attachments.size > 0) {
+          let size = 0;
+          message.attachments.forEach(attachments => {
+            size += attachments.size;
+          });
+          str += size > 10485760 ? `,\n${file_t}: ${attachment.url}` : `,\n${file_t}:`;
+          if (size <= 10485760) {
+            files = message.attachments.values();
+          }
+        }
+        if (message.embeds[0]) {
+          receivedEmbed = message.embeds;
+          str += `\n${em}:`
+        }
+      }
+      split(str, channel, files, receivedEmbed);
+
     } catch (e) {
       console.log(e)
     }
   }
 };
 
-function split(str, channel, file) {
+function split(str, channel, file, embed) {
+  const exampleEmbed = embed ? new EmbedBuilder(embed).setTitle('New title') : null;
   let startPos = 0;
   let partNumber = 1;
   let totalParts = Math.ceil(str.length / 1850);
@@ -29,94 +132,7 @@ function split(str, channel, file) {
     const part = str.substring(startPos, endPos);
     startPos = endPos + 1;
     const content = `${part} \nPart ${partNumber} / ${totalParts}`;
-    channel.send(file ? content ? { content: `${content}, 檔案: `, files: Array.from(file) } : { content: `檔案: `, files: Array.from(file) } : content);
+    channel.send(embed ? (file ? { content: content, files: Array.from(file), embeds: embed } : { content: content, embeds: embed }) : (file ? { content: content, files: Array.from(file) } : content));
     partNumber++;
   }
 };
-
-
-function embed(str, channel, embed) {
-  const exampleEmbed = new EmbedBuilder(embed).setTitle('New title');
-  var partsArr = str.match(/[\s\S]{1,1900}/g) || [];
-  partsArr.forEach((part, i) => {
-    const content = `${part} \nPart ${i + 1} / ${partsArr.length}`;
-    try { channel.send(content ? { content, embeds: embed } : { embeds: embed }); } catch (e) {
-      console.log(embed, "error sending embed:", e)
-    }
-  });
-};
-// msgtype
-// 0 = stickers
-// 1 = attatchments url
-// 2 = attatchments
-// 3 = embed + content
-// 4 = embed
-// 5 = reply
-let tries = 0 // prevent keep fetching message
-// 6 = normal message
-async function msgtype(message, channel) {
-  let hasParent = message.channel.parent;
-  // if it was a sticker
-  if (message.stickers.size > 0) {
-    const ext = "png";
-    const sck = message.stickers.first();
-    const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
-    let str = '';
-    let files = [];
-    if (message.attachments.size > 0) {
-      message.attachments.forEach(attachment => {
-        const hasContent = message.content.length > 0;
-        const attachmentText = attachment.size > 10485760 ? `, \n 附件: ${attachment.url}` : ', \n 附件:';
-        str = `人：${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} ,\n${hasContent ? ` 訊息: ${message.content} ,` : ''} \n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}${attachmentText}`;
-        if (attachment.size <= 10485760) {
-          files = message.attachments.values();
-        }
-      });
-      split(str, channel, files);
-    }
-    else {
-      const hasContent = message.content.length > 0;
-      str = `人：${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} ,\n${hasContent ? ` 訊息: ${message.content} ,` : ''} \n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} , 貼圖： ${sticurl} ,\n 頻道: ${message.channel.name}`;
-      split(str, channel);
-    }
-    let type = 0;
-  }
-  // if it has attachments (image/video/document....)
-  else if (message.attachments.size > 0) {
-    let size = 0;
-    message.attachments.forEach(attachments => {
-      size += attachments.size;
-    });
-    if (size > 10485760) {
-      var str = `人：${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} ${message.content.length > 0 ? `,\n 訊息: ${message.content}` : ""} ,\n 群: ${message.guild.name} , \n 分類: ${message.channel.parent.name} ,\n 頻道: ${message.channel.name} ,\n 附件: ${message.attachments.url}`
-      split(str, channel);
-      return;
-    }
-    else {
-      var str = `人：${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} ${message.content.length > 0 ? `,\n 訊息: ${message.content}` : ""} ,\n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道: ${message.channel.name} ,\n 附件:`
-      split(str, channel, message.attachments.values());
-      return;
-    }
-  }
-  // if it have embed
-  else if (message.embeds[0]) {
-    const receivedEmbed = message.embeds;
-    const hasContent = message.content.length > 0;
-    let type = hasContent ? 3 : 4;
-    const str = `人：${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} ,\n 群: ${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道: ${message.channel.name} ${hasContent ? `,\n 内容： ${message.content}` : ''} ,\n embed:`;
-    embed(str, channel, receivedEmbed);
-  }
-  // if it was a reply
-  else if ((message.reference) && (message.reference.messageId)) {
-    tries++;
-    const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
-    let type = 5;
-    const str = `前文(?: ${repliedTo.author.tag}\n 内容：${repliedTo.content} \n ======================================== \n 人: ${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`} , 訊息: ${message.content} ,\n 群:${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道:${message.channel.name}`;
-    split(str, channel);
-  }
-  // normal message
-  else {
-    var str = `人: ${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`},\n 訊息: ${message.content} ,\n 群:${message.guild.name} ${hasParent ? `,\n 分類: ${message.channel.parent.name}` : ''} ,\n 頻道:${message.channel.name}`, type = 6;
-    split(str, channel)
-  }
-}

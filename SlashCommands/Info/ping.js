@@ -9,7 +9,9 @@ module.exports = {
       var yourping = new Date().getTime() - interaction.createdTimestamp
       var botping = Math.round(client.ws.ping)
       // Report ping to the user
-      interaction.reply(`Your ping: ${yourping} \nBots ping: ${botping}`)
+      const your_ping = trans.strings.find(it => it.name === "your_ping").trans;
+      const bot_ping = trans.strings.find(it => it.name === "bot_ping").trans;
+      interaction.reply(`${your_ping}: ${yourping} \n${bot_ping}: ${botping}`)
     }
   }
   

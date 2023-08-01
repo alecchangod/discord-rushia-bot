@@ -34,6 +34,7 @@ module.exports = {
 
     const user = interaction.member;
     if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
+      const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
       return interaction.reply("笑死你沒權限 <a:isis:963826754328330300>");
     }
 
@@ -53,6 +54,8 @@ module.exports = {
       }
     });
 
-    await interaction.reply(`Started deleting ${deleteCount} messages from ${targetUser.tag}`);
+    const started = trans.strings.find(it => it.name === "started").trans;
+    const msg = trans.strings.find(it => it.name === "msg").trans;
+    await interaction.reply(`${started} ${deleteCount} ${targetUser.tag}${msg}`);
   }
 }

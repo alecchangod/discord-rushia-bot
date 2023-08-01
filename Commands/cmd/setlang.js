@@ -20,7 +20,8 @@ module.exports = {
         const slang = message.content.split(" ")[1];
         // If they inputed an invalid language code
         // Return and make them to re-enter a valid code
-        if (!lang.some(it => it.code === slang)) return message.reply("please input a valid language code.");
+        const invalid = trans.strings.find(it => it.name === "invalid").trans;
+        if (!lang.some(it => it.code === slang)) return message.reply(invalid);
         // If it was valid
         // Save the language code
         await db.set(`lang_${guildId}`, slang);
@@ -35,8 +36,12 @@ module.exports = {
         const timeFromDb = await db.get(`lang_t_${guildId}`);
         const lang_name = lang.filter(it => it.code === langFromDb)[0]?.name;
         // Give a reply after saving the language code
-        const replyMessage = `New preferred translate language was set to ${langFromDb} (${lang_name}) \n by <@${authorFromDb}> \n at <t:${timeFromDb}>`;
-        await message.reply("loading...").then(async msg => {
+        const set_to = trans.strings.find(it => it.name === "set_to").trans;
+        const by = trans.strings.find(it => it.name === "by").trans;
+        const at = trans.strings.find(it => it.name === "at").trans;
+        const replyMessage = `${set_to} ${langFromDb} (${lang_name}) \n${by} <@${authorFromDb}> \n${at} <t:${timeFromDb}>`;
+        const loading = trans.strings.find(it => it.name === "loading").trans;
+        await message.reply(loading).then(async msg => {
           await wait(2000);
           msg.edit(replyMessage);
         });

@@ -11,7 +11,7 @@ module.exports = {
             {
                 name: 'add',
                 type: ApplicationCommandOptionType.Subcommand,
-                description: 'Ban a word',
+                description: 'Add an reaction',
                 options: [
                     {
                         name: 'reaction',
@@ -30,7 +30,7 @@ module.exports = {
             {
                 name: 'remove',
                 type: ApplicationCommandOptionType.Subcommand,
-                description: 'Unban a word',
+                description: 'Remove an reaction',
                 options: [
                     {
                         name: 'reaction',
@@ -73,20 +73,25 @@ module.exports = {
             const message = await guild.channels.cache.get(interaction.channelId).messages.fetch(messageid);
 
             if (status === "add") {
-                if ((!emoji) && (!message.reactions.cache.find(v => v._emoji.id == reactionid))) return interaction.reply({ content: `I don't have access to ${reaction}`, ephemeral: true })
-                await interaction.reply({ content: `Sending ${reaction}`, ephemeral: true, })
+                const no_access = trans.strings.find(it => it.name === "no_access").trans;
+                if ((!emoji) && (!message.reactions.cache.find(v => v._emoji.id == reactionid))) return interaction.reply({ content: `${no_access} ${reaction}`, ephemeral: true })
+                const sending = trans.strings.find(it => it.name === "sending").trans;
+                await interaction.reply({ content: `${sending} ${reaction}`, ephemeral: true, })
                 message.react(reaction);
             }
             else {
-                if ((!emoji) && (!message.reactions.cache.find(v => v._emoji.id == reactionid))) return interaction.reply({ content: `I don't have access to ${reaction}`, ephemeral: true })
-                await interaction.reply({ content: `Removing ${reaction}`, ephemeral: true })
+                const react_not_found = trans.strings.find(it => it.name === "react_not_found").trans;
+                if (!message.reactions.cache.find(v => v._emoji.id == reactionid)) return interaction.reply({ content: `${react_not_found} ${reaction}`, ephemeral: true })
+                const removing = trans.strings.find(it => it.name === "removing").trans;
+                await interaction.reply({ content: `${removing} ${reaction}`, ephemeral: true })
                 const member = interaction.options.getMember('user') || secret.bot;
                 message.reactions.cache.get(reactionid).users.remove(member);
             }
         } catch (err) {
             console.error(err);
+            const error = trans.strings.find(it => it.name === "error").trans;
             await wait(1000);
-            await interaction.editReply({ content: `Couldn't send the reaction: ${err.message}`, ephemeral: true });
+            await interaction.editReply({ content: `${error}: ${err.message}`, ephemeral: true });
         }
     }
 }

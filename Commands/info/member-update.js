@@ -5,7 +5,7 @@ module.exports = {
   name: "Member Updates",
   aliases: ["member-update"],
   description: 'log member changes',
-  run: async (client, oldMember, newMember, secret, trans, langc) => {
+  run: async (client, oldMember, newMember, secret, trans, b_trans) => {
     // Check if was saved at database
     const rolehasRecord = await member.get(`${newMember.guild.id}_roles_${newMember.user.id}`);
     const namehasRecord = await member.get(`${newMember.guild.id}_${newMember.user.id}`);
@@ -15,18 +15,34 @@ module.exports = {
     const rolelog = await client.channels.fetch(secret.role_log_channel)
     const usernamelog = await client.channels.fetch(secret.username_log_channel)
 
+    // Get translations
+    const adding = b_trans.strings.find(it => it.name === "adding").trans;
+    const b_m_add = b_trans.strings.find(it => it.name === "m_add").trans;
+    const b_m_rm = b_trans.strings.find(it => it.name === "m_rm").trans;
+    const added = b_trans.strings.find(it => it.name === "added").trans;
+    const b_r_changed = b_trans.strings.find(it => it.name === "r_changed").trans;
+    const b_now_is = b_trans.strings.find(it => it.name === "now_is").trans;
+    const b_u_change = b_trans.strings.find(it => it.name === "u_change").trans;
+
+    const m_add = trans.strings.find(it => it.name === "m_add").trans;
+    const m_rm = trans.strings.find(it => it.name === "m_rm").trans;
+    const r_changed = trans.strings.find(it => it.name === "r_changed").trans;
+    const now_is = trans.strings.find(it => it.name === "now_is").trans;
+    const u_change = trans.strings.find(it => it.name === "u_change").trans;
+
+
     // Save if not yet saved
     if ((!rolehasRecord) && (newMember.guild.id)) {
-      newrecord.send(`${newMember.guild.name}(${newMember.guild.id})\n ${newMember.user.tag} adding to record`);
+      newrecord.send(`${newMember.guild.name}(${newMember.guild.id})\n ${newMember.user.tag} ${adding}`);
       newMember.roles.cache.forEach(async role => {
         if (((!rolehasRecord) || (!JSON.stringify(rolehasRecord).includes(role.id)))) {
           (async () => {
             await member.push(`${newMember.guild.id}_roles_${newMember.user.id}`, role.id);
-            newrecord.send(`${newMember.guild.name}(${newMember.guild.id})\n ${newMember.user.tag} added to ${role.name}`);
+            newrecord.send(`${newMember.guild.name}(${newMember.guild.id})\n${newMember.user.tag} ${b_m_add} ${role.name}`);
           })();
         }
       });
-      newrecord.send(`${newMember.guild.name}(${newMember.guild.id})\n ${newMember.user.tag} added to record`);
+      newrecord.send(`${newMember.guild.name}(${newMember.guild.id})\n${newMember.user.tag} ${added}`);
     }
     // Find log channel
     const log = newMember.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
@@ -37,9 +53,10 @@ module.exports = {
       const roleNames = removedRoles.map(r => r.name).toString();
       if (roleNames.length) {
         await member.pull(`${newMember.guild.id}_roles_${newMember.user.id}`, removedRoles.map(r => r.id));
-        const newr = `${newMember.user.tag} 不再是 ${roleNames} 了`;
-        rolelog.send(`${newMember.guild.name}(${newMember.guild.id})\n ${newr}`)
-        if (log) log.send(`**身份組變了欸~**\n\n${newr}`);
+        const newr = `${newMember.user.tag} ${m_rm} ${roleNames}`;
+        const b_newr = `${newMember.user.tag} ${b_m_rm} ${roleNames}`;
+        rolelog.send(`**${b_r_changed}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_newr}`)
+        if (log) log.send(`**${r_changed}**\n\n${newr}`);
       }
     }
     // Addition
@@ -48,9 +65,10 @@ module.exports = {
       const roleNames = addedRoles.map(r => r.name).toString();
       if (roleNames.length) {
         await member.push(`${newMember.guild.id}_roles_${newMember.user.id}`, addedRoles.map(r => r.id));
-        const rmr = `${newMember.user.tag} 現在是 ${roleNames} 了`;
-        rolelog.send(`${newMember.guild.name}(${newMember.guild.id})\n ${rmr}`)
-        if (log) log.send(`**身份組變了欸~**\n\n${rmr}`);
+        const rmr = `${newMember.user.tag} ${m_add} ${roleNames}`;
+        const b_rmr = `${newMember.user.tag} ${b_m_add} ${roleNames}`;
+        rolelog.send(`**${b_r_changed}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_rmr}`)
+        if (log) log.send(`**${r_changed}**\n\n${rmr}`);
       }
     }
 
@@ -60,11 +78,12 @@ module.exports = {
       (async () => {
         await member.set(`${newMember.guild.id}_${newMember.user.id}`, newMember.user.tag);
       })();
-      const name = `${namehasRecord} 現在是 ${newMember.user.tag} 了`;
+      const name = `${namehasRecord} ${now_is} ${newMember.user.tag} 了`;
+      const b_name = `${namehasRecord} ${b_now_is} ${newMember.user.tag} 了`;
       // Only send message when really changed name
       if ((namehasRecord != newMember.user.tag)) {
-        usernamelog.send(`${newMember.guild.name}(${newMember.guild.id})\n ${name}`)
-        if (log) log.send(`**Changed username**\n\n${name}`)
+        usernamelog.send(`**${b_u_change}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_name}`)
+        if (log) log.send(`**${u_change}**\n\n${name}`)
       }
     }
     // Display name changes
@@ -72,11 +91,12 @@ module.exports = {
       (async () => {
         await member.set(`${newMember.guild.id}_${newMember.user.id}`, `${newMember.displayName}#${newMember.user.discriminator}`);
       })();
-      const name = `${namehasRecord} 現在是 ${newMember.displayName}#${newMember.user.discriminator} 了`;
+      const name = `${namehasRecord} ${now_is} ${newMember.displayName}#${newMember.user.discriminator} 了`;
+      const b_name = `${namehasRecord} ${b_now_is} ${newMember.displayName}#${newMember.user.discriminator} 了`;
       // Only send message when really changed name
       if ((namehasRecord != `${newMember.displayName}#${newMember.user.discriminator}`)) {
-        usernamelog.send(`${newMember.guild.name}(${newMember.guild.id})\n ${name}`)
-        if (log) log.send(`**Changed username**\n\n${name}`)
+        usernamelog.send(`**${b_u_change}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_name}`)
+        if (log) log.send(`**${u_change}**\n\n${name}`)
       }
     }
   }

@@ -36,7 +36,8 @@ module.exports = {
     try {
       // Check if the interaction author have permission to delete message
       if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild) && (interaction.member.id != secret.me)) {
-        return interaction.reply("You don't have the required permissions.");
+        const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
+        return interaction.reply(missing_permission);
       }
 
       // Get provided channel
@@ -72,7 +73,10 @@ module.exports = {
       const timeFromDb = await db.get(`welcome_t_${guildId}`);
 
       // Give an reply after running the command
-      const msg = `New welcome channel: <#${channelFromDb}> \n set by <@${authorFromDb}> \n at <t:${timeFromDb}>`
+      const new_channel = trans.strings.find(it => it.name === "new_channel").trans;
+      const set_by = trans.strings.find(it => it.name === "set_by").trans;
+      const at = trans.strings.find(it => it.name === "at").trans;
+      const msg = `${new_channel}: <#${channelFromDb}> \n${set_by}: <@${authorFromDb}> \n${at}: <t:${timeFromDb}>`
       interaction.reply(msg);
 
     } catch (e) {

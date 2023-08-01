@@ -15,18 +15,21 @@ module.exports = {
   },
   userPermissions: PermissionsBitField.Flags.ManageMessages,
   async execute(client, interaction, args, secret, trans, langc, guild) {
-    const id = interaction.options.getString('messageid');
-    if (!id || id.length !== 19) {
-        return interaction.reply({ content: `Please enter a valid message id.`, ephemeral: true });
-      }
-    const msg = await interaction.channel.messages.fetch(id).catch(() => null);
-    await msg.delete();
-
     const user = interaction.member;
     if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
-      return interaction.reply({ content: "笑死你沒權限 <a:isis:963826754328330300>", ephemeral: true });
+      const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
+      return interaction.reply({ content: missing_permission, ephemeral: true });
     }
+    const id = interaction.options.getString('messageid');
 
-    await interaction.reply({ content: `Deleted a messages from ${interaction.channel} .`, ephemeral: true });
+    const msg = await interaction.channel.messages.fetch(id).catch(() => null);
+    if (!msg) {
+      const invalid_id = trans.strings.find(it => it.name === "invalid_id").trans;
+      return interaction.reply({ content: invalid_id, ephemeral: true });
+    }
+    await msg.delete();
+
+    const deleted = trans.strings.find(it => it.name === "deleted").trans;
+    await interaction.reply({ content: `${deleted} ${interaction.channel} .`, ephemeral: true });
   }
 }

@@ -8,12 +8,13 @@ module.exports = {
   name: "Translate",
   aliases: ["tl"],
   description: 'translate a message',
-  run: async (client, message, args, secret, prefix, trans, langc) => {
+  run: async (client, message, args, secret, prefix, trans) => {
     let svr_lang = await db.get(`lang_${message.guild.id}`);
     var hastarlangInput = true, hasorilangInput = true;
     try {
       // Send a "loading" first
-      const msg = await message.reply('loading');
+    const loading = trans.strings.find(it => it.name === "loading").trans;
+      const msg = await message.reply(loading);
       // Get input from message
       var trantext = message.content.substring(3);
       let tarlangInput, orilangInput;
@@ -38,21 +39,28 @@ module.exports = {
       // If no content provided for translate
       // Delete the loading message and told them to provide text to translate
       if (!trantext) {
+        const no_text = trans.strings.find(it => it.name === "no_text").trans;
         await msg.delete();
-        return message.reply('Must provide text to translate!');
+        return message.reply(no_text);
       }
       // If the language was invalid
       // Ask them to re-enter
       if (!JSON.stringify(lang).includes(tarlang)) {
-        return msg.edit("Please enter a valid target language code.");
+        const no_tar = trans.strings.find(it => it.name === "no_tar").trans;
+        return msg.edit(no_tar);
       }
       if ((!JSON.stringify(lang).includes(orilang)) && (orilang !== "auto")) {
-        return msg.edit("Please enter a valid original language code.");
+        const no_ori = trans.strings.find(it => it.name === "no_ori").trans;
+        return msg.edit(no_ori);
       }
       // Start doing translation
       const translation = await translate(trantext, tarlang, orilang);
       // Edit the "loading" message after translate done
-      msg.edit(`語言：${translation.sourceLang} => ${translation.targetLang}\n譯文： ${translation.translation}\n||沒錯就是Google渣翻||`);
+        const langc = trans.strings.find(it => it.name === "langc").trans;
+        const trans_text = trans.strings.find(it => it.name === "trans_text").trans;
+        const trans_provider = trans.strings.find(it => it.name === "trans_provider").trans;
+        const google_tl = trans.strings.find(it => it.name === "google_tl").trans;
+      msg.edit(`${langc}: ${translation.sourceLang} => ${translation.targetLang}\n${trans_text}: ${translation.translation}\n${trans_provider}: ${google_tl}`);
     } catch (error) {
       console.error(`Error executing translation: ${error}`);
     }

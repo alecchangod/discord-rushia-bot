@@ -7,12 +7,13 @@ const { translate } = require("@almeidx/translate");
 const lang = require('../../lang.json');
 module.exports = {
     data: {
-      name: "listlangs",
+      name: "listlang",
       description: 'List all available languages',
     },
     
     async execute(client, interaction, args, secret, trans, langc, guild) {
-        await interaction.reply({content: "loading...", ephemeral: true });
+      const loading = trans.strings.find(it => it.name === "loading").trans;
+        await interaction.reply({content: loading, ephemeral: true });
       try {
         async function split(str, channel) {
             let startPos = 0;
@@ -34,10 +35,12 @@ module.exports = {
               partNumber++;
             }
           };
-        let message = 'Available languages:\n';
+          const available_lang = trans.strings.find(it => it.name === "available_lang").trans;
+        let message = `${available_lang}:\n`;
         lang.forEach((l) => message += `${l.code} - ${l.name}\n`);
         split(message, interaction.channel);
-        interaction.editReply("Language listing ended.")
+        const ended = trans.strings.find(it => it.name === "ended").trans;
+        interaction.editReply(ended)
         
       } catch (e) {
         console.log(e);

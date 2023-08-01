@@ -6,8 +6,9 @@ module.exports = {
     userPermissions: PermissionsBitField.Flags.Administrator,
   },
     async execute(client, interaction, args, secret, trans, langc, guild) {
-        if (interaction.user.id !== '574194910459199489') {
-            return interaction.reply(`~~笑死這功能 <@574194910459199489> 專用~~`);
+        if (interaction.user.id !== secret.me) {
+      const owner_only = trans.strings.find(it => it.name === "owner_only").trans;
+      return interaction.reply(owner_only);
         }
         interaction.reply("wait...");
         const os = require('os');

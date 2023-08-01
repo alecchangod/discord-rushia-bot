@@ -27,14 +27,18 @@ module.exports = {
       const amount = interaction.options.getInteger('amount');
       const content = interaction.options.getString('content');
 
-      interaction.reply({ content: `Now sending ${amount} * ${content} to <#${interaction.channelId}>`, ephemeral: true });
+      const now_sending = trans.strings.find(it => it.name === "now_sending").trans;
+      const to = trans.strings.find(it => it.name === "to").trans;
+
+      interaction.reply({ content: `${now_sending} ${amount} * ${content} ${to} <#${interaction.channelId}>`, ephemeral: true });
 
       for (let i = 0; i < amount; i++) {
         await interaction.channel.send(content);
         await wait(100);
       }
     } else {
-      await interaction.reply("You don't have the required permission.");
+      const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
+      await interaction.reply(missing_permission);
     }
   },
 };

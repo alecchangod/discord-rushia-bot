@@ -31,6 +31,6 @@ module.exports = {
     ]
   },
   async execute(client, interaction, args, secret, trans, langc, guild) {
-    await slashtranslate(client, interaction, args, secret, trans, langc, guild);
+    await slashtranslate(client, interaction, args, secret, trans, guild);
   }
 };

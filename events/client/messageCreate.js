@@ -102,6 +102,7 @@ client.on('messageCreate', async message => {
 
   // Get language code from database or use server's one
   var langc = await db.get(`lang_${message.guild.id}`) || message.guild.preferredLocale;
+  let trans = require(`../../trans/${langc}/${cmd}.json`);
 
   // Run the command and catch error
   if (command) {
@@ -115,22 +116,23 @@ client.on('messageCreate', async message => {
 });
 
 // Common function to fetch command and execute it
-async function fetchAndRunCommand(message, cmd) {
+async function fetchAndRunCommand(message, cmd, langc) {
   let command = client.info.get(cmd) || client.info.get(client.aliases.get(cmd));
-  var langc = await db.get(`lang_${message.guild?.id}`) || message.guild?.preferredLocale;
+  var langc = secret.bot_lang;
+  let trans = require(`../../trans/${langc}/${cmd}.json`);
   if (command) command.run(client, message, secret, trans, langc);
 }
 
 //message log
 client.on('messageCreate', async message => {
   if (!message.guild) return;
-  fetchAndRunCommand(message, 'send-logger');
+  fetchAndRunCommand(message, 'message-logger');
 });
 
 //dm detect
 client.on('messageCreate', async (message) => {
   if (message.channel.type == 1) {
-    fetchAndRunCommand(message, 'dm-logger');
+    fetchAndRunCommand(message, 'dms-logger');
   }
 });
 

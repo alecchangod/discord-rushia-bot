@@ -12,7 +12,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
         cmd = 'message-update';
     } else if (newMessage.channel.type == 1) {
     // For DMs
-        cmd = 'dm-edit-logger';
+        cmd = 'dms-edit-logger';
     } else {
         return;
     }
@@ -21,6 +21,9 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
     if (!command) command = client.info.get(client.aliases.get(cmd));
 
     // Get language code from database or use server's one
-    var langc = await db.get(`lang_${newMessage.guild.id}`) || newMessage.guild.preferredLocale;
-    if (command) command.run(client, oldMessage, newMessage, secret, trans, langc)
+    var langc = newMessage.guild ? await db.get(`lang_${newMessage.guild.id}`) || newMessage.guild.preferredLocale : secret.bot_lang;
+    let trans = require(`../../trans/${langc}/${cmd}.json`);
+    var b_langc = secret.bot_lang;
+    let b_trans = require(`../../trans/${b_langc}/${cmd}.json`);
+    if (command) command.run(client, oldMessage, newMessage, secret, trans, b_trans)
 });

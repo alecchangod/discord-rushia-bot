@@ -2,38 +2,46 @@ const { PermissionsBitField } = require('discord.js');
 module.exports = {
   name: "Warn",
   aliases: ["warn"],
-  description: 'warn user',
+  description: 'Timeout a user for 5 minutes',
   run: async (client, message, args, secret, prefix, trans, langc) => {
     try {
       // Fetch message author
       var user = await message.guild.members.fetch(message.author)
       // Check for ModerateMembers permission
+      const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
       if (!user.permissions.has(PermissionsBitField.Flags.ModerateMembers))
-        return message.channel.send("笑死你沒權限 <a:isis:963826754328330300>");
+        return message.channel.send(missing_permission);
       // Block bot account
+      const bot = trans.strings.find(it => it.name === "bot").trans;
       if (message.author.bot)
-        return message.reply("你是不會用自己賬號打嗎 <:pekora_whatwrongwithyou:976146270743855217>");
+        return message.reply(`${bot} <:pekora_whatwrongwithyou:976146270743855217>`);
       // Get user to timeout
       const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
       // If no user provided
       // Ask them to re-enter a user
+      const no_member = trans.strings.find(it => it.name === "no_member").trans;
       if (!member)
-        return message.reply("阿你到底要我禁誰 <:cmonBruh:961592205485670420>");
+        return message.reply(`${no_member} <:cmonBruh:961592205485670420>`);
       // I can't and will never timeout myself xD
+      const warn_yourself = trans.strings.find(it => it.name === "warn_yourself").trans;
       if (member.user.id === secret.botid)
-        return message.reply('啊你怎麽那麽厲害可以禁言自己, 我不會欸, 怎麽辦 <a:z_sui_eating:976448366781267998>');
+        return message.reply(`${warn_yourself} <a:z_sui_eating:976448366781267998>`);
       // Check for reason to timeout
       // Use IDK if not provided :))
-      const reason = message.content.split(">")[1] || '欸我不知道 <:0V0:970325975810334750>';
+      const idk = trans.strings.find(it => it.name === "idk").trans;
+      const reason = message.content.split(">")[1] || `${idk} <:0V0:970325975810334750>`;
       // I can't timeout Admin :/
+      const warn_admin = trans.strings.find(it => it.name === "warn_admin").trans;
       if (member.permissions.has(PermissionsBitField.Flags.Administrator))
-        return message.reply('管管怎麽禁言 <:emoji_34:961594390994882570>');
+        return message.reply(`${warn_admin} <:emoji_34:961594390994882570>`);
       // Check if the bot has the required permission
       if (!interaction.guild.members.me.permissions.has(PermissionsBitField.Flags.ModerateMembers)) return interaction.reply('你確定要叫一個沒權限禁言的人來幫你?');
       // Timeout for 5 minutes
       member.timeout(1000 * 60 * 5);
       // Mention the user and tell the that they have been banned
-      message.channel.send("<@" + member + ">" + "誰讓你在這裡廢話？滾, 5分鐘後再回來（X <:bananaV3:958346989597241344>")
+      const stfu = trans.strings.find(it => it.name === "stfu").trans;
+      const min = trans.strings.find(it => it.name === "min").trans;
+      message.channel.send(`<@${member}>${stfu}5${min}<:bananaV3:958346989597241344>`)
         .catch(console.log);
       // If there is a warning channel
       // Working on a command to set it. For now, was hardcoded and for private use only.
@@ -41,7 +49,11 @@ module.exports = {
       if (!channel_id) return;
       // Send message to the warning channel
       const channel = await client.channels.fetch(channel_id);
-      channel.send(`**Timeout**\n人:<@${member}> <:bananaV3:958346989597241344>\n原因:${reason}\n時間: 5分鐘`).catch(console.log);
+      const warn = trans.strings.find(it => it.name === "warn").trans;
+      const human = trans.strings.find(it => it.name === "human").trans;
+      const why = trans.strings.find(it => it.name === "why").trans;
+      const time = trans.strings.find(it => it.name === "time").trans;
+      channel.send(`**${warn}**\n${human}: <@${member}>\n${why}: ${reason}\n${time}: 5${min}`).catch(console.log);
 
     } catch (e) {
       console.log(e)

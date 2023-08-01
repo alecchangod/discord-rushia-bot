@@ -31,7 +31,8 @@ module.exports = {
 
       const user = interaction.member;
       if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
-        return interaction.reply("笑死你沒權限 <a:isis:963826754328330300>");
+        const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
+        return interaction.reply(missing_permission);
       }
 
       const content = interaction.options.getString('content');
@@ -44,8 +45,6 @@ module.exports = {
         var webhook = webhookClient.find(wh => wh.token);
 
         if (!webhook) {
-          console.log('No webhook was found that I can use!');
-          console.log("Now I'll create a new one.")
           var webhook = await interaction.channel.createWebhook({
             name: 'Rushia'
           });
@@ -54,23 +53,21 @@ module.exports = {
         await webhook.editMessage(id, { content: content });
       }
       else {
-        if (!id || id.length !== 19) {
-          return interaction.reply({ content: `Please enter a valid message id.`, ephemeral: true });
-        }
-
         const msg = await channel.messages.fetch(id).catch(() => null);
-
         if (!msg) {
-          return interaction.reply({ content: `Please enter a valid message id.`, ephemeral: true });
+          const invalid_msg = trans.strings.find(it => it.name === "invalid_msg").trans;
+          return interaction.reply({ content: invalid_msg, ephemeral: true });
         }
 
         if (msg.author.id != secret.botid) {
-          return interaction.reply({ content: `I cannot edit a message sent by others.`, ephemeral: true });
+          const not_mine = trans.strings.find(it => it.name === "not_mine").trans;
+          return interaction.reply({ content: not_mine, ephemeral: true });
         }
 
         await msg.edit(content);
       }
-      interaction.reply({ content: `${content} has been sent to <#${interaction.channelId}>`, ephemeral: true });
+      const sent = trans.strings.find(it => it.name === "sent").trans;
+      interaction.reply({ content: `${content} ${sent} <#${interaction.channelId}>`, ephemeral: true });
 
     } catch (e) {
       console.log(e)

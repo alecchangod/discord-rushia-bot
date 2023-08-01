@@ -5,6 +5,7 @@ module.exports = {
   aliases: ['move'],
   run: async (client, message, args, secret, prefix, trans) => {
     let voiceChannel = message.member.voice.channel
+    console.log("start join")
     if (args[0]) {
       voiceChannel = await client.channels.fetch(args[0])
       if (!Constants.VoiceBasedChannelTypes.includes(voiceChannel?.type)) {
@@ -17,5 +18,6 @@ module.exports = {
       )
     }
     client.distube.voices.join(voiceChannel)
+    console.log("join done")
   }
 }

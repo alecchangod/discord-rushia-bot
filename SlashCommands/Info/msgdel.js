@@ -19,14 +19,16 @@ module.exports = {
       const user = interaction.member;
       // Check if user has permission to delete message
       if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
-        return interaction.reply("笑死你沒權限");
+        const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
+        return interaction.reply(missing_permission);
       }
 
       // Get amount to delete from interaction
       let amount = interaction.options.getInteger('amount');
 
       // Reply first
-      await interaction.reply({content: `Deleting ${amount} message.`, ephemeral: true})
+      const deleting = trans.strings.find(it => it.name === "deleting").trans;
+      await interaction.reply({content: `${deleting} * ${amount} .`, ephemeral: true})
 
       // Start counting
       let messagesDeleted = 0;
@@ -40,7 +42,8 @@ module.exports = {
       } while (amount > 0);
 
       // Give a reply after deleting required message
-      await interaction.editReply(`<@${interaction.user.id}> I have deleted ${messagesDeleted} messages.`);
+        const deleted = trans.strings.find(it => it.name === "msg_del").trans;
+      await interaction.editReply(`<@${interaction.user.id}> ${msg_del} ${messagesDeleted} .`);
 
     } catch (error) {
       console.error(`Error executing purge command: ${error}`);

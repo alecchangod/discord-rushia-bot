@@ -6,9 +6,7 @@ module.exports = {
   },
   async execute(client, interaction, args, secret, trans, langc, guild) {
     // Get translations
-    const { trans: current_time } = trans.find(it => it.name === "time")
-                                           .lang.find(it => it.code === langc)
-                                           .strings.find(it => it.name === "current_time");
+    const { trans: current_time } = trans.strings.find(it => it.name === "current_time");
     // Give reply about the current time
     interaction.reply(`${current_time}<t:${Math.floor(Date.now() / 1000)}>`);
   }

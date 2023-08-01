@@ -4,12 +4,12 @@ const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
     data: {
-        name: "saypng",
-        description: "send an image",
+        name: "sayfile",
+        description: "send a file",
         options: [
             {
-                name: 'image',
-                description: 'The image to convert',
+                name: 'file',
+                description: 'The file to send',
                 type: ApplicationCommandOptionType.Attachment,
                 required: true
             },
@@ -18,25 +18,29 @@ module.exports = {
     async execute(client, interaction, args, secret, trans, langc, guild) {
         if (interaction.user.id != secret.me) return;
         try {
-            var image = await interaction.options.getAttachment('image');
+            var file = await interaction.options.getAttachment('file');
 
-            if (!image) {
+            if (!file) {
+                const no_file = trans.strings.find(it => it.name === "no_file").trans;
                 return interaction.reply({
-                    content: 'No file was provided!',
+                    content: no_file,
                     ephemeral: true,
                 });
             }
 
-            var file = await fetch(image.attachment);
+            var file = await fetch(file.attachment);
             const buffer = await file.buffer();
             const attach = new AttachmentBuilder(buffer);
-            await interaction.reply({content: `Sending ${image.name} to current channel.`, ephemeral: true,})
+            const sending = trans.strings.find(it => it.name === "sending").trans;
+            const to = trans.strings.find(it => it.name === "to").trans;
+            await interaction.reply({content: `${sending} ${file.name} ${to}`, ephemeral: true,})
             await interaction.channel.send({ files: [attach] });
 
         } catch (err) {
             console.error(err);
             await wait(1000);
-            await interaction.editReply({ content: `Couldn't convert the image: ${err.message}`, ephemeral: true});
+            const error = trans.strings.find(it => it.name === "error").trans;
+            await interaction.editReply({ content: `${error}: ${err.message}`, ephemeral: true});
         }
     }
 }

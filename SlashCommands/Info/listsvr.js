@@ -4,8 +4,10 @@ module.exports = {
   description: "list server",
   },
   async execute(client, interaction, args, secret, trans, langc, guild) {
-    if (interaction.user.id !== '574194910459199489') {
-      return interaction.reply(`~~笑死這功能 <@574194910459199489> 專用~~`);
+    // Don't allow other people to use it
+      const owner_only = trans.strings.find(it => it.name === "owner_only").trans;
+    if (interaction.user.id !== secret.me) {
+      return message.reply(`${owner_only}`);
     }
     // Get all server informations
     let str = `\`\`\``;

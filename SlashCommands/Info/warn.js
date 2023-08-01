@@ -38,12 +38,14 @@ module.exports = {
     },
     async execute(client, interaction, args, secret, trans, langc, guild) {
         const member = interaction.options.getMember('user');
-        await checkmodperm(client, interaction, args, secret, trans, langc, guild, member);
+        await checkmodperm(client, interaction, args, secret, trans, guild, member);
 
         let time = interaction.options.getInteger('time') || 5;
         member.timeout(1000 * 60 * time);
-        interaction.reply(`${member} 誰讓你在這裡廢話？滾, ${time} 分鐘後再回來（X <:bananaV3:958346989597241344>`);
+        const stfu = trans.strings.find(it => it.name === "stfu").trans;
+        const min = trans.strings.find(it => it.name === "min").trans;
+        interaction.reply(`${member} ${stfu} ${time} ${min} <:bananaV3:958346989597241344>`);
 
-        await warnch(client, interaction, args, secret, trans, langc, guild, member, "warn");
+        await warnch(client, interaction, args, secret, trans, guild, member, "warn");
     }
 }

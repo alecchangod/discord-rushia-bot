@@ -39,7 +39,7 @@ module.exports = {
     async execute(client, interaction, args, secret, trans, langc, guild) {
         try {
             const user = interaction.member;
-            const missing_permission = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "missing_permission")[0].trans || trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === "en-US")[0].strings.filter(it => it.name === "missing_permission")[0].trans;
+            const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
 
             if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
                 return interaction.reply(missing_permission);
@@ -53,34 +53,34 @@ module.exports = {
             if (status === "ban") {
                 if (!JSON.stringify(group).includes(interaction.guild.id)) await db.push('group', interaction.guild.id);
                 const now = await db.get(interaction.guild.id);
-                const already_banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "already_banned")[0].trans;
+                const already_banned = trans.strings.find(it => it.name === "already_banned").trans;
 
                 if (JSON.stringify(now).includes(word)) {
                     return interaction.reply(already_banned);
                 }
 
                 await db.push(`${interaction.guild.id}`, word);
-                const banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "banned")[0].trans;
+                const banned = trans.strings.find(it => it.name === "banned").trans;
 
                 interaction.reply(`\`\`\`${word}\`\`\` ${banned} <a:isis:963826754328330300>`);
             }
 
             if (status === "unban") {
-                const no_word_banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "no_word_banned")[0].trans;
+                const no_word_banned = trans.strings.find(it => it.name === "no_word_banned").trans;
 
                 if (!JSON.stringify(group).includes(interaction.guild.id)) {
                     return interaction.reply(no_word_banned);
                 }
 
                 const now = await db.get(interaction.guild.id);
-                const not_banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "not_banned")[0].trans;
+                const not_banned = trans.strings.find(it => it.name === "not_banned").trans;
 
                 if (!JSON.stringify(now).includes(word)) {
                     return interaction.reply(not_banned);
                 }
 
                 await db.pull(`${interaction.guild.id}`, word);
-                const unbanned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "unbanned")[0].trans;
+                const unbanned = trans.strings.find(it => it.name === "unbanned").trans;
 
                 interaction.reply(`\`\`\`${word}\`\`\` ${unbanned}`);
             }

@@ -3,7 +3,7 @@ const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
     data: {
-        name: "spurge",
+        name: "purge",
         description: 'Purge messages after a message (ONLY less than 14 days)',
         options: [{
             name: 'messageid',
@@ -17,14 +17,16 @@ module.exports = {
         try {
             // Check if the interaction author have permission to delete message
             if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
-                return interaction.reply("You don't have the required permissions.");
+                const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
+                return interaction.reply(missing_permission);
             }
 
             // Get message id provided
             const messageId = interaction.options.getString('messageid');
 
             // Reply first
-            await interaction.reply({ content: `Deleting message after https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messageId}`, ephemeral: true })
+                const deleting = trans.strings.find(it => it.name === "deleting").trans;
+            await interaction.reply({ content: `${deleting} https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messageId}`, ephemeral: true })
 
             let messagesDeleted = 0;
             let fetchedMessages;
@@ -65,7 +67,9 @@ module.exports = {
                 await wait(1000);
             };
 
-            await interaction.editReply(`I have deleted ${messagesDeleted} messages after message ID https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messageId} (${messageId}).`);
+            const msg_del = trans.strings.find(it => it.name === "msg_del").trans;
+            const after_id = trans.strings.find(it => it.name === "after_id").trans;
+            await interaction.editReply(`${msg_del} * ${messagesDeleted} ${after_id} https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messageId} (${messageId}).`);
         } catch (error) {
             console.error(`Error executing spurge command: ${error}`);
         }

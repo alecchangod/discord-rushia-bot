@@ -2,24 +2,24 @@ const { PermissionsBitField } = require('discord.js');
 const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
-    name: "Spurge",
-    aliases: ["spurge", "purge"],
+    name: "purge",
+    aliases: ["purge"],
     description: 'purge message after a message (ONLY less than 14 days)',
-    run: async (client, message, args, secret, prefix, trans, langc) => {
+    run: async (client, message, args, secret, prefix, trans) => {
         try {
-            // const user = message.mentions.users.first();
-
             // Check if the message author have permission to delete message
             const usr = await message.guild.members.fetch(message.author);
+            const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
             if (!usr.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
-                return message.reply("笑死你沒權限");
+                return message.reply(missing_permission);
             }
 
             // Get message id provided
             var messageId = args[0];
             // MUST have one ID provided (Will work on reply one later)
+            const missing_id = trans.strings.find(it => it.name === "missing_id").trans;
             if (!messageId) {
-                return message.reply('Must specify a message ID to delete!');
+                return message.reply(missing_id);
             }
 
             // Start counting
@@ -83,7 +83,9 @@ module.exports = {
 
             };
             // Give a reply after deleted all requierd message
-            message.channel.send(`<@${message.author.id}> I have deleted ${messagesDeleted} messages after message ID ${messageId}.`);
+            const msg_del = trans.strings.find(it => it.name === "msg_del").trans;
+            const after_id = trans.strings.find(it => it.name === "after_id").trans;
+            message.channel.send(`<@${message.author.id}> ${msg_del} * ${messagesDeleted} ${after_id} ${messageId}.`);
 
         } catch (error) {
             console.error(`Error executing msgdel command: ${error}`);

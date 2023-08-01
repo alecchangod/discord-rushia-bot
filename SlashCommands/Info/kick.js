@@ -34,12 +34,12 @@ module.exports = {
     },
     async execute(client, interaction, args, secret, trans, langc, guild) {
         const member = interaction.options.getMember('user');
-        await checkmodperm(client, interaction, args, secret, trans, langc, guild, member);
+        await checkmodperm(client, interaction, args, secret, trans, guild, member);
 
-        await byeuser(client, interaction, args, secret, trans, langc, guild, member, "kick");
+        await byeuser(client, interaction, args, secret, trans, guild, member, "kick");
 
-        await tombstonegen(client, interaction, args, secret, trans, langc, guild, member);
+        await tombstonegen(client, interaction, args, secret, trans, guild, member);
 
-        await warnch(client, interaction, args, secret, trans, langc, guild, member, "kick");
+        await warnch(client, interaction, args, secret, trans, guild, member, "kick");
     }
 }

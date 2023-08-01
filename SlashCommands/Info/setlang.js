@@ -24,7 +24,8 @@ module.exports = {
     try {
       // Check if the interaction author have permission to delete message
       if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
-        return interaction.reply("You don't have the required permissions.");
+        const no_perm = trans.strings.find(it => it.name === "no_perm").trans;
+        return interaction.reply(no_perm);
       }
 
       // Get interaction information
@@ -34,7 +35,8 @@ module.exports = {
       const slang = interaction.options.getString('language');
       // If they inputed an invalid language code
       // Return and make them to re-enter a valid code
-      if (!lang.some(it => it.code === slang)) return interaction.reply({ content: "please input a valid language code.", ephemeral: true });
+      const invalid_code = trans.strings.find(it => it.name === "invalid").trans;
+      if (!lang.some(it => it.code === slang)) return interaction.reply({ content: invalid_code, ephemeral: true });
       // If it was valid
       // Save the language code
       await db.set(`lang_${guildId}`, slang);
@@ -49,15 +51,15 @@ module.exports = {
       const timeFromDb = await db.get(`lang_t_${guildId}`);
       const lang_name = lang.filter(it => it.code === langFromDb)[0]?.name;
       // Give a reply after saving the language code
-      const replyMessage = `New preferred translate language was set to ${langFromDb} (${lang_name}) \n by <@${authorFromDb}> \n at <t:${timeFromDb}>`;
+      const set_to = trans.strings.find(it => it.name === "set_to").trans;
+      const by = trans.strings.find(it => it.name === "by").trans;
+      const at = trans.strings.find(it => it.name === "at").trans;
+      const replyMessage = `${set_to} ${langFromDb} (${lang_name})\n${by}: <@${authorFromDb}>\n${at}: <t:${timeFromDb}>`;
 
-      await interaction.reply("loading...");
-      await wait(2000);
-      await interaction.editReply(replyMessage);
+      await interaction.reply(replyMessage);
 
     } catch (e) {
       console.log(e);
-      await interaction.channel.send({ content: 'An error occurred while executing the command.' });
     }
   },
 };

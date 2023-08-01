@@ -44,7 +44,7 @@ module.exports = {
       // Allow these roles in server (1) and (2)
       // const allowedRolesGrp1 = ["test", "元首", "管理員", "神志不清的天才寶特瓶"]; // rushia chin server
       // const allowedRolesGrp2 = ["大哥", "管理員"]; // bot testing group
-      const allowedUser = [secret.me, "805785752074977300", "1122862133043015751", "737133459222298694"];
+      const allowedUser = [secret.me, "805785752074977300", "1122862133043015751", "737133459222298694", "967404236407197736"];
 
       // Check if user was allowed to run this command. If not, their interaction will be ignored.
       let isAllowed = allowedUser.includes(interaction.member.id)
@@ -57,6 +57,9 @@ module.exports = {
         const content = interaction.options.getString('content');
         const messageId = interaction.options.getSubcommand() === 'reply' ? interaction.options.getString('messageid') : null;
 
+        // Get translations
+        const sent = trans.strings.find(it => it.name === "sent").trans;
+
         // Check if the user was replying to another message
         // If they were, send the message as a reply
         if (messageId) {
@@ -64,17 +67,23 @@ module.exports = {
           const message = await guild.channels.cache.get(interaction.channelId).messages.fetch(messageId);
           if (message) {
             message.reply(content);
-            interaction.reply({ content: `${content} has been sent to <#${interaction.channelId}>`, ephemeral: true });
+            interaction.reply({ content: `${content} ${sent} <#${interaction.channelId}>`, ephemeral: true });
           }
-          else return interaction.reply({ content: `Please provide a valid message id.`, ephemeral: true });
+          else {
+            const invalid_id = trans.strings.find(it => it.name === "invalid_id").trans;
+            return interaction.reply({ content: invalid_id, ephemeral: true });
+          }
         }
         // If not, send the message normally 
         else {
           interaction.channel.send(content);
-          interaction.reply({ content: `${content} has been sent to <#${interaction.channelId}>`, ephemeral: true });
+          interaction.reply({ content: `${content} ${sent} <#${interaction.channelId}>`, ephemeral: true });
         }
       }
-      else return interaction.reply("笑死你沒權限");
+      else {
+        const no_perm = trans.strings.find(it => it.name === "no_perm").trans;
+        return interaction.reply(no_perm);
+      }
     } catch (error) {
       console.log(`Error running say command: ${error}`);
     }

@@ -6,12 +6,12 @@ module.exports = {
   name: 'Blacklist',
   aliases: ["bl"],
   description: 'Ban words in a group (case sensitive)',
-  run: async (client, message, args, secret, prefix, trans, langc) => {
+  run: async (client, message, args, secret, prefix, trans) => {
     try {
         // Fetch message author
       const user = await message.guild.members.fetch(message.author);
     //   Get translation
-      const missing_permission = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "missing_permission")[0].trans;
+      const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
     //   Check for user permission
       if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
         return message.channel.send(missing_permission);
@@ -29,13 +29,13 @@ module.exports = {
         await db.push('group', message.guild.id);
         // Check if it was already banned
         const now = await db.get(message.guild.id);
-        const already_banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "already_banned")[0].trans;
+        const already_banned = trans.strings.find(it => it.name === "already_banned").trans;
         if (JSON.stringify(now).includes(word)) {
           return message.reply(already_banned);
         }
         // Ban the word
         await db.push(`${message.guild.id}`, word);
-        const banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "banned")[0].trans;
+        const banned = trans.strings.find(it => it.name === "banned").trans;
         // Give a reply after it was banned
         message.reply(`\`\`\`${word}\`\`\` ${banned} <a:isis:963826754328330300>`);
       }
@@ -45,19 +45,19 @@ module.exports = {
         // Check if it was banned
         const grp = await db.get('group');
         // If no word were banned in the server
-        const no_word_banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "no_word_banned")[0].trans;
+        const no_word_banned = trans.strings.find(it => it.name === "no_word_banned").trans;
         if (!JSON.stringify(grp).includes(message.guild.id)) {
           return message.reply(no_word_banned);
         }
         // If it was not banned
         const now = await db.get(message.guild.id);
-        const not_banned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "not_banned")[0].trans;
+        const not_banned = trans.strings.find(it => it.name === "not_banned").trans;
         if (!JSON.stringify(now).includes(word)) {
           return message.reply(not_banned);
         }
         // Unban the word if it was banned before on this server
         await db.pull(`${message.guild.id}`, word);
-        const unbanned = trans.filter(it => it.name === "bl")[0].lang.filter(it => it.code === langc)[0].strings.filter(it => it.name === "unbanned")[0].trans;
+        const unbanned = trans.strings.find(it => it.name === "unbanned").trans;
         message.reply(`\`\`\`${word}\`\`\` ${unbanned}`);
       }
     } catch (error) {
