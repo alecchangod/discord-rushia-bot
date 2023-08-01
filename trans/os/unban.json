@@ -1,0 +1,44 @@
+{
+    "strings": [
+        {
+            "name": "missing_permission",
+            "trans": "You don't have require permission for running this command!"
+        },
+        {
+            "name": "fine",
+            "trans": "Fine."
+        },
+        {
+            "name": "join_again",
+            "trans": "can join again."
+        },
+        {
+            "name": "bot",
+            "trans": "Can't you run it with your own account?"
+        },
+        {
+            "name": "not_banned",
+            "trans": "wan't banned."
+        },
+        {
+            "name": "no_perm",
+            "trans": "I don't have the required permission to warn an user."
+        },
+        {
+            "name": "status",
+            "trans": "Unbanned"
+        },
+        {
+            "name": "idk",
+            "trans": "I don't know"
+        },
+        {
+            "name": "human",
+            "trans": "User"
+        },
+        {
+            "name": "why",
+            "trans": "Reason"
+        }
+    ]
+}
