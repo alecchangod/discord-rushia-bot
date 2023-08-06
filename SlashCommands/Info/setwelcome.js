@@ -32,7 +32,7 @@ module.exports = {
     ],
   },
   userPermissions: PermissionsBitField.Flags.ManageGuild,
-  async execute(client, interaction, args, secret, prefix, trans, langc) {
+  async execute(client, interaction, args, secret, trans, langc, guild) {
     try {
       // Check if the interaction author have permission to delete message
       if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageGuild) && (interaction.member.id != secret.me)) {
