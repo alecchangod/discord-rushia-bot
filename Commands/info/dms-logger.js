@@ -57,7 +57,7 @@ module.exports = {
         repliedTo.attachments.forEach(attachments => {
           size += attachments.size;
         });
-        str += size > 10485760 ? `,\n${file_t}: ${attachment.url}` : `,\n${file_t}:`;
+        str += size > 10485760 ? `,\n${file_t}: ${message.attachment.url}` : `,\n${file_t}:`;
         if (size <= 10485760) {
           files = repliedTo.attachments.values();
         }
@@ -83,7 +83,7 @@ module.exports = {
         message.attachments.forEach(attachments => {
           size += attachments.size;
         });
-        str += size > 10485760 ? `,\n${file_t}: ${attachment.url}` : `,\n${file_t}:`;
+        str += size > 10485760 ? `,\n${file_t}: ${message.attachment.url}` : `,\n${file_t}:`;
         if (size <= 10485760) {
           files = message.attachments.values();
         }
@@ -108,7 +108,7 @@ module.exports = {
         message.attachments.forEach(attachments => {
           size += attachments.size;
         });
-        str += size > 10485760 ? `,\n${file_t}: ${attachment.url}` : `,\n${file_t}:`;
+        str += size > 10485760 ? `,\n${file_t}: ${message.attachment.url}` : `,\n${file_t}:`;
         if (size <= 10485760) {
           files = message.attachments.values();
         }
