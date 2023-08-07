@@ -69,54 +69,30 @@ module.exports = {
 
       str += `\n\n===================================\n\n`;
 
-      str += `${u}: ${authorTag} (<@${message.author.id}>)`;
-      str += hasContent ? `\n${cont}: ${message.content}` : '';
+    }
 
-      if (message.stickers.size > 0) {
-        const ext = "png";
-        const sck = message.stickers.first();
-        const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
-        str += `\n,${sti_t}: ${sticurl}`;
-      }
-      if (message.attachments.size > 0) {
-        let size = 0;
-        message.attachments.forEach(attachments => {
-          size += attachments.size;
-        });
-        str += size > 10485760 ? `,\n${file_t}: ${message.attachment.url}` : `,\n${file_t}:`;
-        if (size <= 10485760) {
-          files = message.attachments.values();
-        }
-      }
-      if (message.embeds[0]) {
-        receivedEmbed = message.embeds;
-        str += `\n${em}:`
-      }
+    str += `${u}: ${authorTag} (<@${message.author.id}>)`;
+    str += hasContent ? `\n${cont}: ${message.content}` : '';
 
-    } else { // Normal message
-      str += `${u}: ${authorTag} (<@${message.author.id}>)`;
-      str += hasContent ? `\n${cont}: ${message.content}` : '';
-
-      if (message.stickers.size > 0) {
-        const ext = "png";
-        const sck = message.stickers.first();
-        const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
-        str += `\n,${sti_t}: ${sticurl}`;
+    if (message.stickers.size > 0) {
+      const ext = "png";
+      const sck = message.stickers.first();
+      const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
+      str += `\n,${sti_t}: ${sticurl}`;
+    }
+    if (message.attachments.size > 0) {
+      let size = 0;
+      message.attachments.forEach(attachments => {
+        size += attachments.size;
+      });
+      str += size > 10485760 ? `,\n${file_t}: ${message.attachment.url}` : `,\n${file_t}:`;
+      if (size <= 10485760) {
+        files = message.attachments.values();
       }
-      if (message.attachments.size > 0) {
-        let size = 0;
-        message.attachments.forEach(attachments => {
-          size += attachments.size;
-        });
-        str += size > 10485760 ? `,\n${file_t}: ${message.attachment.url}` : `,\n${file_t}:`;
-        if (size <= 10485760) {
-          files = message.attachments.values();
-        }
-      }
-      if (message.embeds[0]) {
-        receivedEmbed = message.embeds;
-        str += `\n${em}:`
-      }
+    }
+    if (message.embeds[0]) {
+      receivedEmbed = message.embeds;
+      str += `\n${em}:`
     }
     split(str, channel, files, receivedEmbed);
 
