@@ -42,11 +42,11 @@ module.exports = {
       } while (amount > 0);
 
       // Give a reply after deleting required message
-        const deleted = trans.strings.find(it => it.name === "msg_del").trans;
+        const msg_del = trans.strings.find(it => it.name === "msg_del").trans;
       await interaction.editReply(`<@${interaction.user.id}> ${msg_del} ${messagesDeleted} .`);
 
     } catch (error) {
-      console.error(`Error executing purge command: ${error}`);
+      console.error(`Error executing purge(msgdel) command: ${error}`);
     }
   }
 };
