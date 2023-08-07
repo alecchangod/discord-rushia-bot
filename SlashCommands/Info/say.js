@@ -1,4 +1,6 @@
-const { PermissionsBitField, ApplicationCommandOptionType } = require('discord.js');
+const { PermissionsBitField, ApplicationCommandOptionType, AttachmentBuilder } = require('discord.js');
+const fetch = require('node-fetch');
+
 module.exports = {
   data: {
     name: "say",
@@ -13,7 +15,13 @@ module.exports = {
             name: 'content',
             type: ApplicationCommandOptionType.String,
             description: 'The content of the message',
-            required: true,
+            required: false,
+          },
+          {
+            name: 'file',
+            type: ApplicationCommandOptionType.Attachment,
+            description: 'The file to send',
+            required: false,
           },
         ],
       },
@@ -32,7 +40,13 @@ module.exports = {
             name: 'content',
             type: ApplicationCommandOptionType.String,
             description: 'The content of the message',
-            required: true,
+            required: false,
+          },
+          {
+            name: 'file',
+            type: ApplicationCommandOptionType.Attachment,
+            description: 'The file to send',
+            required: false,
           },
         ],
       },
@@ -41,44 +55,54 @@ module.exports = {
   },
   async execute(client, interaction, args, secret, trans, langc, guild) {
     try {
-      // Allow these roles in server (1) and (2)
-      // const allowedRolesGrp1 = ["test", "元首", "管理員", "神志不清的天才寶特瓶"]; // rushia chin server
-      // const allowedRolesGrp2 = ["大哥", "管理員"]; // bot testing group
+      // Allow these users only
       const allowedUser = [secret.me, "805785752074977300", "1122862133043015751", "737133459222298694", "967404236407197736"];
 
-      // Check if user was allowed to run this command. If not, their interaction will be ignored.
+      // Check if user was allowed to run this command
       let isAllowed = allowedUser.includes(interaction.member.id)
-      // let isAllowedGrp1 = interaction.guild.id === secret.grp1 && interaction.member.roles.cache.some(role => allowedRolesGrp1.includes(role.name));
-      // let isAllowedGrp2 = interaction.guild.id === secret.grp2 && interaction.member.roles.cache.some(role => allowedRolesGrp2.includes(role.name));
 
       // If they were allowed
       if (isAllowed) {
         // Get message to send
         const content = interaction.options.getString('content');
+        var i_file = await interaction.options.getAttachment('file');
         const messageId = interaction.options.getSubcommand() === 'reply' ? interaction.options.getString('messageid') : null;
+        const no_file_content = trans.strings.find(it => it.name === "nothing").trans;
+        if ((!i_file) && (!content)) return interaction.reply({ content: no_file_content, ephemeral: true });;
+        await interaction.deferReply({ ephemeral: true });
+
+        // If there were file provided,
+        // Buffer the file and set the filename
+        let attach;
+        if (i_file?.attachment) {
+          var file = await fetch(i_file.attachment);
+          const buffer = await file.buffer();
+          attach = new AttachmentBuilder(buffer);
+          var filename = `\`${i_file.name}\``;
+        }
 
         // Get translations
         const sent = trans.strings.find(it => it.name === "sent").trans;
 
-        // Check if the user was replying to another message
-        // If they were, send the message as a reply
+        // Check if message id was provided
+        // If yes, send the message as a reply
         if (messageId) {
           const guild = client.guilds.cache.get(interaction.guildId);
           const message = await guild.channels.cache.get(interaction.channelId).messages.fetch(messageId);
           if (message) {
-            message.reply(content);
-            interaction.reply({ content: `${content} ${sent} <#${interaction.channelId}>`, ephemeral: true });
+            message.reply(file ? { content: content, files: [attach] } : { content: content });
           }
           else {
             const invalid_id = trans.strings.find(it => it.name === "invalid_id").trans;
-            return interaction.reply({ content: invalid_id, ephemeral: true });
+            return interaction.editReply({ content: invalid_id, ephemeral: true });
           }
         }
         // If not, send the message normally 
         else {
-          interaction.channel.send(content);
-          interaction.reply({ content: `${content} ${sent} <#${interaction.channelId}>`, ephemeral: true });
+          interaction.channel.send(file ? { content: content, files: [attach] } : { content: content });
         }
+
+        interaction.editReply(file ? { content: `${content ? `\`${content}\` && ` : ""} ${filename} ${sent} <#${interaction.channelId}>`, files: [attach], ephemeral: true } : { content: `\`${content}\` ${sent} <#${interaction.channelId}>`, ephemeral: true });
       }
       else {
         const no_perm = trans.strings.find(it => it.name === "no_perm").trans;

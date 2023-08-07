@@ -15,6 +15,10 @@
         {
             "name": "no_perm",
             "trans": "You are not allowed to run this command."
+        },
+        {
+            "name": "nothing",
+            "trans": "Please provide a file or content to say."
         }
     ]
 }
