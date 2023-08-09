@@ -30,7 +30,8 @@ module.exports = {
 
       // Is reply?
       if (message.reference?.messageId) {
-        const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
+        const repliedTo = await fetchRepliedMessage(message);
+        if (!repliedTo) return;
         const rauthorTag = `${repliedTo.author.discriminator === '0' ? "@" : ""}${repliedTo.author.username}${repliedTo.author.discriminator === '0' ? "" : `#${repliedTo.author.discriminator}`}`;
         str += `${p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
         const rhasContent = repliedTo.content.length > 0;
@@ -113,3 +114,11 @@ function split(str, channel, file, embed) {
     partNumber++;
   }
 };
+
+async function fetchRepliedMessage(message) {
+  try {
+    return await message.channel.messages.fetch(message.reference.messageId);
+  } catch (error) {
+    return null;
+  }
+}

@@ -122,58 +122,61 @@ async function fetchAndRunCommand(message, cmd, langc) {
   if (command) command.run(client, message, secret, trans, langc);
 }
 
-//message log
+// Loggers
 client.on('messageCreate', async message => {
-  if (!message.guild) return;
-  fetchAndRunCommand(message, 'message-logger');
-});
-
-//dm detect
-client.on('messageCreate', async (message) => {
   if (message.channel.type == 1) {
     fetchAndRunCommand(message, 'dms-logger');
+  }
+  else if (message.guild) {
+    fetchAndRunCommand(message, 'message-logger');
   }
 });
 
 // Self-protect
-client.on('messageCreate', async message => {
+client.on('messageCreate', processMessage);
+
+async function processMessage(message) {
+  // Ignore bot message and non-reply messages
+  if (message.author.id === secret.botid || !message.reference) return;
+  const repliedTo = await fetchRepliedMessage(message);
+  // Check who is they replying and return if message doesn't exist
+  if (!repliedTo || repliedTo.author.id !== secret.botid) return;
+  const response = checkResponses(message.content.toLowerCase());
+  if (response) return message.reply(response);
+}
+
+async function fetchRepliedMessage(message) {
   try {
-    // Ignore bot message and non-reply messages
-    if (message.author.id === secret.botid || !message.reference) return;
-    if ((!message.reference.messageId) || (!await message.channel.messages.fetch(message.reference.messageId))) return;
-
-    // Check who is they replying
-    const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
-    if (repliedTo.author.id !== secret.botid) return;
-
-    // Reply
-    const content = message.content.toLowerCase();
-    const responses = {
-      '滾': '蛤',
-      '草': '蛤',
-      '幹': '蛤',
-      '操': '蛤',
-      '安靜': '蛤',
-      '賣插': '蛤',
-      '賣吵': '蛤',
-      '麥插': '蛤',
-      '麥吵': '蛤',
-      '閉嘴': '蛤',
-      '蛤三小': '早安 <:RushiaYandere:948941963170828328>',
-      '早安': '早安',
-      '蛤': '早安',
-      '怎麽了': '不知道',
-    };
-
-    for (const key in responses) {
-      if (content.includes(key)) {
-        return message.reply(responses[key]);
-      }
-    }
-  } catch (e) {
-    console.error(e);
+    return await message.channel.messages.fetch(message.reference.messageId);
+  } catch (error) {
+    return null;
   }
-});
+}
+
+function checkResponses(content) {
+  const responses = {
+    '滾': '蛤',
+    '草': '蛤',
+    '幹': '蛤',
+    '操': '蛤',
+    '安靜': '蛤',
+    '賣插': '蛤',
+    '賣吵': '蛤',
+    '麥插': '蛤',
+    '麥吵': '蛤',
+    '閉嘴': '蛤',
+    '蛤三小': '早安 <:RushiaYandere:948941963170828328>',
+    '早安': '早安',
+    '蛤': '早安',
+    '怎麽了': '不知道',
+  };
+  for (const key in responses) {
+    if (content.includes(key)) {
+      return responses[key];
+    }
+  }
+  return null;
+}
 
 // Webhook
 client.on('messageCreate', async (message) => {
@@ -181,7 +184,11 @@ client.on('messageCreate', async (message) => {
   var ch = await db.get(`webhook_${message.channel.id}`);
   if ((!ch) || (!JSON.stringify(ch).includes(message.author.id))) return;
 
-  if (message.content == 0) var message = await message.channel.messages.fetch(message.id).catch(() => null);
+  if (message.content == 0) try {
+    message = await message.channel.messages.fetch(message.id)
+  } catch (error) {
+    return null;
+  }
 
   if (message.reference?.messageId) return;
   let emoji = true;
@@ -208,7 +215,7 @@ client.on('messageCreate', async (message) => {
   if (!emoji) return console.log("I don't have access to that emoji :(");
 
   // Send with nickname if set
-  const user = await message.guild.members.fetch (message.author.id);
+  const user = await message.guild.members.fetch(message.author.id);
   let uname = user.nickname ? user.nickname : message.author.username;
 
   // Resend user message as a webhook
@@ -224,8 +231,6 @@ client.on('messageCreate', async (message) => {
     console.log(message.content)
     console.log(message.content.length)
   }
-
-  // console.log(`Resent message as webhook: ${webhookMessage}`);
 });
 
 //don't sleep
