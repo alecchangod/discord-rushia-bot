@@ -3,16 +3,38 @@ const client = require('../../index.js')
 const secret = require('../../config.json')
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/server.sqlite" });
-const { PermissionsBitField, ApplicationCommandOptionType } = require('discord.js');
+const { PermissionsBitField, ApplicationCommandOptionType, AttachmentBuilder } = require('discord.js');
+const fetch = require('node-fetch');
+const wait = require('node:timers/promises').setTimeout;
 
 // Command
 client.on("interactionCreate", async (interaction) => {
-    console.log(interaction.options?._hoistedOptions);
-    // Log slash usage
+    let file;
+    let attach;
+    let str = `Guild: ${interaction.guild?.name}\n`
+    str += `${interaction.channel.parent ? `Channel parent: ${interaction.channel.parent.name}` : ""}\n`
+    str += `Channel: ${interaction.channel.name}\n`
+    str += `User: ${interaction.member} ${interaction.user.discriminator === '0' ? "@" : ""}${interaction.user.username}${interaction.user.discriminator === '0' ? "" : `#${interaction.user.discriminator}`}\n`
+    str += `Command: ${interaction.commandName}`;
+    str += interaction.options?._hoistedOptions.size ? "\nOptions:" : "";
+
+    interaction.options?._hoistedOptions.forEach(async (options) => {
+        str += `\n${options.name}: ${options.type != 11 ? options.value : options.attachment.name}`;
+        if (options.type === 11) {
+            var file_ = await fetch(options.attachment.url);
+            const buffer = await file_.buffer();
+            attach = new AttachmentBuilder(buffer);
+            file = options.attachment;
+            client.channels.fetch(secret.slash_log_channel).then(async channel => {
+                await wait(1000);
+                channel.send({ content: `Attachments \`${options.attachment.name}\` for the options \`${options.name}\``, files: [attach] })
+            });
+        }
+    });
+
     client.channels.fetch(secret.slash_log_channel).then(async channel => {
-        channel.send(`Guild: ${interaction.guild?.name} \n ${interaction.channel.parent ? `Channel parent: ${interaction.channel.parent.name}` : ""} \n Channel: ${interaction.channel.name} \n User: ${interaction.member} ${interaction.user.discriminator === '0' ? "@" : ""}${interaction.user.username}${interaction.user.discriminator === '0' ? "" : `#${interaction.user.discriminator}`} \n Command: ${interaction.commandName}`)
-    }
-    );
+        channel.send(str);
+    });
 
     // Command handling
     if (interaction.isChatInputCommand()) {
