@@ -43,42 +43,42 @@ module.exports = {
     // Is reply?
     if (message.reference?.messageId) {
       const repliedTo = await fetchRepliedMessage(message);
-      if (!repliedTo) return;
-      const rauthorTag = `${repliedTo.author.discriminator === '0' ? "@" : ""}${repliedTo.author.username}${repliedTo.author.discriminator === '0' ? "" : `#${repliedTo.author.discriminator}`}`;
-      b_str += `${b_p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
-      str += `${p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
-      const rhasContent = repliedTo.content.length > 0;
-      b_str += rhasContent ? `${b_cont}: ${repliedTo.content}\n` : '';
-      str += rhasContent ? `${cont}: ${repliedTo.content}\n` : '';
+      if (repliedTo) {
+        const rauthorTag = `${repliedTo.author.discriminator === '0' ? "@" : ""}${repliedTo.author.username}${repliedTo.author.discriminator === '0' ? "" : `#${repliedTo.author.discriminator}`}`;
+        b_str += `${b_p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
+        str += `${p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
+        const rhasContent = repliedTo.content.length > 0;
+        b_str += rhasContent ? `${b_cont}: ${repliedTo.content}\n` : '';
+        str += rhasContent ? `${cont}: ${repliedTo.content}\n` : '';
 
-      if (repliedTo.stickers.size > 0) {
-        const ext = "png";
-        const sck = repliedTo.stickers.first();
-        const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
-        b_str += `${b_sti_t}: ${sticurl}\n`;
-        str += `${sti_t}: ${sticurl}\n`;
+        if (repliedTo.stickers.size > 0) {
+          const ext = "png";
+          const sck = repliedTo.stickers.first();
+          const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
+          b_str += `${b_sti_t}: ${sticurl}\n`;
+          str += `${sti_t}: ${sticurl}\n`;
 
-      }
-      if (repliedTo.attachments.size > 0) {
-        let size = 0;
-        repliedTo.attachments.forEach(attachments => {
-          size += attachments.size;
-        });
-        b_str += size > 10485760 ? `${b_file_t}: ${message.attachment.url}\n` : `${b_file_t}:\n`;
-        str += size > 10485760 ? `${file_t}: ${message.attachment.url}\n` : `${file_t}:\n`;
-        if (size <= 10485760) {
-          files = repliedTo.attachments.values();
         }
-      }
-      if (repliedTo.embeds[0]) {
-        receivedEmbed = repliedTo.embeds;
-        b_str += `${b_em}:\n`
-        str += `${em}:\n`
-      }
+        if (repliedTo.attachments.size > 0) {
+          let size = 0;
+          repliedTo.attachments.forEach(attachments => {
+            size += attachments.size;
+          });
+          b_str += size > 10485760 ? `${b_file_t}: ${message.attachment.url}\n` : `${b_file_t}:\n`;
+          str += size > 10485760 ? `${file_t}: ${message.attachment.url}\n` : `${file_t}:\n`;
+          if (size <= 10485760) {
+            files = repliedTo.attachments.values();
+          }
+        }
+        if (repliedTo.embeds[0]) {
+          receivedEmbed = repliedTo.embeds;
+          b_str += `${b_em}:\n`
+          str += `${em}:\n`
+        }
 
-      b_str += `\n\n===================================\n\n`;
-      str += `\n\n===================================\n\n`;
-
+        b_str += `\n\n===================================\n\n`;
+        str += `\n\n===================================\n\n`;
+      }
     }
 
     b_str += `${b_u}: ${authorTag} (<@${message.author.id}>)\n`;

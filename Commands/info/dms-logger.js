@@ -40,35 +40,36 @@ module.exports = {
 
     // Is reply?
     if (message.reference?.messageId) {
-      const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
-      str += `${p_msg}: ${repliedTo.author.tag}\n`;
-      const rhasContent = repliedTo.content.length > 0;
-      str += rhasContent ? `${cont}: ${repliedTo.content}\n` : '';
+      const repliedTo = await fetchRepliedMessage(message);
+      if (repliedTo) {
+        str += `${p_msg}: ${repliedTo.author.tag}\n`;
+        const rhasContent = repliedTo.content.length > 0;
+        str += rhasContent ? `${cont}: ${repliedTo.content}\n` : '';
 
-      if (repliedTo.stickers.size > 0) {
-        const ext = "png";
-        const sck = repliedTo.stickers.first();
-        const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
-        str += `${sti_t}: ${sticurl}\n`;
+        if (repliedTo.stickers.size > 0) {
+          const ext = "png";
+          const sck = repliedTo.stickers.first();
+          const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
+          str += `${sti_t}: ${sticurl}\n`;
 
-      }
-      if (repliedTo.attachments.size > 0) {
-        let size = 0;
-        repliedTo.attachments.forEach(attachments => {
-          size += attachments.size;
-        });
-        str += size > 10485760 ? `${file_t}: ${message.attachment.url}\n` : `${file_t}:\n`;
-        if (size <= 10485760) {
-          files = repliedTo.attachments.values();
         }
-      }
-      if (repliedTo.embeds[0]) {
-        receivedEmbed = repliedTo.embeds;
-        str += `${em}:\n`
-      }
+        if (repliedTo.attachments.size > 0) {
+          let size = 0;
+          repliedTo.attachments.forEach(attachments => {
+            size += attachments.size;
+          });
+          str += size > 10485760 ? `${file_t}: ${message.attachment.url}\n` : `${file_t}:\n`;
+          if (size <= 10485760) {
+            files = repliedTo.attachments.values();
+          }
+        }
+        if (repliedTo.embeds[0]) {
+          receivedEmbed = repliedTo.embeds;
+          str += `${em}:\n`
+        }
 
-      str += `\n\n===================================\n\n`;
-
+        str += `\n\n===================================\n\n`;
+      }
     }
 
     str += `${u}: ${authorTag} (<@${message.author.id}>)`;
@@ -97,5 +98,13 @@ module.exports = {
     split(str, channel, files, receivedEmbed);
 
 
+  }
+}
+
+async function fetchRepliedMessage(message) {
+  try {
+    return await message.channel.messages.fetch(message.reference.messageId);
+  } catch (error) {
+    return null;
   }
 }
