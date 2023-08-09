@@ -1,10 +1,13 @@
 module.exports = {
   name: 'playtop',
-  aliases: ['pt'],
+  aliases: ['playtop'],
   inVoiceChannel: true,
   run: async (client, message, args, secret, prefix, trans) => {
+    // Get translate
+    var not_found = trans.strings.find(it => it.name === "not_found").trans;
+
     const string = args.join(' ')
-    if (!string) return message.channel.send(`${client.emotes.error} | Please enter a song url or query to search.`)
+    if (!string) return message.channel.send(`${client.emotes.error} | ${not_found}`)
     client.distube.play(message.member.voice.channel, string, {
       member: message.member,
       textChannel: message.channel,

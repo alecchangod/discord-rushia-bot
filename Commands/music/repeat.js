@@ -1,10 +1,17 @@
 module.exports = {
   name: 'repeat',
-  aliases: ['loop', 'rp'],
+  aliases: ['repeat'],
   inVoiceChannel: true,
   run: async (client, message, args, secret, prefix, trans) => {
+    // Get translate
+    var no_playing = trans.strings.find(it => it.name === "no_playing").trans;
+    var r_queue = trans.strings.find(it => it.name === "r_queue").trans;
+    var r_song = trans.strings.find(it => it.name === "r_song").trans;
+    var off = trans.strings.find(it => it.name === "off").trans;
+    var repeat_m = trans.strings.find(it => it.name === "repeat_m").trans;
+
     const queue = client.distube.getQueue(message)
-    if (!queue) return message.channel.send(`${client.emotes.error} | There is nothing playing!`)
+    if (!queue) return message.channel.send(`${client.emotes.error} | ${no_playing}`)
     let mode = null
     switch (args[0]) {
       case 'off':
@@ -18,7 +25,7 @@ module.exports = {
         break
     }
     mode = queue.setRepeatMode(mode)
-    mode = mode ? (mode === 2 ? 'Repeat queue' : 'Repeat song') : 'Off'
-    message.channel.send(`${client.emotes.repeat} | Set repeat mode to \`${mode}\``)
+    mode = mode ? (mode === 2 ? r_queue : r_song) : off
+    message.channel.send(`${client.emotes.repeat} | ${repeat_m} \`${mode}\``)
   }
 }

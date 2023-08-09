@@ -1,0 +1,12 @@
+{
+    "strings": [
+        {
+            "name": "no_queue",
+            "trans": "There is nothing in the queue right now!"
+        },
+        {
+            "name": "stopped",
+            "trans": "Stopped!"
+        }
+    ]
+}

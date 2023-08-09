@@ -1,0 +1,24 @@
+{
+    "strings": [
+        {
+            "name": "no_playing",
+            "trans": "There is nothing playing!"
+        },
+        {
+            "name": "r_queue",
+            "trans": "Repeat queue"
+        },
+        {
+            "name": "r_song",
+            "trans": "Repeat song"
+        },
+        {
+            "name": "off",
+            "trans": "Off"
+        },
+        {
+            "name": "repeat_m",
+            "trans": "Set repeat mode to"
+        }
+    ]
+}

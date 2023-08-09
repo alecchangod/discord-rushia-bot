@@ -1,0 +1,20 @@
+{
+    "strings": [
+        {
+            "name": "cmd",
+            "trans": "Commands"
+        },
+        {
+            "name": "n_cmd",
+            "trans": "Normal command"
+        },
+        {
+            "name": "m_cmd",
+            "trans": "Music command"
+        },
+        {
+            "name": "b_cmd",
+            "trans": "Base command"
+        }
+    ]
+}

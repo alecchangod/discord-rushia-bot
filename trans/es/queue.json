@@ -1,0 +1,16 @@
+{
+    "strings": [
+        {
+            "name": "no_playing",
+            "trans": "There is nothing playing!"
+        },
+        {
+            "name": "playing",
+            "trans": "Playing"
+        },
+        {
+            "name": "queue",
+            "trans": "Server Queue"
+        }
+    ]
+}

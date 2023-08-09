@@ -2,22 +2,24 @@ const { Constants } = require('discord.js')
 
 module.exports = {
   name: 'join',
-  aliases: ['move'],
+  aliases: ['join'],
   run: async (client, message, args, secret, prefix, trans) => {
+    // Get translate
+    var invalid_ch = trans.strings.find(it => it.name === "invalid_ch").trans;
+    var no_ch = trans.strings.find(it => it.name === "no_ch").trans;
+
     let voiceChannel = message.member.voice.channel
-    console.log("start join")
     if (args[0]) {
       voiceChannel = await client.channels.fetch(args[0])
       if (!Constants.VoiceBasedChannelTypes.includes(voiceChannel?.type)) {
-        return message.channel.send(`${client.emotes.error} | ${args[0]} is not a valid voice channel!`)
+        return message.channel.send(`${client.emotes.error} | ${args[0]} ${invalid_ch}`)
       }
     }
     if (!voiceChannel) {
       return message.channel.send(
-        `${client.emotes.error} | You must be in a voice channel or enter a voice channel id!`
+        `${client.emotes.error} | ${no_ch}`
       )
     }
     client.distube.voices.join(voiceChannel)
-    console.log("join done")
   }
 }

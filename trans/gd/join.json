@@ -1,0 +1,12 @@
+{
+    "strings": [
+        {
+            "name": "invalid_ch",
+            "trans": "is not a valid voice channel!"
+        },
+        {
+            "name": "no_ch",
+            "trans": "You must be in a voice channel or enter a voice channel id!"
+        }
+    ]
+}

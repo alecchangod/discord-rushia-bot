@@ -3,13 +3,18 @@ module.exports = {
   aliases: ['pause', 'hold'],
   inVoiceChannel: true,
   run: async (client, message, args, secret, prefix, trans) => {
+    // Get translate
+    var no_queue = trans.strings.find(it => it.name === "no_queue").trans;
+    var resumed = trans.strings.find(it => it.name === "resumed").trans;
+    var paused = trans.strings.find(it => it.name === "paused").trans;
+
     const queue = client.distube.getQueue(message)
-    if (!queue) return message.channel.send(`${client.emotes.error} | There is nothing in the queue right now!`)
+    if (!queue) return message.channel.send(`${client.emotes.error} | ${no_queue}`)
     if (queue.paused) {
       queue.resume()
-      return message.channel.send('Resumed the song for you :)')
+      return message.channel.send(resumed)
     }
     queue.pause()
-    message.channel.send('Paused the song for you :)')
+    message.channel.send(paused)
   }
 }

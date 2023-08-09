@@ -1,11 +1,16 @@
 module.exports = {
   name: 'nowplaying',
-  aliases: ['np'],
+  aliases: ['nowplaying'],
   inVoiceChannel: true,
   run: async (client, message, args, secret, prefix, trans) => {
+    // Get translate
+    var no_queue = trans.strings.find(it => it.name === "no_queue").trans;
+    var playing = trans.strings.find(it => it.name === "playing").trans;
+    var by = trans.strings.find(it => it.name === "by").trans;
+
     const queue = client.distube.getQueue(message)
-    if (!queue) return message.channel.send(`${client.emotes.error} | There is nothing in the queue right now!`)
+    if (!queue) return message.channel.send(`${client.emotes.error} | ${no_queue}`)
     const song = queue.songs[0]
-    message.channel.send(`${client.emotes.play} | I'm playing **\`${song.name}\`**, by ${song.user}`)
+    message.channel.send(`${client.emotes.play} | ${playing} **\`${song.name}\`**, ${by} ${song.user}`)
   }
 }

@@ -21,8 +21,9 @@ export async function run(client, message, args, secret, prefix, trans) {
     });
 
     if(message?.channel?.id) {
+        var ss_of = trans.strings.find(it => it.name === "ss_of").trans;
         message.channel.send({
-            content: `Screenshot of \`\`${url}\`\``, 
+            content: `\`\`${url}\`\` ${ss_of}`,
             files: ['screenshot/screenshot.png']
         });
     }

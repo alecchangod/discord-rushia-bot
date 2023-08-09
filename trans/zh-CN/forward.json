@@ -1,0 +1,20 @@
+{
+    "strings": [
+        {
+            "name": "no_queue",
+            "trans": "There is nothing in the queue right now!"
+        },
+        {
+            "name": "no_time",
+            "trans": "Please provide time (in seconds) to go forward!"
+        },
+        {
+            "name": "invalid_time",
+            "trans": "Please enter a valid number!"
+        },
+        {
+            "name": "forwarded",
+            "trans": "Forwarded the song for"
+        }
+    ]
+}
