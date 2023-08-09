@@ -43,13 +43,13 @@ module.exports = {
       const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
       str += `${p_msg}: ${repliedTo.author.tag}\n`;
       const rhasContent = repliedTo.content.length > 0;
-      str += rhasContent ? `\n${cont}: ${repliedTo.content}` : '';
+      str += rhasContent ? `${cont}: ${repliedTo.content}\n` : '';
 
       if (repliedTo.stickers.size > 0) {
         const ext = "png";
         const sck = repliedTo.stickers.first();
         const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
-        str += `\n,${sti_t}: ${sticurl}`;
+        str += `${sti_t}: ${sticurl}\n`;
 
       }
       if (repliedTo.attachments.size > 0) {
@@ -57,14 +57,14 @@ module.exports = {
         repliedTo.attachments.forEach(attachments => {
           size += attachments.size;
         });
-        str += size > 10485760 ? `,\n${file_t}: ${message.attachment.url}` : `,\n${file_t}:`;
+        str += size > 10485760 ? `${file_t}: ${message.attachment.url}\n` : `${file_t}:\n`;
         if (size <= 10485760) {
           files = repliedTo.attachments.values();
         }
       }
       if (repliedTo.embeds[0]) {
         receivedEmbed = repliedTo.embeds;
-        str += `\n${em}:`
+        str += `${em}:\n`
       }
 
       str += `\n\n===================================\n\n`;
@@ -72,27 +72,27 @@ module.exports = {
     }
 
     str += `${u}: ${authorTag} (<@${message.author.id}>)`;
-    str += hasContent ? `\n${cont}: ${message.content}` : '';
+    str += hasContent ? `${cont}: ${message.content}\n` : '';
 
     if (message.stickers.size > 0) {
       const ext = "png";
       const sck = message.stickers.first();
       const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
-      str += `\n,${sti_t}: ${sticurl}`;
+      str += `${sti_t}: ${sticurl}\n`;
     }
     if (message.attachments.size > 0) {
       let size = 0;
       message.attachments.forEach(attachments => {
         size += attachments.size;
       });
-      str += size > 10485760 ? `,\n${file_t}: ${message.attachment.url}` : `,\n${file_t}:`;
+      str += size > 10485760 ? `${file_t}: ${message.attachment.url}\n` : `${file_t}:\n`;
       if (size <= 10485760) {
         files = message.attachments.values();
       }
     }
     if (message.embeds[0]) {
       receivedEmbed = message.embeds;
-      str += `\n${em}:`
+      str += `${em}:\n`
     }
     split(str, channel, files, receivedEmbed);
 
