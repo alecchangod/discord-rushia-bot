@@ -155,20 +155,53 @@ async function fetchRepliedMessage(message) {
 
 function checkResponses(content) {
   const responses = {
-    '滾': '蛤',
-    '草': '蛤',
-    '幹': '蛤',
-    '操': '蛤',
+    '滾': '~~你嗎? 要滾去哪裏~~',
+    '哈': '怎麽',
+    '笑死': '~~要死了嗎? 一路好走~~ <:ShaSha_RIP:1133085967985672232>',
+    '就幹你': '<:nekocatgun:962380133354844181>',
+    '幹你啊': '<:nekocatgun:962380133354844181>',
+    '幹你': '<:FBI_Billy:959420058453557350> 這裏有位FBI欸 啊你剛説什麽?',
+    'fuck': '<:nekocatgun:962380133354844181> 要來打架是不是',
+    '來啊': '<a:pingpong:959396721333522432><a:pingpong:959396721333522432><a:pingpong:959396721333522432>',
+    'nekocatgun': '<:nekocatgun:962380133354844181> 要來打架是不是',
+    'pingpong': '<a:pingpong:959396721333522432><a:pingpong:959396721333522432><a:pingpong:959396721333522432>',
+    '煩': '<a:pingpong:959396721333522432>',
+    '幹': '~~你要幹誰?~~',
     '安靜': '蛤',
     '賣插': '蛤',
     '賣吵': '蛤',
     '麥插': '蛤',
     '麥吵': '蛤',
     '閉嘴': '蛤',
-    '蛤三小': '早安 <:RushiaYandere:948941963170828328>',
+    '説不出': '爲什麽我要浪費時間在你身上?',
+    '沒話説': '爲什麽我要浪費時間在你身上?',
+    '我是': '蛤? 你誰啊? 我不認識欸',
+    '因爲': '蛤? 你誰啊?',
+    '蛤三小': '怎麽? 有意見? 活膩了是不是?',
+    '不行': '我有説可以嗎?',
     '早安': '早安',
-    '蛤': '早安',
+    '蛤': '蛤三小',
     '怎麽了': '不知道',
+    '操': '怎麽? 有意見?',
+    '草': '好吃嗎? <a:eat:959739205670539294>',
+    '供三小': '蛤',
+    '嗨': '嗨',
+    '怎麽': '有意見?',
+    '三小': '尛',
+    '你誰': '~~我怎麽知道~~',
+    '誰': '你要找誰?',
+    '操': '去操自己 <:emoji_34:961594390994882570>',
+    '不要': '我有問你意見?',
+    '你忘記': 'https://media.discordapp.net/attachments/956867669959794728/960943560117596221/FB_IMG_1628385959138.jpg',
+    '婆': '婆婆?',
+    '要你説': '我有問你意見嗎?',
+    '還要你同意': '我有問你意見嗎?',
+    '你同意': '什麽鬼',
+    '不能說嗎': '誰説你可以的?',
+    '啊': '怎麽?',
+    '?': '蛤',
+    '.': '?',
+    '': '怎麽'
   };
   for (const key in responses) {
     if (content.includes(key)) {
@@ -223,7 +256,7 @@ client.on('messageCreate', async (message) => {
     await webhook.send({
       content: message.content.toString(),
       username: uname,
-      avatarURL: message.author.displayAvatarURL(),
+      avatarURL: user.displayAvatarURL(),
     }).then(async () => await message.delete())
   } catch (error) {
     console.log(error)
