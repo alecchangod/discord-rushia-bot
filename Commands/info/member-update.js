@@ -75,26 +75,28 @@ module.exports = {
     // Check for name changes and save new username
     // Username changes
     if ((newMember.user.tag) && (oldMember.user.tag != newMember.user.tag)) {
+      const authorTag = `${newMember.user.discriminator === '0' ? "@" : ""}${newMember.user.username}${newMember.user.discriminator === '0' ? "" : `#${newMember.user.discriminator}`}`;
       (async () => {
-        await member.set(`${newMember.guild.id}_${newMember.user.id}`, newMember.user.tag);
+        await member.set(`${newMember.guild.id}_${newMember.user.id}`, authorTag);
       })();
-      const name = `${namehasRecord} ${now_is} ${newMember.user.tag} 了`;
-      const b_name = `${namehasRecord} ${b_now_is} ${newMember.user.tag} 了`;
+      const name = `${namehasRecord} ${now_is} ${authorTag}`;
+      const b_name = `${namehasRecord} ${b_now_is} ${authorTag}`;
       // Only send message when really changed name
-      if ((namehasRecord != newMember.user.tag)) {
+      if ((namehasRecord != authorTag)) {
         usernamelog.send(`**${b_u_change}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_name}`)
         if (log) log.send(`**${u_change}**\n\n${name}`)
       }
     }
     // Display name changes
-    if ((newMember.displayName) || (namehasRecord != `${newMember.displayName}#${newMember.user.discriminator}`)) {
+    const authorTag = `${newMember.user.discriminator === '0' ? "@" : ""}${newMember.displayName}${newMember.user.discriminator === '0' ? "" : `#${newMember.user.discriminator}`}`;
+    if ((newMember.displayName) || (namehasRecord != authorTag)) {
       (async () => {
-        await member.set(`${newMember.guild.id}_${newMember.user.id}`, `${newMember.displayName}#${newMember.user.discriminator}`);
+        await member.set(`${newMember.guild.id}_${newMember.user.id}`, authorTag);
       })();
-      const name = `${namehasRecord} ${now_is} ${newMember.displayName}#${newMember.user.discriminator} 了`;
-      const b_name = `${namehasRecord} ${b_now_is} ${newMember.displayName}#${newMember.user.discriminator} 了`;
+      const name = `${namehasRecord} ${now_is} ${authorTag}`;
+      const b_name = `${namehasRecord} ${b_now_is} ${authorTag}`;
       // Only send message when really changed name
-      if ((namehasRecord != `${newMember.displayName}#${newMember.user.discriminator}`)) {
+      if ((namehasRecord != authorTag)) {
         usernamelog.send(`**${b_u_change}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_name}`)
         if (log) log.send(`**${u_change}**\n\n${name}`)
       }

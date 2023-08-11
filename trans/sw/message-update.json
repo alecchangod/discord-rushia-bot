@@ -13,10 +13,6 @@
             "trans": "New message"
         },
         {
-            "name": "not_recorded",
-            "trans": "No record"
-        },
-        {
             "name": "link_t",
             "trans": "Link"
         },
@@ -27,6 +23,18 @@
         {
             "name": "channel",
             "trans": "Channel"
+        },
+        {
+            "name": "file",
+            "trans": "Files"
+        },
+        {
+            "name": "sti_t",
+            "trans": "Stickers"
+        },
+        {
+            "name": "embed",
+            "trans": "Embeds"
         }
     ]
 }

@@ -1,3 +1,10 @@
+const { EmbedBuilder } = require("@discordjs/builders")
+const { QuickDB } = require("quick.db");
+const db = new QuickDB({ filePath: "database/messages.sqlite" });
+const member = new QuickDB({ filePath: "database/members.sqlite" });
+const fetch = require('node-fetch');
+const fs = require("fs")
+
 module.exports = {
   name: "DMs message logger",
   aliases: ["dms-logger"],
@@ -6,7 +13,11 @@ module.exports = {
     const channel = await client.channels.fetch(secret.PMlog);
     const authorTag = `${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`}`;
     const messageContent = message.content;
-    var str = `${authorTag} (<@${message.author.id}>)`;
+    let authorname = await member.get(`${message.author.id}`);
+    if ((!authorname) || (authorname != authorTag)) {
+      authorname = authorTag;
+      await member.set(`${message.author.id}`, authorname);
+    }
     var files = [];
     var receivedEmbed = [];
     const hasContent = messageContent.length > 0;
@@ -17,6 +28,7 @@ module.exports = {
     const sti_t = trans.strings.find(it => it.name === "sti_t").trans;
     const em = trans.strings.find(it => it.name === "embed").trans;
     const u = trans.strings.find(it => it.name === "user").trans;
+    const dm = trans.strings.find(it => it.name === "dm").trans;
 
     function split(str, channel, file, embed) {
       const exampleEmbed = embed ? new EmbedBuilder(embed).setTitle('New title') : null;
@@ -38,11 +50,20 @@ module.exports = {
       }
     };
 
+    // Start logging
+    var str = `**${dm}**\n`;
+
     // Is reply?
     if (message.reference?.messageId) {
       const repliedTo = await fetchRepliedMessage(message);
       if (repliedTo) {
-        str += `${p_msg}: ${repliedTo.author.tag}\n`;
+        const rauthorTag = `${repliedTo.author.discriminator === '0' ? "@" : ""}${repliedTo.author.username}${repliedTo.author.discriminator === '0' ? "" : `#${repliedTo.author.discriminator}`}`;
+        let rauthorname = await member.get(`${repliedTo.author.id}`);
+        if ((!rauthorname) || (rauthorname != rauthorTag)) {
+          rauthorname = rauthorTag;
+          await member.set(`${repliedTo.author.id}`, rauthorname);
+        }
+        str += `${p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
         const rhasContent = repliedTo.content.length > 0;
         str += rhasContent ? `${cont}: ${repliedTo.content}\n` : '';
 
@@ -59,7 +80,7 @@ module.exports = {
             size += attachments.size;
           });
           str += `${file_t}:\n`;
-          if (size <= 10485760) {
+          if (size <= 26214400) {
             files = repliedTo.attachments.values();
           }
           else repliedTo.attachments.forEach(attachments => {
@@ -75,14 +96,20 @@ module.exports = {
       }
     }
 
-    str += `${u}: ${authorTag} (<@${message.author.id}>)`;
-    str += hasContent ? `${cont}: ${message.content}\n` : '';
+    str += `${u}: ${authorname} (<@${message.author.id}>)\n`;
+    await db.set(`${message.id}_author`, message.author.id);
+
+    if (hasContent) {
+      str += `${cont}: ${messageContent}\n`;
+      await db.set(`${message.id}_cont`, messageContent);
+    }
 
     if (message.stickers.size > 0) {
       const ext = "png";
       const sck = message.stickers.first();
       const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
       str += `${sti_t}: ${sticurl}\n`;
+      await db.set(`${message.id}_sck`, sticurl);
     }
     if (message.attachments.size > 0) {
       let size = 0;
@@ -90,19 +117,44 @@ module.exports = {
         size += attachments.size;
       });
       str += `${file_t}:\n`;
-      if (size <= 10485760) {
+      if (size <= 26214400) {
         files = message.attachments.values();
+        const dirName = `messages/${message.id}`;
+        if (!fs.existsSync(dirName)) {
+          fs.mkdirSync(dirName);
+        }
+
+        message.attachments.forEach(async attachments => {
+          const response = await fetch(attachments.url);
+          // Split the file name and the extension
+          let fileNameParts = attachments.name.split('.');
+          let fileExtension = fileNameParts.pop();
+          let fileName = fileNameParts.join('.');
+          // Append a timestamp to the file name
+          let newFileName = `${fileName}_${Date.now()}.${fileExtension}`;
+          const filepath = `messages/${message.id}/${newFileName}`;
+          const fileStream = fs.createWriteStream(filepath);
+          response.body.pipe(fileStream);
+
+          fileStream.on('finish', () => {
+            fileStream.close();
+          });
+
+          await db.push(`${message.id}_file`, filepath);
+        })
       }
-      else message.attachments.forEach(attachments => {
-        str += `${attachments.url}\n`;
-      })
+      else {
+        message.attachments.forEach(attachments => {
+          str += `${attachments.url}\n`;
+        })
+      }
     }
     if (message.embeds[0]) {
       receivedEmbed = message.embeds;
       str += `${em}:\n`
+      await db.set(`${message.id}_embed`, receivedEmbed);
     }
     split(str, channel, files, receivedEmbed);
-
 
   }
 }

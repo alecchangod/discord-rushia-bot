@@ -1,14 +1,13 @@
 const { EmbedBuilder } = require("@discordjs/builders")
+const { QuickDB } = require("quick.db");
+const db = new QuickDB({ filePath: "database/messages.sqlite" });
+const member = new QuickDB({ filePath: "database/members.sqlite" });
+
 module.exports = {
   name: "Message delete logger",
   aliases: ["delete-logger"],
   description: 'Log all deleted message at "log" channel',
   run: async (client, message, secret, trans, b_trans) => {
-    // Get user information
-    const authorTag = `${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`}`;
-    // Send to the "log" channel
-    const messageContent = message.content;
-    const hasContent = messageContent.length > 0;
     let hasParent = message.channel.parent;
     var files = [];
     var receivedEmbed = [];
@@ -64,11 +63,13 @@ module.exports = {
           repliedTo.attachments.forEach(attachments => {
             size += attachments.size;
           });
+          b_str += `${b_file_t}:\n`;
           str += `${file_t}:\n`;
-          if (size <= 10485760) {
+          if (size <= 26214400) {
             files = repliedTo.attachments.values();
           }
           else repliedTo.attachments.forEach(attachments => {
+            b_str += `${attachments.url}\n`;
             str += `${attachments.url}\n`;
           })
         }
@@ -82,34 +83,29 @@ module.exports = {
         str += `\n\n===================================\n\n`;
       }
     }
+    const authorid = await db.get(`${message.id}_author`);
+    const authorname = await member.get(`${message.guildId}_${authorid}`);
 
-    b_str += `${b_u}: ${authorTag} (<@${message.author.id}>)\n`;
-    str += `${u}: ${authorTag} (<@${message.author.id}>)\n`;
-    b_str += hasContent ? `${b_cont}: ${message.content}\n` : '';
-    str += hasContent ? `${cont}: ${message.content}\n` : '';
+    b_str += `${b_u}: ${authorname} (<@${authorid}>)\n`;
+    str += `${u}: ${authorname} (<@${authorid}>)\n`;
 
-    if (message.stickers.size > 0) {
-      const ext = "png";
-      const sck = message.stickers.first();
-      const sticurl = `https://cdn.discordapp.com/stickers/${sck.id}.${ext}`;
+    const mct = await db.get(`${message.id}_cont`);
+
+    b_str += mct ? `${b_cont}: ${mct}\n` : '';
+    str += mct ? `${cont}: ${mct}\n` : '';
+
+    const sticurl = await db.get(`${message.id}_sck`);
+    if (sticurl) {
       b_str += `${b_sti_t}: ${sticurl}\n`;
       str += `${sti_t}: ${sticurl}\n`;
     }
-    if (message.attachments.size > 0) {
-      let size = 0;
-      message.attachments.forEach(attachments => {
-        size += attachments.size;
-      });
-      str += `${file_t}:\n`;
-      if (size <= 10485760) {
-        files = message.attachments.values();
-      }
-      else message.attachments.forEach(attachments => {
-        str += `${attachments.url}\n`;
-      })
+    const file = await db.get(`${message.id}_file`);
+    if (file) {
+      files = file.map(path => ({ attachment: path, name: path.split('/').pop() }));
     }
-    if (message.embeds[0]) {
-      receivedEmbed = message.embeds;
+    const embed = await db.get(`${message.id}_embed`);
+    if (embed) {
+      receivedEmbed = embed;
       b_str += `${b_em}:\n`
       str += `${em}:\n`
     }
