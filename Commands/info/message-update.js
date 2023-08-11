@@ -38,7 +38,7 @@ module.exports = {
       files = file.map(path => ({ attachment: path, name: path.split('/').pop() }));
     }
     const embed_db = await db.get(`${newMessage.id}_embed`);
-    if (newMessage.embeds) await db.set(`${newMessage.id}_embed`, newMessage.embeds);
+    if (newMessage.embeds[0]) await db.set(`${newMessage.id}_embed`, newMessage.embeds);
 
     let authorid = await db.get(`${newMessage.id}_author`);
     if (!authorid) {
