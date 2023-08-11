@@ -15,6 +15,18 @@
         {
             "name": "not_recorded",
             "trans": "Not recorded"
+        },
+        {
+            "name": "file",
+            "trans": "Files"
+        },
+        {
+            "name": "sti_t",
+            "trans": "Stickers"
+        },
+        {
+            "name": "embed",
+            "trans": "Embeds"
         }
     ]
 }
