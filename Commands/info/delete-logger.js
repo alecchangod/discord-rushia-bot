@@ -9,8 +9,7 @@ module.exports = {
   description: 'Log all deleted message at "log" channel',
   run: async (client, message, secret, trans, b_trans) => {
     let hasParent = message.channel.parent;
-    var files = [];
-    var receivedEmbed = [];
+    let files, rfiles, receivedEmbed;
     // Get translations
     const b__deleted = b_trans.strings.find(it => it.name === "deleted").trans;
     const b_t_message = b_trans.strings.find(it => it.name === "message").trans;
@@ -66,7 +65,7 @@ module.exports = {
           b_str += `${b_file_t}:\n`;
           str += `${file_t}:\n`;
           if (size <= 26214400) {
-            files = repliedTo.attachments.values();
+            rfiles = repliedTo.attachments.values();
           }
           else repliedTo.attachments.forEach(attachments => {
             b_str += `${attachments.url}\n`;
@@ -101,6 +100,8 @@ module.exports = {
     }
     const file = await db.get(`${message.id}_file`);
     if (file) {
+      b_str += `${b_file_t}:\n`;
+      str += `${file_t}:\n`;
       files = file.map(path => ({ attachment: path, name: path.split('/').pop() }));
     }
     const embed = await db.get(`${message.id}_embed`);
@@ -109,6 +110,10 @@ module.exports = {
       b_str += `${b_em}:\n`
       str += `${em}:\n`
     }
+
+    let attachments1 = rfiles ? Array.from(rfiles) : [];
+    let attachments2 = files ? Array.from(files) : [];
+    files = attachments1.concat(attachments2);
 
     client.channels.fetch(secret.delete_log_channel).then(log => {
       split(b_str, log, files, receivedEmbed);

@@ -18,8 +18,7 @@ module.exports = {
       authorname = authorTag;
       await member.set(`${message.author.id}`, authorname);
     }
-    var files = [];
-    var receivedEmbed = [];
+    let files, rfiles, receivedEmbed;
     const hasContent = messageContent.length > 0;
     // Get translations
     const file_t = trans.strings.find(it => it.name === "file").trans;
@@ -61,7 +60,7 @@ module.exports = {
           });
           str += `${file_t}:\n`;
           if (size <= 26214400) {
-            files = repliedTo.attachments.values();
+            rfiles = repliedTo.attachments.values();
           }
           else repliedTo.attachments.forEach(attachments => {
             str += `${attachments.url}\n`;
@@ -134,6 +133,11 @@ module.exports = {
       str += `${em}:\n`
       await db.set(`${message.id}_embed`, receivedEmbed);
     }
+
+    let attachments1 = rfiles ? Array.from(rfiles) : [];
+    let attachments2 = files ? Array.from(files) : [];
+    files = attachments1.concat(attachments2);
+
     split(str, channel, files, receivedEmbed);
 
   }

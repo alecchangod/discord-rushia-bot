@@ -13,10 +13,6 @@
             "trans": "was deleted."
         },
         {
-            "name": "msg_cont",
-            "trans": "Message content"
-        },
-        {
             "name": "file",
             "trans": "Files"
         },
