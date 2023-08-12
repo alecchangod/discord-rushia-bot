@@ -42,9 +42,9 @@ module.exports = {
     if (message.reference?.messageId) {
       const repliedTo = await fetchRepliedMessage(message);
       if (repliedTo) {
-        const rauthorTag = `${repliedTo.author.discriminator === '0' ? "@" : ""}${repliedTo.author.username}${repliedTo.author.discriminator === '0' ? "" : `#${repliedTo.author.discriminator}`}`;
-        b_str += `${b_p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
-        str += `${p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
+        let rauthorname = await member.get(`${message.guildId}_${repliedTo.author.id}`);
+        b_str += `${b_p_msg}: ${rauthorname} (<@${repliedTo.author.id}>)\n`;
+        str += `${p_msg}: ${rauthorname} (<@${repliedTo.author.id}>)\n`;
         const rhasContent = repliedTo.content.length > 0;
         b_str += rhasContent ? `${b_cont}: ${repliedTo.content}\n` : '';
         str += rhasContent ? `${cont}: ${repliedTo.content}\n` : '';

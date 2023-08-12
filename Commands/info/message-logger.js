@@ -29,7 +29,10 @@ module.exports = {
       const u = trans.strings.find(it => it.name === "user").trans;
 
       // Start logging
-      const authorTag = `${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`}`;
+      let user;
+      if (!message.webhookId) user = await message.guild.members.fetch(message.author.id);
+      let uname = user?.nickname || message.author.username;
+      const authorTag = `${message.author.discriminator === '0' ? "@" : ""}${uname}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`}`;
       var str = `${server}: ${message.guild.name} ${hasParent ? `\n${parent}: ${message.channel.parent.name}` : ''}\n${ch}: ${message.channel.name}\n`;
       let authorname = await member.get(`${message.guildId}_${message.author.id}`);
       if ((!authorname) || (authorname != authorTag)) {
@@ -40,7 +43,10 @@ module.exports = {
       if (message.reference?.messageId) {
         const repliedTo = await fetchRepliedMessage(message);
         if (repliedTo) {
-          const rauthorTag = `${repliedTo.author.discriminator === '0' ? "@" : ""}${repliedTo.author.username}${repliedTo.author.discriminator === '0' ? "" : `#${repliedTo.author.discriminator}`}`;
+          let ruser;
+          if (!repliedTo.webhookId) ruser = await message.guild.members.fetch(repliedTo.author.id);
+          let runame = ruser?.nickname || repliedTo.author.username;
+          const rauthorTag = `${repliedTo.author.discriminator === '0' ? "@" : ""}${runame}${repliedTo.author.discriminator === '0' ? "" : `#${repliedTo.author.discriminator}`}`;
           let rauthorname = await member.get(`${message.guildId}_${repliedTo.author.id}`);
           if ((!rauthorname) || (rauthorname != rauthorTag)) {
             rauthorname = rauthorTag;

@@ -46,7 +46,10 @@ module.exports = {
       await db.set(`${newMessage.id}_author`, authorid);
     }
     let authorname = await member.get(`${newMessage.guildId}_${authorid}`);
-    let authortag = `${newMessage.author.discriminator === '0' ? "@" : ""}${newMessage.author.username}${newMessage.author.discriminator === '0' ? "" : `#${newMessage.author.discriminator}`}`;
+    let username;
+    if (!newMessage.webhookId) username = await newMessage.guild.members.fetch(newMessage.author.id);
+    let uname = username?.nickname || newMessage.author.username;
+    let authortag = `${newMessage.author.discriminator === '0' ? "@" : ""}${uname}${newMessage.author.discriminator === '0' ? "" : `#${newMessage.author.discriminator}`}`;
     if ((!authorname) || (authorname != authortag)) {
       authorname = authortag;
       await member.set(`${newMessage.guildId}_${authorid}`, authorname);
