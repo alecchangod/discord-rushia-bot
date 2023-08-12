@@ -14,14 +14,14 @@ function startScheduledMessage(time, server, channelid, contents) {
   scheduledMessage.start();
 }
 // Self-role
-async function handleSelfRole(guildid, channel, messageid, reaction, roleid) {
+async function handleSelfRole(guildid, channel, messageid, reactionid, roleid) {
   const sr_log = await client.channels.fetch(secret.self_role_log_channel);
   const guild = client.guilds.cache.get(guildid);
   const message = await guild.channels.cache.get(channel).messages.fetch(messageid);
+  const reaction = client.emojis.cache.find(emoji => emoji.id === reactionid);
   message.react(reaction);
-  const reaction_name = reaction.split("<:")[1].split(":")[0];
-  const collector = message.createReactionCollector({ 
-    filter: (reaction, user) => reaction.emoji.name === reaction_name && !user.bot 
+  const collector = message.createReactionCollector({
+    filter: (reaction, user) => reaction.emoji.id === reactionid && !user.bot
   });
   collector.on('collect', async (reaction, user) => {
     const link = `https://discord.com/channels/${reaction.message.guildId}/${reaction.message.channelId}/${reaction.message.id}`;
@@ -61,6 +61,6 @@ client.on('ready', async () => {
   startScheduledMessage("00 00 12 * * *", secret.grp2, secret.channelID2, "你各位別當死魚堆");
 
   // Start to handle self-role
-  await handleSelfRole("949153367609987124", "963802334482284595", "963802394045583370", "<:makaneko_surprise:958407417559908382>", "964140235401355304");
-  await handleSelfRole("980650812499963914", "1082257504748183572", "1134574954906669236", "<:fubuki:1132672127984742490>", "1025995347455119361");
+  await handleSelfRole("949153367609987124", "963802334482284595", "963802394045583370", "958407417559908382", "964140235401355304");
+  await handleSelfRole("980650812499963914", "1082257504748183572", "1134574954906669236", "1132672127984742490", "1025995347455119361");
 });
