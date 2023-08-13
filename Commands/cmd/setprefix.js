@@ -6,6 +6,7 @@ module.exports = {
     name: 'Set Prefix',
     aliases: ['setprefix'],
     description: 'set prefix/serer',
+    trans: "set",
     run: async (client, message, args, secret, prefix, trans, langc) => {
         // Check if user have permission
         const member = message.guild.members.cache.get(message.author.id)

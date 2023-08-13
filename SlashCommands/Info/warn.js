@@ -34,11 +34,13 @@ module.exports = {
             },
         ],
         DefaultPermission: false,
-        userPermissions: PermissionsBitField.Flags.ModerateMembers,
+        trans: "moderate",
     },
-    async execute(client, interaction, args, secret, trans, langc, guild) {
+    async execute(client, interaction, args, secret, trans) {
         const member = interaction.options.getMember('user');
-        await checkmodperm(client, interaction, args, secret, trans, guild, member);
+
+        let status = await checkmodperm(client, interaction, secret, trans, member);
+        if (!status) return;
 
         let time = interaction.options.getInteger('time') || 5;
         member.timeout(1000 * 60 * time);
@@ -46,6 +48,6 @@ module.exports = {
         const min = trans.strings.find(it => it.name === "min").trans;
         interaction.reply(`${member} ${stfu} ${time} ${min} <:bananaV3:958346989597241344>`);
 
-        await warnch(client, interaction, args, secret, trans, guild, member);
+        await warnch(client, interaction, trans, member, "warn");
     }
 }

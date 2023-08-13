@@ -101,7 +101,9 @@ client.on('messageCreate', async message => {
 
   // Get language code from database or use server's one
   var langc = await db.get(`lang_${message.guild.id}`) || message.guild.preferredLocale;
-  let trans = require(`../../trans/${langc}/${cmd}.json`);
+  let trans;
+  if (command.trans) trans = require(`../../trans/${langc}/${command.trans}.json`);
+  else trans = require(`../../trans/${langc}/${cmd}.json`);
 
   // Run the command and catch error
   if (command) {
@@ -115,7 +117,7 @@ client.on('messageCreate', async message => {
 });
 
 // Common function to fetch command and execute it
-async function fetchAndRunCommand(message, cmd, langc) {
+async function fetchAndRunCommand(message, cmd) {
   let command = client.info.get(cmd) || client.info.get(client.aliases.get(cmd));
   var langc = secret.bot_lang;
   let trans = require(`../../trans/${langc}/${cmd}.json`);

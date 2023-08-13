@@ -19,10 +19,11 @@ module.exports = {
         type: ApplicationCommandOptionType.Integer,
         required: true
       }
-    ]
+    ],
+    trans: "spam",
   },
   userPermissions: PermissionsBitField.Flags.ManageMessages,
-  async execute(client, interaction, args, secret, trans, langc, guild) {
+  async execute(client, interaction, args, secret, trans) {
     if (interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages) || (interaction.member.id === secret.me)) {
       const amount = interaction.options.getInteger('amount');
       const content = interaction.options.getString('content');

@@ -6,8 +6,6 @@ module.exports = {
         name: "reaction",
         description: "React to a message",
         options: [
-
-
             {
                 name: 'add',
                 type: ApplicationCommandOptionType.Subcommand,
@@ -52,13 +50,10 @@ module.exports = {
                     },
                 ],
             },
-
-
-
-
         ],
+        trans: "reaction",
     },
-    async execute(client, interaction, args, secret, trans, langc, guild) {
+    async execute(client, interaction, args, secret, trans) {
         if (interaction.user.id != secret.me) return;
         try {
             var reaction = await interaction.options.getString('reaction');

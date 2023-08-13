@@ -23,9 +23,8 @@ module.exports = {
                     }
                 ]
             },
-
         ],
-        userPermissions: PermissionsBitField.Flags.ManageGuild,
+        trans: "webhook",
     },
     async execute(client, interaction, args, secret, trans, langc, guild) {
         try {

@@ -2,6 +2,7 @@ module.exports = {
   name: "List server",
   aliases: ["listsvr"],
   description: 'list server(owner only)',
+  trans: "owner_only",
   run: async (client, message, args, secret, prefix, trans) => {
     try {
       // Don't allow other people to use it

@@ -1,10 +1,11 @@
 module.exports = {
   data: {
-  name: "time",
-  aliases: ["time"],
-  description: 'get current time',
+    name: "time",
+    aliases: ["time"],
+    description: 'get current time',
+    trans: "time",
   },
-  async execute(client, interaction, args, secret, trans, langc, guild) {
+  async execute(client, interaction, args, secret, trans) {
     // Get translations
     const { trans: current_time } = trans.strings.find(it => it.name === "current_time");
     // Give reply about the current time

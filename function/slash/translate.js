@@ -3,7 +3,7 @@ const lang = require('../../lang.json');
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/server.sqlite" });
 
-async function slashtranslate(client, interaction, args, secret, trans, guild) {
+async function slashtranslate(client, interaction, trans) {
     const guildLang = await db.get(`lang_${interaction.guildId}`);
     const text = interaction.options.getString('text');
     const targetLang = interaction.options.getString('target_language') || guildLang || interaction.guild.preferredLocale;

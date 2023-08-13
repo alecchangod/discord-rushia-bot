@@ -2,6 +2,7 @@ module.exports = {
   name: 'repeat',
   aliases: ['repeat'],
   inVoiceChannel: true,
+  trans: "music",
   run: async (client, message, args, secret, prefix, trans) => {
     // Get translate
     var no_playing = trans.strings.find(it => it.name === "no_playing").trans;

@@ -8,10 +8,11 @@ const lang = require('../../lang.json');
 module.exports = {
     data: {
       name: "listlang",
-      description: 'List all available languages',
+      description: 'List all supported languages',
+      trans: "listlang"
     },
     
-    async execute(client, interaction, args, secret, trans, langc, guild) {
+    async execute(client, interaction, args, secret, trans) {
       const loading = trans.strings.find(it => it.name === "loading").trans;
         await interaction.reply({content: loading, ephemeral: true });
       try {

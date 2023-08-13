@@ -3,6 +3,7 @@ const Discord = require('discord.js')
 module.exports = {
   name: 'help',
   aliases: ['help'],
+  trans: "help",
   run: async (client, message, args, secret, prefix, trans) => {
     // Get translate
     var cmd = trans.strings.find(it => it.name === "cmd").trans;

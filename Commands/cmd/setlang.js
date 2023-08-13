@@ -11,6 +11,7 @@ module.exports = {
     name: 'Set Language',
     aliases: ["setlang"],
     description: 'Set Group Language',
+    trans: "set",
     run: async (client, message, args, secret, prefix, trans, langc) => {
       try {
         // Get message information

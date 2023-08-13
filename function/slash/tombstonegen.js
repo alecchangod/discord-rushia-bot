@@ -1,5 +1,5 @@
 const moment = require("moment");
-async function tombstonegen(client, interaction, args, secret, trans, guild, member) {
+async function tombstonegen(client, interaction, trans, member) {
     
     const mem_of = trans.strings.find(it => it.name === "mem_of").trans;
     const hated = trans.strings.find(it => it.name === "hated").trans;

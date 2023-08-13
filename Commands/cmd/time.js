@@ -2,6 +2,7 @@ module.exports = {
   name: "Time",
   aliases: ["time"],
   description: 'get current time',
+  trans: "time",
   run: async (client, message, args, secret, prefix, trans) => {
     // Get translations
     const current_time = trans.strings.find(it => it.name === "current_time").trans;

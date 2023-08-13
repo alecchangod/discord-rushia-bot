@@ -1,8 +1,0 @@
-{
-    "strings": [
-        {
-            "name": "not_found",
-            "trans": "Please enter a song url or query to search."
-        }
-    ]
-}

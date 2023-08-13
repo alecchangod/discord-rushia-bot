@@ -17,8 +17,16 @@
             "trans": "after message ID"
         },
         {
-            "name": "deleting",
+            "name": "deleting_after",
             "trans": "Deleting message after"
+        },
+        {
+            "name": "no_amount",
+            "trans": "Must specify an amount to delete!"
+        },
+        {
+            "name": "deleting",
+            "trans": "Deleting message"
         }
     ]
 }

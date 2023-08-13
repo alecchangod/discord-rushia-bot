@@ -30,16 +30,18 @@ module.exports = {
             },
         ],
         DefaultPermission: false,
-        userPermissions: PermissionsBitField.Flags.ModerateMembers,
+        trans: "moderate",
     },
-    async execute(client, interaction, args, secret, trans, langc, guild) {
+    async execute(client, interaction, args, secret, trans) {
         const member = interaction.options.getMember('user');
-        await checkmodperm(client, interaction, args, secret, trans, guild, member);
 
-        await byeuser(client, interaction, args, secret, trans, guild, member, "kick");
+        let status = await checkmodperm(client, interaction, secret, trans, member);
+        if (!status) return;
 
-        await tombstonegen(client, interaction, args, secret, trans, guild, member);
+        await byeuser(client, interaction, secret, trans, member, "kick");
 
-        await warnch(client, interaction, args, secret, trans, guild, member);
+        await tombstonegen(client, interaction, trans, member);
+
+        await warnch(client, interaction, trans, member, "kick");
     }
 }

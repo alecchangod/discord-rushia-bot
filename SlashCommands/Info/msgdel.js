@@ -12,9 +12,9 @@ module.exports = {
         required: true
       }
     ],
-    userPermissions: PermissionsBitField.Flags.ManageMessages,
+    trans: "purge",
   },
-  async execute(client, interaction, args, secret, trans, langc, guild) {
+  async execute(client, interaction, args, secret, trans) {
     try {
       const user = interaction.member;
       // Check if user has permission to delete message
@@ -28,7 +28,7 @@ module.exports = {
 
       // Reply first
       const deleting = trans.strings.find(it => it.name === "deleting").trans;
-      await interaction.reply({content: `${deleting} * ${amount} .`, ephemeral: true})
+      await interaction.reply({ content: `${deleting} * ${amount} .`, ephemeral: true })
 
       // Start counting
       let messagesDeleted = 0;
@@ -42,7 +42,7 @@ module.exports = {
       } while (amount > 0);
 
       // Give a reply after deleting required message
-        const msg_del = trans.strings.find(it => it.name === "msg_del").trans;
+      const msg_del = trans.strings.find(it => it.name === "msg_del").trans;
       await interaction.editReply(`<@${interaction.user.id}> ${msg_del} ${messagesDeleted} .`);
 
     } catch (error) {

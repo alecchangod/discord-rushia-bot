@@ -8,6 +8,7 @@ module.exports = {
   name: "Translate",
   aliases: ["tl"],
   description: 'translate a message',
+  trans: "translate",
   run: async (client, message, args, secret, prefix, trans) => {
     let svr_lang = await db.get(`lang_${message.guild.id}`);
     var hastarlangInput = true, hasorilangInput = true;

@@ -4,6 +4,7 @@ module.exports = {
   name: "Purge",
   aliases: ["msgdel"],
   description: 'purge message to delete (ONLY less than 14 days)',
+  trans: "purge",
   run: async (client, message, args, secret, prefix, trans) => {
     try {
 

@@ -1,6 +1,7 @@
 module.exports = {
   name: 'autoplay',
   inVoiceChannel: true,
+  trans: "music",
   run: async (client, message, args, secret, prefix, trans) => {
     const queue = client.distube.getQueue(message)
     var no_queue = trans.strings.find(it => it.name === "no_queue").trans;

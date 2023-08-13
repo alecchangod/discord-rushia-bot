@@ -2,8 +2,9 @@ module.exports = {
   data:{
   name: "listserver",
   description: "list server",
+  trans: "owner_only",
   },
-  async execute(client, interaction, args, secret, trans, langc, guild) {
+  async execute(client, interaction, args, secret, trans) {
     // Don't allow other people to use it
       const owner_only = trans.strings.find(it => it.name === "owner_only").trans;
     if (interaction.user.id !== secret.me) {

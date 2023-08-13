@@ -1,6 +1,6 @@
-async function warnch(client, interaction, args, secret, trans, guild, member) {
+async function warnch(client, interaction, trans, member, status) {
 
-    const doing = trans.strings.find(it => it.name === "status").trans;
+    const doing = trans.strings.find(it => it.name === status).trans;
 
     let warn_channel = interaction.options.getChannel('channel');
     let channel_id = warn_channel ? warn_channel.id : null;    

@@ -24,9 +24,10 @@ module.exports = {
         required: true,
       },
     ],
+    trans: "delmsgs",
   },
   userPermissions: PermissionsBitField.Flags.ManageMessages,
-  async execute(client, interaction, args, secret, trans, langc, guild) {
+  async execute(client, interaction, args, secret, trans) {
     const targetUser = interaction.options.getUser('target');
     const deleteCount = interaction.options.getInteger('count');
     let time = interaction.options.getInteger('time');
@@ -35,7 +36,7 @@ module.exports = {
     const user = interaction.member;
     if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
       const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
-      return interaction.reply("笑死你沒權限 <a:isis:963826754328330300>");
+      return interaction.reply(`${missing_permission} <a:isis:963826754328330300>`);
     }
 
     // Filter for MessageCollector - only collect messages of target user

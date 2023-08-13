@@ -28,9 +28,10 @@ module.exports = {
         type: ApplicationCommandOptionType.String,
         required: false
       }
-    ]
+    ],
+    trans: "translate",
   },
-  async execute(client, interaction, args, secret, trans, langc, guild) {
-    await slashtranslate(client, interaction, args, secret, trans, guild);
+  async execute(client, interaction, args, secret, trans) {
+    await slashtranslate(client, interaction, trans);
   }
 };

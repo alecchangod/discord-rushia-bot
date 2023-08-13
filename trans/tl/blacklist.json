@@ -22,7 +22,11 @@
         },
         {
             "name": "unbanned",
-            "trans": " was now unbanned."
+            "trans": "was now unbanned."
+        },
+        {
+            "name": "invalid_status",
+            "trans": "Please provide a valid status!"
         }
     ]
 }

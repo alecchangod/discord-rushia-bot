@@ -24,9 +24,9 @@ module.exports = {
         require: false
       }
     ],
-    userPermissions: PermissionsBitField.Flags.ManageMessages,
+    trans: "editmessage",
   },
-  async execute(client, interaction, args, secret, trans, langc, guild) {
+  async execute(client, interaction, args, secret, trans) {
     try {
 
       const user = interaction.member;

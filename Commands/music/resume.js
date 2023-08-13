@@ -2,6 +2,7 @@ module.exports = {
   name: 'resume',
   aliases: ['resume'],
   inVoiceChannel: true,
+  trans: "music",
   run: async (client, message, args, secret, prefix, trans) => {
     // Get translate
     var no_queue = trans.strings.find(it => it.name === "no_queue").trans;

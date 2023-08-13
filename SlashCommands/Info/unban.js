@@ -29,7 +29,7 @@ module.exports = {
         DefaultPermission: false,
         userPermissions: PermissionsBitField.Flags.ModerateMembers,
     },
-    async execute(client, interaction, args, secret, trans, langc, guild) {
+    async execute(client, interaction, args, secret, trans) {
         const member = interaction.options.getString('userid');
 
         // Check for user permission
@@ -58,6 +58,6 @@ module.exports = {
         message.guild.members.unban(member);
         interaction.reply(`${fine} <@${member}> ${join_again}`);
 
-        await warnch(client, interaction, args, secret, trans, guild, `<@${member}>`);
+        await warnch(client, interaction, trans, `<@${member}>`, "unban");
     }
 }

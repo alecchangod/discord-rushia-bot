@@ -7,8 +7,9 @@ module.exports = {
     data: {
         name: "serverinfo",
         description: "Get server info",
+        trans: "serverinfo",
     },
-    async execute(client, interaction, args, secret, trans, langc, guild) {
+    async execute(client, interaction, args, secret, trans) {
         const guildId = interaction.guild.id;
 
         const lang_c = await db.get(`lang_${guildId}`);

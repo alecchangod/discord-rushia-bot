@@ -3,6 +3,7 @@ module.exports = {
   name: "Warn",
   aliases: ["warn"],
   description: 'Timeout a user for 5 minutes',
+  trans: "moderate",
   run: async (client, message, args, secret, prefix, trans, langc) => {
     try {
       // Fetch message author
@@ -15,6 +16,9 @@ module.exports = {
       const bot = trans.strings.find(it => it.name === "bot").trans;
       if (message.author.bot)
         return message.reply(`${bot} <:pekora_whatwrongwithyou:976146270743855217>`);
+      // Check if the bot has the required permission
+      const no_perm = trans.strings.find(it => it.name === "no_perm").trans;
+      if (!message.guild.members.me.permissions.has(PermissionsBitField.Flags.ModerateMembers)) return interaction.reply(no_perm);
       // Get user to timeout
       const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
       // If no user provided
@@ -34,8 +38,6 @@ module.exports = {
       const warn_admin = trans.strings.find(it => it.name === "warn_admin").trans;
       if (member.permissions.has(PermissionsBitField.Flags.Administrator))
         return message.reply(`${warn_admin} <:emoji_34:961594390994882570>`);
-      // Check if the bot has the required permission
-      if (!interaction.guild.members.me.permissions.has(PermissionsBitField.Flags.ModerateMembers)) return interaction.reply('你確定要叫一個沒權限禁言的人來幫你?');
       // Timeout for 5 minutes
       member.timeout(1000 * 60 * 5);
       // Mention the user and tell the that they have been banned

@@ -25,9 +25,9 @@ module.exports = {
             },
 
         ],
-        userPermissions: PermissionsBitField.Flags.ManageGuild,
+        trans: "command",
     },
-    async execute(client, interaction, args, secret, trans, langc, guild) {
+    async execute(client, interaction, args, secret, trans) {
         try {
             const user = interaction.member;
             const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;

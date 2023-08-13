@@ -11,9 +11,9 @@ module.exports = {
             description: 'ID of the message after which messages should be purged',
             required: true,
         }],
-        userPermissions: PermissionsBitField.Flags.ManageMessages,
+        trans: "purge",
     },
-    async execute(client, interaction, args, secret, trans, langc, guild) {
+    async execute(client, interaction, args, secret, trans) {
         try {
             // Check if the interaction author have permission to delete message
             if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
@@ -25,7 +25,7 @@ module.exports = {
             const messageId = interaction.options.getString('messageid');
 
             // Reply first
-                const deleting = trans.strings.find(it => it.name === "deleting").trans;
+            const deleting = trans.strings.find(it => it.name === "deleting_after").trans;
             await interaction.reply({ content: `${deleting} https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messageId}`, ephemeral: true })
 
             let messagesDeleted = 0;

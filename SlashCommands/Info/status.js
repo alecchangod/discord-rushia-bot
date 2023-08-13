@@ -1,14 +1,14 @@
 const { ApplicationCommandOptionType, PermissionsBitField } = require('discord.js');
 module.exports = {
-  data: {
-    name: "status",
-    description: "server status",
-    userPermissions: PermissionsBitField.Flags.Administrator,
-  },
-    async execute(client, interaction, args, secret, trans, langc, guild) {
+    data: {
+        name: "status",
+        description: "server status",
+        trans: "owner_only",
+    },
+    async execute(client, interaction, args, secret, trans) {
         if (interaction.user.id !== secret.me) {
-      const owner_only = trans.strings.find(it => it.name === "owner_only").trans;
-      return interaction.reply(owner_only);
+            const owner_only = trans.strings.find(it => it.name === "owner_only").trans;
+            return interaction.reply(owner_only);
         }
         interaction.reply("wait...");
         const os = require('os');

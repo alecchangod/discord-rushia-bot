@@ -4,6 +4,7 @@ module.exports = {
   name: "Spam",
   aliases: ["spam"],
   description: 'spam message in a channel',
+  trans: "spam",
   run: async (client, message, args, secret, prefix, trans) => {
     // Check for user permission
     // If they have permission to run it

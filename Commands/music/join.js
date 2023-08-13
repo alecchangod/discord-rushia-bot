@@ -3,6 +3,7 @@ const { Constants } = require('discord.js')
 module.exports = {
   name: 'join',
   aliases: ['join'],
+  trans: "music",
   run: async (client, message, args, secret, prefix, trans) => {
     // Get translate
     var invalid_ch = trans.strings.find(it => it.name === "invalid_ch").trans;

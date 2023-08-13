@@ -5,6 +5,7 @@ module.exports = {
     name: "purge",
     aliases: ["purge"],
     description: 'purge message after a message (ONLY less than 14 days)',
+    trans: "purge",
     run: async (client, message, args, secret, prefix, trans) => {
         try {
             // Check if the message author have permission to delete message

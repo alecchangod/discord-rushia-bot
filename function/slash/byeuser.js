@@ -1,4 +1,4 @@
-async function byeuser(client, interaction, args, secret, trans, guild, member, status) {
+async function byeuser(client, interaction, secret, trans, member, status) {
 
     if (status === "ban") {
         interaction.guild.members.ban(member);

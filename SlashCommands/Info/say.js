@@ -51,9 +51,9 @@ module.exports = {
         ],
       },
     ],
-    // userPermissions: PermissionsBitField.Flags.ManageMessages,
+    trans: "say",
   },
-  async execute(client, interaction, args, secret, trans, langc, guild) {
+  async execute(client, interaction, args, secret, trans) {
     try {
       // Allow these users only
       const allowedUser = [secret.me, "805785752074977300", "1122862133043015751", "737133459222298694", "967404236407197736"];

@@ -6,6 +6,7 @@ module.exports = {
     name: 'Set Welcome Channel',
     aliases: ['setwelcome'],
     description: 'set welcome channel/serer',
+    trans: "set",
     run: async (client, message, args, secret, prefix, trans) => {
         // Check if user have permission
         const member = message.guild.members.cache.get(message.author.id);

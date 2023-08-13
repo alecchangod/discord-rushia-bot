@@ -2,6 +2,7 @@ module.exports = {
   name: "Ping",
   aliases: ["ping"],
   description: 'get your ping',
+  trans: "ping",
   run: async (client, message, args, secret, prefix, trans) => {
     // Get ping
     var yourping = new Date().getTime() - message.createdTimestamp

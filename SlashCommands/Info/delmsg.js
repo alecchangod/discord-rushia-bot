@@ -12,9 +12,10 @@ module.exports = {
         required: true,
       },
     ],
+    trans: "delmsg",
   },
   userPermissions: PermissionsBitField.Flags.ManageMessages,
-  async execute(client, interaction, args, secret, trans, langc, guild) {
+  async execute(client, interaction, args, secret, trans) {
     const user = interaction.member;
     if (!user.permissions.has(PermissionsBitField.Flags.ManageMessages) && (interaction.member.id != secret.me)) {
       const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;

@@ -15,8 +15,9 @@ module.exports = {
                 required: true
             },
         ],
+        trans: "converttopng",
     },
-    async execute(client, interaction, args, secret, trans, langc, guild) {
+    async execute(client, interaction, args, secret, trans) {
         try {
             const file = await interaction.options.getAttachment('image');
             console.log(file);
