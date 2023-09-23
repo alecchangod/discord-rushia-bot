@@ -16,7 +16,7 @@ module.exports = {
       const loading = trans.strings.find(it => it.name === "loading").trans;
         await interaction.reply({content: loading, ephemeral: true });
       try {
-        async function split(str, channel) {
+        function split(str, channel) {
             let startPos = 0;
             let partNumber = 1;
             let totalParts = Math.ceil(str.length / 1850);
@@ -31,7 +31,7 @@ module.exports = {
               startPos = endPos + 1;
           
               const content = `${part} \nPart ${partNumber} / ${totalParts}`;
-              await channel.send(content);
+              channel.send(content);
           
               partNumber++;
             }
