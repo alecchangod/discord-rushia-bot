@@ -8,7 +8,7 @@ module.exports = {
     aliases: ["dms-delete-logger"],
     description: 'Log messages deleted in DMs',
     run: async (client, message, secret, trans, b_trans, langc) => {
-        let channel = await client.channels.fetch(secret.PMlog);
+        let channel = await client.channels.fetch(secret.dm_log_channel);
         let files, rfiles, receivedEmbed;
         // Get translations
         const _deleted = b_trans.strings.find(it => it.name === "deleted").trans;

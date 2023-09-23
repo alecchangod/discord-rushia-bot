@@ -47,7 +47,7 @@ module.exports = {
         .catch(console.log);
       // If there is a warning channel
       // Working on a command to set it. For now, was hardcoded and for private use only.
-      let channel_id = message.guild.id === secret.grp ? secret.warn : message.guild.id === secret.grp1 ? secret.warn1 : null;
+      let channel_id = message.guild.id === secret.bot_testing_grp ? secret.bot_testing_grp_warn : message.guild.id === secret.bot_grp1 ? secret.bot_grp1_warn : null;
       if (!channel_id) return;
       // Send message to the warning channel
       const channel = await client.channels.fetch(channel_id);

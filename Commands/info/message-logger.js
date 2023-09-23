@@ -12,7 +12,7 @@ module.exports = {
   run: async (client, message, secret, trans) => {
     try {
       if ((message.channel.parent?.id === "963763737683181568")) return;
-      const channel = await client.channels.fetch(secret.log_channel);
+      const channel = await client.channels.fetch(secret.message_log_channel);
       const messageContent = message.content;
       const hasContent = messageContent.length > 0;
       let hasParent = message.channel.parent;

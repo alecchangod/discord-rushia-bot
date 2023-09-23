@@ -10,7 +10,7 @@ module.exports = {
   aliases: ["dms-logger"],
   description: 'Log DMs messages',
   run: async (client, message, secret, trans) => {
-    const channel = await client.channels.fetch(secret.PMlog);
+    const channel = await client.channels.fetch(secret.dm_log_channel);
     const authorTag = `${message.author.discriminator === '0' ? "@" : ""}${message.author.username}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`}`;
     const messageContent = message.content;
     let authorname = await member.get(`${message.author.id}`);

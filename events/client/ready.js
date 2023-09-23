@@ -58,7 +58,7 @@ client.on('ready', async () => {
   // Set status
   client.user.setPresence({ activities: [{ name: "誰在做夢", type: 3 }], status: 'idle', clientStatus: "PS5" });
   // Start schedule messages
-  startScheduledMessage("00 00 12 * * *", secret.grp2, secret.channelID2, "你各位別當死魚堆");
+  startScheduledMessage("00 00 12 * * *", secret.bot_grp2, secret.bot_grp2_chat, "你各位別當死魚堆");
 
   // Start to handle self-role
   await handleSelfRole("949153367609987124", "963802334482284595", "963802394045583370", "958407417559908382", "964140235401355304");
