@@ -3,7 +3,8 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/messages.sqlite" });
 const member = new QuickDB({ filePath: "database/members.sqlite" });
 const fetch = require('node-fetch');
-const fs = require("fs")
+const fs = require("fs");
+const split = require("../../function/common/split.js");
 
 module.exports = {
   name: "Message logger",
@@ -153,26 +154,6 @@ module.exports = {
     } catch (e) {
       console.log(e)
     }
-  }
-};
-
-function split(str, channel, file, embed) {
-  const exampleEmbed = embed ? new EmbedBuilder(embed).setTitle('New title') : null;
-  let startPos = 0;
-  let partNumber = 1;
-  let totalParts = Math.ceil(str.length / 1850);
-  while (startPos < str.length) {
-    let endPos = startPos + 1900;
-    if (endPos < str.length) {
-      const lastSpacePos = str.lastIndexOf(' ', endPos);
-      const lastNewLinePos = str.lastIndexOf('\n', endPos);
-      endPos = Math.max(lastSpacePos, lastNewLinePos);
-    }
-    const part = str.substring(startPos, endPos);
-    startPos = endPos + 1;
-    const content = `${part} \nPart ${partNumber} / ${totalParts}`;
-    channel.send(embed ? (file ? { content: content, files: Array.from(file), embeds: embed } : { content: content, embeds: embed }) : (file ? { content: content, files: Array.from(file) } : content));
-    partNumber++;
   }
 };
 
