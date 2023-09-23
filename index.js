@@ -50,7 +50,7 @@ const client = new Client({
 client.setMaxListeners(50);
 process.setMaxListeners(50);
 
-for (const collection of ["info", "cmd", "twitter", "music", "aliases", "categories", "events", "slashCommands"]) {
+for (const collection of ["info", "cmd", "music", "aliases", "categories", "events", "slashCommands"]) {
   client[collection] = new Collection();
 }
 

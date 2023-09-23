@@ -85,10 +85,8 @@ client.on('messageCreate', async message => {
   // Get command
   let command = client.info.get(cmd)
     || client.cmd.get(cmd)
-    || client.twitter.get(cmd)
     || client.music.get(cmd)
     || client.cmd.get(client.aliases.get(cmd))
-    || client.twitter.get(client.aliases.get(cmd))
     || client.music.get(client.aliases.get(cmd));
 
   // Return if command not found
