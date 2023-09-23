@@ -44,8 +44,6 @@ client.on('ready', async () => {
   // Rushia is now online!
   let str = `${client.user.tag} is ready on ${client.guilds.cache.size} servers.`
   console.log(str);
-  // Online logging
-  const log = await client.channels.fetch(secret.online_log_channel);
   str += `\n\`\`\``;
   // Show which group Rushia was in
   client.guilds.cache.forEach(guild => {
@@ -53,8 +51,13 @@ client.on('ready', async () => {
     console.log(channel);
     str += `\n${channel}`;
   });
-  // Send to log channel
-  log.send(`**${client.user.tag} was now online!** \n<t:${Math.floor(Date.now() / 1000)}>\n\n${str}\`\`\``);
+  // Online logging
+  if (secret.online_log_channel) {
+    const log = await client.channels.fetch(secret.online_log_channel);
+    // Send to log channel
+    log.send(`**${client.user.tag} was now online!** \n<t:${Math.floor(Date.now() / 1000)}>\n\n${str}\`\`\``);
+  }
+  else console.log("Online log channel id wasn't found. Please provide one in ``secret.online_log_channel``.")
   // Set status
   client.user.setPresence({ activities: [{ name: "誰在做夢", type: 3 }], status: 'idle', clientStatus: "PS5" });
   // Start schedule messages
