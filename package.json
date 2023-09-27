@@ -4,9 +4,7 @@
   "description": "Seems it is becoming a normal discord bot...?",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "rebuild": "electron-rebuild -f -w -v 26.2.2 better-sqlite3 ",
-    "postinstall": "electron-builder install-app-deps"
+    "start": "node index.js"
   },
   "author": "alecchangod",
   "license": "ISC",
