@@ -21,23 +21,24 @@ async function bl(interaction, secret, trans, user, status, word) {
 
 
     const group = await db.get('group');
-    const now = await db.get(interaction.guild.id);
+    const now = await db.get(`${interaction.guild.id}_word`);
+    const guildid = interaction.guild.id;
 
     if (status === "ban") {
-        if (!JSON.stringify(group).includes(interaction.guild.id)) await db.push('group', interaction.guild.id);
+        if (!JSON.stringify(group).includes(guildid)) await db.push('group', guildid);
 
         if (JSON.stringify(now).includes(word)) {
             return interaction.reply(already_banned);
         }
 
-        await db.push(`${interaction.guild.id}`, word);
+        await db.push(`${guildid}_word`, word);
 
         interaction.reply(`\`\`\`${word}\`\`\` ${banned} <a:isis:963826754328330300>`);
     }
 
     else if (status === "unban") {
 
-        if (!JSON.stringify(group).includes(interaction.guild.id)) {
+        if (!JSON.stringify(group).includes(guildid)) {
             return interaction.reply(no_word_banned);
         }
 
@@ -45,19 +46,19 @@ async function bl(interaction, secret, trans, user, status, word) {
             return interaction.reply(not_banned);
         }
 
-        await db.pull(`${interaction.guild.id}`, word);
+        await db.pull(`${guildid}_word`, word);
 
         interaction.reply(`\`\`\`${word}\`\`\` ${unbanned}`);
     }
 
     else if (status === "list") {
 
-        if (!JSON.stringify(group).includes(interaction.guild.id)) {
+        if (!JSON.stringify(group).includes(guildid)) {
             return interaction.reply(no_word_banned);
         }
 
         // Get the list of blocked words for this guild
-        var blocked = await db.get(`${interaction.guild.id}`);
+        var blocked = await db.get(`${guildid}_word`);
 
         // Show the list of blocked words
         let list = list_of_word_banned;
