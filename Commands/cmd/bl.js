@@ -1,6 +1,6 @@
 const { PermissionsBitField } = require('discord.js');
 const { QuickDB } = require("quick.db");
-const db = new QuickDB({ filePath: "database/blacklist.sqlite" });
+const db = new QuickDB({ filePath: "database/bad_word.sqlite" });
 
 module.exports = {
   name: 'Blacklist',

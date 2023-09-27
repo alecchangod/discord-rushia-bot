@@ -43,7 +43,7 @@ client.on('messageCreate', async message => {
   if (!JSON.stringify(grp).includes(message.guild?.id)) return;
 
   // Get the list of blocked words for this guild
-  var blocked = await bl.get(`${message.guild?.id}`);
+  var blocked = await bl.get(`${message.guild.id}`);
 
   // Delete the message if it contains a blocked word
   blocked.forEach(word => {
