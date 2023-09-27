@@ -73,7 +73,7 @@ module.exports = {
 
     let logContent = `${ch}: ${newMessage.channel.name} (${newMessage.channel})\n`
     logContent += `${user}: ${authorname} (<@${authorid}>)`;
-    let b_logContent = `${b_server}: ${newMessage.guild.name} \n${b_ch}: ${newMessage.channel.name} (${newMessage.channel})\n`
+    let b_logContent = `${b_server}: ${newMessage.guild.name} (${newMessage.guild.id}) \n${b_ch}: ${newMessage.channel.name} (${newMessage.channel.id})\n`
     b_logContent += `${b_user}: ${authorname} (<@${authorid}>)`;
     let channel = newMessage.guild.channels.cache.find(ch => ch.name.toLowerCase() === 'log');
 

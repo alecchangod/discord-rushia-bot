@@ -34,7 +34,7 @@ module.exports = {
       if (!message.webhookId) user = await message.guild.members.fetch(message.author.id);
       let uname = user?.nickname || message.author.username;
       const authorTag = `${message.author.discriminator === '0' ? "@" : ""}${uname}${message.author.discriminator === '0' ? "" : `#${message.author.discriminator}`}`;
-      var str = `${server}: ${message.guild.name} ${hasParent ? `\n${parent}: ${message.channel.parent.name}` : ''}\n${ch}: ${message.channel.name}\n`;
+      var str = `${server}: ${message.guild.name} (${message.guild.id}) ${hasParent ? `\n${parent}: ${message.channel.parent.name}` : ''}\n${ch}: ${message.channel.name} (${message.channel.id})\n`;
       let authorname = await member.get(`${message.guildId}_${message.author.id}`);
       if ((!authorname) || (authorname != authorTag)) {
         authorname = authorTag;
