@@ -32,6 +32,13 @@ module.exports = {
           },
         ],
       },
+      {
+        name: 'list',
+        type: ApplicationCommandOptionType.Subcommand,
+        description: 'List the word banned',
+        options: [
+        ],
+      },
     ],
     trans: "blacklist",
   },

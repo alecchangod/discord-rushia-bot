@@ -27,6 +27,14 @@
         {
             "name": "invalid_status",
             "trans": "Please provide a valid status!"
+        },
+        {
+            "name": "list_of_word_banned",
+            "trans": "List of words banned:"
+        },
+        {
+            "name": "sending_list_of_word_banned",
+            "trans": "Now sending list of words banned."
         }
     ]
 }
