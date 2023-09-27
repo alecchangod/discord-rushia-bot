@@ -36,7 +36,7 @@ client.on('messageCreate', async message => {
   var prefix = await db.get(`prefix_${message.guild?.id}`) || PREFIX;
 
   // Ignore commands for adding or deleting blocked words
-  if (message.content.startsWith(`${prefix}bl add`) || message.content.startsWith(`${prefix}bl del`)) return;
+  if (message.content.startsWith(`${prefix}bl ban`) || message.content.startsWith(`${prefix}bl unban`)) return;
 
   // Check if the guild has blocked words
   var grp = await bl.get('group');
