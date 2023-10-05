@@ -10,7 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "@electron/rebuild": "^3.3.0",
-    "electron": "^26.2.2",
+    "electron": "^26.2.4",
     "electron-prebuilt": "^1.4.13",
     "node": "^16.6.1"
   },
