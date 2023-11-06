@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require("@discordjs/builders");
 async function split(str, channel, file, embed) {
   const exampleEmbed = embed ? new EmbedBuilder(embed).setTitle('New title') : null;
   let startPos = 0;
