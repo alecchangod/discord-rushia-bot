@@ -1,6 +1,15 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require("@discordjs/builders")
-const { ApplicationCommandOptionType, ButtonStyle, PermissionsBitField } = require("discord.js")
-const wait = require('node:timers/promises').setTimeout;
+const {
+  EmbedBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  SelectMenuBuilder,
+} = require("@discordjs/builders");
+const {
+  ApplicationCommandOptionType,
+  ButtonStyle,
+  PermissionsBitField,
+} = require("discord.js");
+const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
   data: {
@@ -8,37 +17,49 @@ module.exports = {
     description: "spam message in a channel (owner only for now)",
     options: [
       {
-        name: 'content',
-        description: 'Enter message that you want to send',
+        name: "content",
+        description: "Enter message that you want to send",
         type: ApplicationCommandOptionType.String,
-        required: true
+        required: true,
       },
       {
-        name: 'amount',
-        description: 'Enter amount of messages to send',
+        name: "amount",
+        description: "Enter amount of messages to send",
         type: ApplicationCommandOptionType.Integer,
-        required: true
-      }
+        required: true,
+      },
     ],
     trans: "spam",
   },
   userPermissions: PermissionsBitField.Flags.ManageMessages,
   async execute(client, interaction, args, secret, trans) {
-    if (interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages) || (interaction.member.id === secret.me)) {
-      const amount = interaction.options.getInteger('amount');
-      const content = interaction.options.getString('content');
+    if (
+      interaction.member.permissions.has(
+        PermissionsBitField.Flags.ManageMessages
+      ) ||
+      interaction.member.id === secret.me
+    ) {
+      const amount = interaction.options.getInteger("amount");
+      const content = interaction.options.getString("content");
 
-      const now_sending = trans.strings.find(it => it.name === "now_sending").trans;
-      const to = trans.strings.find(it => it.name === "to").trans;
+      const now_sending = trans.strings.find(
+        (it) => it.name === "now_sending"
+      ).trans;
+      const to = trans.strings.find((it) => it.name === "to").trans;
 
-      interaction.reply({ content: `${now_sending} ${amount} * ${content} ${to} <#${interaction.channelId}>`, ephemeral: true });
+      interaction.reply({
+        content: `${now_sending} ${amount} * ${content} ${to} <#${interaction.channelId}>`,
+        ephemeral: true,
+      });
 
       for (let i = 0; i < amount; i++) {
         await interaction.channel.send(content);
         await wait(100);
       }
     } else {
-      const missing_permission = trans.strings.find(it => it.name === "missing_permission").trans;
+      const missing_permission = trans.strings.find(
+        (it) => it.name === "missing_permission"
+      ).trans;
       await interaction.reply(missing_permission);
     }
   },

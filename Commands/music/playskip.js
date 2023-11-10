@@ -1,19 +1,20 @@
 module.exports = {
-  name: 'playskip',
-  aliases: ['playskip'],
+  name: "playskip",
+  aliases: ["playskip"],
   inVoiceChannel: true,
   trans: "music",
   run: async (client, message, args, secret, prefix, trans) => {
     // Get translate
-    var not_found = trans.strings.find(it => it.name === "not_found").trans;
+    var not_found = trans.strings.find((it) => it.name === "not_found").trans;
 
-    const string = args.join(' ')
-    if (!string) return message.channel.send(`${client.emotes.error} | ${not_found}`)
+    const string = args.join(" ");
+    if (!string)
+      return message.channel.send(`${client.emotes.error} | ${not_found}`);
     client.distube.play(message.member.voice.channel, string, {
       member: message.member,
       textChannel: message.channel,
       message,
-      skip: true
-    })
-  }
-}
+      skip: true,
+    });
+  },
+};

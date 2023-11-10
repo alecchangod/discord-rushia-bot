@@ -1,10 +1,10 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionsBitField } = require("discord.js");
 const bl = require("../../function/common/bl.js");
 
 module.exports = {
-  name: 'Blacklist',
+  name: "Blacklist",
   aliases: ["bl"],
-  description: 'Ban words in a group (case sensitive)',
+  description: "Ban words in a group (case sensitive)",
   trans: "blacklist",
   run: async (client, message, args, secret, prefix, trans) => {
     try {
@@ -17,9 +17,8 @@ module.exports = {
       const word = det[2];
       // Run the commands
       bl(message, secret, trans, user, status, word);
-
     } catch (error) {
       console.error(`Error executing blacklist (bl) command: ${error}`);
     }
-  }
+  },
 };

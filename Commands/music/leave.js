@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'leave',
+  name: "leave",
   trans: "music",
   run: async (client, message) => {
-    client.distube.voices.leave(message)
-  }
-}
+    client.distube.voices.leave(message);
+  },
+};
