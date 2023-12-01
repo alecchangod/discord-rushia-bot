@@ -1,5 +1,6 @@
 const { QuickDB } = require("quick.db");
 const member = new QuickDB({ filePath: "database/members.sqlite" });
+const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
   name: "Member Updates",
@@ -8,11 +9,11 @@ module.exports = {
   run: async (client, oldMember, newMember, secret, trans, b_trans) => {
     // Check if was saved at database
     const rolehasRecord = await member.get(
-      `${newMember.guild.id}_roles_${newMember.user.id}`
+      `${newMember.guild.id}_${newMember.user.id}_roles`
     );
-    const namehasRecord = await member.get(
-      `${newMember.guild.id}_${newMember.user.id}`
-    );
+    const namehasRecord =
+      (await member.get(`${newMember.guild.id}_${newMember.user.id}`)) ||
+      (await member.get(`${newMember.user.id}_username`));
 
     // Few logging channels
     const newrecord = await client.channels.fetch(secret.newrecord_log_channel);
@@ -30,6 +31,9 @@ module.exports = {
       (it) => it.name === "r_changed"
     ).trans;
     const b_now_is = b_trans.strings.find((it) => it.name === "now_is").trans;
+    const b_n_now_is = b_trans.strings.find(
+      (it) => it.name === "n_now_is"
+    ).trans;
     const b_u_change = b_trans.strings.find(
       (it) => it.name === "u_change"
     ).trans;
@@ -38,6 +42,7 @@ module.exports = {
     const m_rm = trans.strings.find((it) => it.name === "m_rm").trans;
     const r_changed = trans.strings.find((it) => it.name === "r_changed").trans;
     const now_is = trans.strings.find((it) => it.name === "now_is").trans;
+    const n_now_is = trans.strings.find((it) => it.name === "n_now_is").trans;
     const u_change = trans.strings.find((it) => it.name === "u_change").trans;
 
     // Save if not yet saved
@@ -45,22 +50,29 @@ module.exports = {
       newrecord.send(
         `${newMember.guild.name}(${newMember.guild.id})\n ${newMember.user.tag} ${adding}`
       );
+      let role_id_added = [];
+      let role_added = [];
       newMember.roles.cache.forEach(async (role) => {
         if (
           !rolehasRecord ||
           !JSON.stringify(rolehasRecord).includes(role.id)
         ) {
-          (async () => {
-            await member.push(
-              `${newMember.guild.id}_roles_${newMember.user.id}`,
-              role.id
-            );
-            newrecord.send(
-              `${newMember.guild.name}(${newMember.guild.id})\n${newMember.user.tag} ${b_m_add} ${role.name}`
-            );
-          })();
+          role_id_added.push(role.id);
+          role_added.push(role.name);
         }
       });
+      (async () => {
+        await member.set(
+          `${newMember.guild.id}_${newMember.user.id}_roles`,
+          role_id_added
+        );
+        newrecord.send(
+          `${newMember.guild.name}(${newMember.guild.id})\n${
+            newMember.user.tag
+          } ${b_m_add} ${role_added.join(", ")}`
+        );
+      })();
+
       newrecord.send(
         `${newMember.guild.name}(${newMember.guild.id})\n${newMember.user.tag} ${added}`
       );
@@ -69,16 +81,30 @@ module.exports = {
     const log = newMember.guild.channels.cache.find(
       (ch) => ch.name.toLowerCase() === "log"
     );
+
     // Check for roles changes
+    // Get saved roles id
+    let recorded = await member.get(
+      `${newMember.guild.id}_${newMember.user.id}_roles`
+    );
+
+    // Wait for 1 second for new record if recorded was null
+    if (!recorded) {
+      await wait(1000);
+      recorded = await member.get(
+        `${newMember.guild.id}_${newMember.user.id}_roles`
+      );
+    }
+
     // Removal
     const removedRoles = oldMember.roles.cache.filter(
-      (role) => !newMember.roles.cache.has(role.id)
+      (role) => !recorded.includes(role.id)
     );
     if (removedRoles.size) {
       const roleNames = removedRoles.map((r) => r.name).toString();
       if (roleNames.length) {
         await member.pull(
-          `${newMember.guild.id}_roles_${newMember.user.id}`,
+          `${newMember.guild.id}_${newMember.user.id}_roles`,
           removedRoles.map((r) => r.id)
         );
         const newr = `${newMember.user.tag} ${m_rm} ${roleNames}`;
@@ -89,15 +115,16 @@ module.exports = {
         if (log) log.send(`**${r_changed}**\n\n${newr}`);
       }
     }
+
     // Addition
     const addedRoles = newMember.roles.cache.filter(
-      (role) => !oldMember.roles.cache.has(role.id)
+      (role) => !recorded.includes(role.id)
     );
     if (addedRoles.size) {
       const roleNames = addedRoles.map((r) => r.name).toString();
       if (roleNames.length) {
         await member.push(
-          `${newMember.guild.id}_roles_${newMember.user.id}`,
+          `${newMember.guild.id}_${newMember.user.id}_roles`,
           addedRoles.map((r) => r.id)
         );
         const rmr = `${newMember.user.tag} ${m_add} ${roleNames}`;
@@ -120,13 +147,10 @@ module.exports = {
           : `#${newMember.user.discriminator}`
       }`;
       (async () => {
-        await member.set(
-          `${newMember.guild.id}_${newMember.user.id}`,
-          authorTag
-        );
+        await member.set(`${newMember.user.id}_username`, authorTag);
       })();
-      const name = `${namehasRecord} ${now_is} ${authorTag}`;
-      const b_name = `${namehasRecord} ${b_now_is} ${authorTag}`;
+      const name = `${namehasRecord} ${n_now_is} ${authorTag}`;
+      const b_name = `${namehasRecord} ${b_n_now_is} ${authorTag}`;
       // Only send message when really changed name
       if (namehasRecord != authorTag) {
         usernamelog.send(

@@ -25,8 +25,16 @@
             "trans": "changed username to"
         },
         {
+            "name": "n_now_is",
+            "trans": "changed nickname to"
+        },
+        {
             "name": "u_change",
             "trans": "Changed username"
+        },
+        {
+            "name": "n_change",
+            "trans": "Changed nickname"
         }
     ]
 }
