@@ -35,6 +35,10 @@
         {
             "name": "n_change",
             "trans": "Changed nickname"
+        },
+        {
+            "name": "n_removed",
+            "trans": "Removed nickname"
         }
     ]
 }

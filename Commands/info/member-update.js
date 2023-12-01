@@ -31,8 +31,14 @@ module.exports = {
       (it) => it.name === "r_changed"
     ).trans;
     const b_now_is = b_trans.strings.find((it) => it.name === "now_is").trans;
+    const b_n_change = b_trans.strings.find(
+      (it) => it.name === "n_change"
+    ).trans;
     const b_n_now_is = b_trans.strings.find(
       (it) => it.name === "n_now_is"
+    ).trans;
+    const b_n_removed = b_trans.strings.find(
+      (it) => it.name === "n_removed"
     ).trans;
     const b_u_change = b_trans.strings.find(
       (it) => it.name === "u_change"
@@ -42,7 +48,9 @@ module.exports = {
     const m_rm = trans.strings.find((it) => it.name === "m_rm").trans;
     const r_changed = trans.strings.find((it) => it.name === "r_changed").trans;
     const now_is = trans.strings.find((it) => it.name === "now_is").trans;
+    const n_change = trans.strings.find((it) => it.name === "n_change").trans;
     const n_now_is = trans.strings.find((it) => it.name === "n_now_is").trans;
+    const n_removed = trans.strings.find((it) => it.name === "n_removed").trans;
     const u_change = trans.strings.find((it) => it.name === "u_change").trans;
 
     // Save if not yet saved
@@ -149,8 +157,8 @@ module.exports = {
       (async () => {
         await member.set(`${newMember.user.id}_username`, authorTag);
       })();
-      const name = `${namehasRecord} ${n_now_is} ${authorTag}`;
-      const b_name = `${namehasRecord} ${b_n_now_is} ${authorTag}`;
+      const name = `${namehasRecord} ${now_is} ${authorTag}`;
+      const b_name = `${namehasRecord} ${b_now_is} ${authorTag}`;
       // Only send message when really changed name
       if (namehasRecord != authorTag) {
         usernamelog.send(
@@ -174,14 +182,24 @@ module.exports = {
           authorTag
         );
       })();
-      const name = `${namehasRecord} ${now_is} ${authorTag}`;
-      const b_name = `${namehasRecord} ${b_now_is} ${authorTag}`;
+
+      let removed_nickname =
+        newMember.user.globalName === newMember.displayName;
+      const name = `${removed_nickname ? authorTag : namehasRecord} ${
+        removed_nickname ? n_removed.toLowerCase() : n_now_is
+      } ${removed_nickname ? namehasRecord : authorTag}`;
+      const b_name = `${removed_nickname ? authorTag : namehasRecord} ${
+        removed_nickname ? b_n_removed.toLowerCase() : b_n_now_is
+      } ${removed_nickname ? namehasRecord : authorTag}`;
       // Only send message when really changed name
       if (namehasRecord != authorTag) {
         usernamelog.send(
-          `**${b_u_change}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_name}`
+          `**${removed_nickname ? b_n_removed : b_n_change}**\n\n${
+            newMember.guild.name
+          }(${newMember.guild.id})\n ${b_name}`
         );
-        if (log) log.send(`**${u_change}**\n\n${name}`);
+        if (log)
+          log.send(`**${removed_nickname ? n_removed : n_change}**\n\n${name}`);
       }
     }
   },
