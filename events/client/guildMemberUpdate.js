@@ -1,5 +1,6 @@
 // Imports the client library
 const client = require("../../index.js");
+const fs = require("fs");
 const secret = require("../../config.json");
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/server.sqlite" });
@@ -13,9 +14,21 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   var langc =
     (await db.get(`lang_${newMember.guild.id}`)) ||
     newMember.guild.preferredLocale;
-  let trans = require(`../../trans/${langc}/${cmd}.json`);
+  let trans_name = cmd;
+
+  let file_exist = fs.existsSync(`trans/${langc}/${trans_name}.json`);
+
+  let trans = file_exist
+    ? require(`../../trans/${langc}/${trans_name}.json`)
+    : require(`../../trans/en-US/${trans_name}.json`);
+
   var b_langc = secret.bot_lang;
-  let b_trans = require(`../../trans/${b_langc}/${cmd}.json`);
+
+  let b_file_exist = fs.existsSync(`trans/${b_langc}/${trans_name}.json`);
+
+  let b_trans = b_file_exist
+    ? require(`../../trans/${b_langc}/${trans_name}.json`)
+    : require(`../../trans/en-US/${trans_name}.json`);
   if (command)
     command.run(client, oldMember, newMember, secret, trans, b_trans);
 });

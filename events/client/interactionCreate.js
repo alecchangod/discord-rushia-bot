@@ -1,5 +1,6 @@
 // Imports the client library
 const client = require("../../index.js");
+const fs = require("fs");
 const secret = require("../../config.json");
 const { QuickDB } = require("quick.db");
 const db = new QuickDB({ filePath: "database/server.sqlite" });
@@ -83,10 +84,15 @@ client.on("interactionCreate", async (interaction) => {
     var langc =
       (await db.get(`lang_${interaction.guild.id}`)) ||
       interaction.guild.preferredLocale;
-    let trans;
-    if (cmd.data.trans)
-      trans = require(`../../trans/${langc}/${cmd.data.trans}.json`);
-    else trans = require(`../../trans/${langc}/${cmd}.json`);
+
+    let trans_name = cmd.data.trans ? cmd.data.trans : cmd;
+
+    let file_exist = fs.existsSync(`trans/${langc}/${trans_name}.json`);
+
+    let trans = file_exist
+      ? require(`../../trans/${langc}/${trans_name}.json`)
+      : require(`../../trans/en-US/${trans_name}.json`);
+
     interaction.member = interaction.guild.members.cache.get(
       interaction.user.id
     );

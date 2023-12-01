@@ -1,5 +1,6 @@
 // Imports the client library
 const client = require("../../index.js");
+const fs = require("fs");
 const PREFIX = "=";
 const secret = require("../../config.json");
 const { QuickDB } = require("quick.db");
@@ -117,10 +118,14 @@ client.on("messageCreate", async (message) => {
   // Get language code from database or use server's one
   var langc =
     (await db.get(`lang_${message.guild.id}`)) || message.guild.preferredLocale;
-  let trans;
-  if (command.trans)
-    trans = require(`../../trans/${langc}/${command.trans}.json`);
-  else trans = require(`../../trans/${langc}/${cmd}.json`);
+
+  let trans_name = command.trans ? command.trans : cmd;
+
+  let file_exist = fs.existsSync(`trans/${langc}/${trans_name}.json`);
+
+  let trans = file_exist
+    ? require(`../../trans/${langc}/${trans_name}.json`)
+    : require(`../../trans/en-US/${trans_name}.json`);
 
   // Run the command and catch error
   if (command) {
@@ -138,7 +143,15 @@ async function fetchAndRunCommand(message, cmd) {
   let command =
     client.info.get(cmd) || client.info.get(client.aliases.get(cmd));
   var langc = secret.bot_lang;
-  let trans = require(`../../trans/${langc}/${cmd}.json`);
+
+  let trans_name = cmd;
+
+  let file_exist = fs.existsSync(`trans/${langc}/${trans_name}.json`);
+
+  let trans = file_exist
+    ? require(`../../trans/${langc}/${trans_name}.json`)
+    : require(`../../trans/en-US/${trans_name}.json`);
+
   if (command) command.run(client, message, secret, trans, langc);
 }
 

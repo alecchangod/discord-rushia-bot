@@ -1,8 +1,0 @@
-{
-    "strings": [
-        {
-            "name": "owner_only",
-            "trans": "This command is owner only."
-        }
-    ]
-}
