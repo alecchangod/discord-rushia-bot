@@ -51,21 +51,35 @@ module.exports = {
       authorid = newMessage.author.id;
       await db.set(`${newMessage.id}_author`, authorid);
     }
-    let authorname = await member.get(`${newMessage.guildId}_${authorid}`);
-    let username;
+
+    let author;
     if (!newMessage.webhookId)
-      username = await newMessage.guild.members.fetch(newMessage.author.id);
-    let uname = username?.nickname || newMessage.author.username;
-    let authortag = `${
+      author = await newMessage.guild.members.fetch(newMessage.author.id);
+    let uname = author?.nickname || newMessage.author.displayName;
+
+    const authorTag = `${
       newMessage.author.discriminator === "0" ? "@" : ""
     }${uname}${
       newMessage.author.discriminator === "0"
         ? ""
         : `#${newMessage.author.discriminator}`
     }`;
-    if (!authorname || authorname != authortag) {
-      authorname = authortag;
+    const author_Username = `${
+      newMessage.author.discriminator === "0" ? "@" : ""
+    }${newMessage.author.username}${
+      newMessage.author.discriminator === "0"
+        ? ""
+        : `#${newMessage.author.discriminator}`
+    }`;
+    let authorname = await member.get(`${newMessage.guildId}_${authorid}`);
+    if (!authorname || authorname != authorTag) {
+      authorname = authorTag;
       await member.set(`${newMessage.guildId}_${authorid}`, authorname);
+    }
+    let authorusername = await member.get(`${newMessage.author.id}_username`);
+    if (!authorusername || authorusername != author_Username) {
+      authorusername = author_Username;
+      await member.set(`${newMessage.author.id}_username`, authorusername);
     }
 
     if (

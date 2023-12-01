@@ -61,11 +61,41 @@ module.exports = {
     if (message.reference?.messageId) {
       const repliedTo = await fetchRepliedMessage(message);
       if (repliedTo) {
-        let rauthorname = await member.get(
-          `${message.guildId}_${repliedTo.author.id}`
+        let rauthor;
+          if (!repliedTo.webhookId)
+            rauthor = await message.guild.members.fetch(repliedTo.author.id);
+          let runame = rauthor?.nickname || repliedTo.author.displayName;
+
+          const r_authorTag = `${
+            repliedTo.author.discriminator === "0" ? "@" : ""
+          }${runame}${
+            repliedTo.author.discriminator === "0"
+              ? ""
+              : `#${repliedTo.author.discriminator}`
+          }`;
+        const r_author_Username = `${
+          repliedTo.author.discriminator === "0" ? "@" : ""
+        }${repliedTo.author.username}${
+          repliedTo.author.discriminator === "0"
+            ? ""
+            : `#${repliedTo.author.discriminator}`
+        }`;
+        let r_authorname = await member.get(`${repliedTo.author.id}_display`);
+        if (!r_authorname || r_authorname != r_authorTag) {
+          r_authorname = r_authorTag;
+          await member.set(`${repliedTo.author.id}_display`, r_authorname);
+        }
+        let r_authorusername = await member.get(
+          `${repliedTo.author.id}_username`
         );
-        b_str += `${b_p_msg}: ${rauthorname} (<@${repliedTo.author.id}>)\n`;
-        str += `${p_msg}: ${rauthorname} (<@${repliedTo.author.id}>)\n`;
+        if (!r_authorusername || r_authorusername != r_author_Username) {
+          r_authorusername = r_author_Username;
+          await member.set(`${repliedTo.author.id}_username`, r_authorusername);
+        }
+
+        b_str += `${b_p_msg}: ${r_authorTag} (<@${repliedTo.author.id}> / ${r_author_Username})\n`;
+        str += `${p_msg}: ${r_authorTag} (<@${repliedTo.author.id}> / ${r_author_Username})\n`;
+
         const rhasContent = repliedTo.content.length > 0;
         b_str += rhasContent ? `${b_cont}: ${repliedTo.content}\n` : "";
         str += rhasContent ? `${cont}: ${repliedTo.content}\n` : "";
@@ -103,10 +133,11 @@ module.exports = {
       }
     }
     const authorid = await db.get(`${message.id}_author`);
-    const authorname = await member.get(`${message.guildId}_${authorid}`);
+    let displayname = await member.get(`${message.author.id}_display`);
+    let authorusername = await member.get(`${message.author.id}_username`);
 
-    b_str += `${b_u}: ${authorname} (<@${authorid}>)\n`;
-    str += `${u}: ${authorname} (<@${authorid}>)\n`;
+    b_str += `${b_u}: ${displayname} (<@${authorid}> / ${authorusername})\n`;
+    str += `${u}: ${displayname} (<@${authorid}> / ${authorusername})\n`;
 
     const mct = await db.get(`${message.id}_cont`);
 

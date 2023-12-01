@@ -12,18 +12,30 @@ module.exports = {
   description: "Log DMs messages",
   run: async (client, message, secret, trans) => {
     const channel = await client.channels.fetch(secret.dm_log_channel);
+    const messageContent = message.content;
     const authorTag = `${message.author.discriminator === "0" ? "@" : ""}${
-      message.author.username
+      message.author.displayName
     }${
       message.author.discriminator === "0"
         ? ""
         : `#${message.author.discriminator}`
     }`;
-    const messageContent = message.content;
-    let authorname = await member.get(`${message.author.id}`);
+    const author_Username = `${
+      message.author.discriminator === "0" ? "@" : ""
+    }${message.author.username}${
+      message.author.discriminator === "0"
+        ? ""
+        : `#${message.author.discriminator}`
+    }`;
+    let authorname = await member.get(`${message.author.id}_display`);
     if (!authorname || authorname != authorTag) {
       authorname = authorTag;
-      await member.set(`${message.author.id}`, authorname);
+      await member.set(`${message.author.id}_display`, authorname);
+    }
+    let authorusername = await member.get(`${message.author.id}_username`);
+    if (!authorusername || authorusername != author_Username) {
+      authorusername = author_Username;
+      await member.set(`${message.author.id}_username`, authorusername);
     }
     let files, rfiles, receivedEmbed;
     const hasContent = messageContent.length > 0;
@@ -43,19 +55,32 @@ module.exports = {
     if (message.reference?.messageId) {
       const repliedTo = await fetchRepliedMessage(message);
       if (repliedTo) {
-        const rauthorTag = `${
+        const r_authorTag = `${repliedTo.author.discriminator === "0" ? "@" : ""}${
+          repliedTo.author.displayName
+        }${
+          repliedTo.author.discriminator === "0"
+            ? ""
+            : `#${repliedTo.author.discriminator}`
+        }`;
+        const r_author_Username = `${
           repliedTo.author.discriminator === "0" ? "@" : ""
         }${repliedTo.author.username}${
           repliedTo.author.discriminator === "0"
             ? ""
             : `#${repliedTo.author.discriminator}`
         }`;
-        let rauthorname = await member.get(`${repliedTo.author.id}`);
-        if (!rauthorname || rauthorname != rauthorTag) {
-          rauthorname = rauthorTag;
-          await member.set(`${repliedTo.author.id}`, rauthorname);
+        let r_authorname = await member.get(`${repliedTo.author.id}_display`);
+        if (!r_authorname || r_authorname != r_authorTag) {
+          r_authorname = r_authorTag;
+          await member.set(`${repliedTo.author.id}_display`, r_authorname);
         }
-        str += `${p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
+        let r_authorusername = await member.get(`${repliedTo.author.id}_username`);
+        if (!r_authorusername || r_authorusername != r_author_Username) {
+          r_authorusername = r_author_Username;
+          await member.set(`${repliedTo.author.id}_username`, r_authorusername);
+        }
+
+        str += `${p_msg}: ${r_authorTag} (<@${repliedTo.author.id}> / ${r_author_Username})\n`;
         const rhasContent = repliedTo.content.length > 0;
         str += rhasContent ? `${cont}: ${repliedTo.content}\n` : "";
 
@@ -87,7 +112,7 @@ module.exports = {
       }
     }
 
-    str += `${u}: ${authorname} (<@${message.author.id}>)\n`;
+    str += `${u}: ${authorTag} (<@${message.author.id}> / ${author_Username})\n`;
     await db.set(`${message.id}_author`, message.author.id);
 
     if (hasContent) {

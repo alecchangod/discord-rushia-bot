@@ -45,17 +45,30 @@ module.exports = {
       authorid = newMessage.author.id;
       await db.set(`${newMessage.id}_author`, authorid);
     }
-    let authorname = await member.get(`${authorid}`);
-    let authortag = `${newMessage.author.discriminator === "0" ? "@" : ""}${
-      newMessage.author.username
+
+    const authorTag = `${newMessage.author.discriminator === "0" ? "@" : ""}${
+      newMessage.author.displayName
     }${
       newMessage.author.discriminator === "0"
         ? ""
         : `#${newMessage.author.discriminator}`
     }`;
-    if (!authorname || authorname != authortag) {
-      authorname = authortag;
-      await member.set(`${authorid}`, authorname);
+    const author_Username = `${
+      newMessage.author.discriminator === "0" ? "@" : ""
+    }${newMessage.author.username}${
+      newMessage.author.discriminator === "0"
+        ? ""
+        : `#${newMessage.author.discriminator}`
+    }`;
+    let authorname = await member.get(`${newMessage.author.id}_display`);
+    if (!authorname || authorname != authorTag) {
+      authorname = authorTag;
+      await member.set(`${newMessage.author.id}_display`, authorname);
+    }
+    let authorusername = await member.get(`${newMessage.author.id}_username`);
+    if (!authorusername || authorusername != author_Username) {
+      authorusername = author_Username;
+      await member.set(`${newMessage.author.id}_username`, authorusername);
     }
 
     if (
@@ -74,7 +87,7 @@ module.exports = {
 
     nmct += files ? `${file_t}:\n` : "";
 
-    let logContent = `${user}: ${authorname} (<@${authorid}>)`;
+    let logContent = `${user}: ${authorTag} (<@${authorid}> / ${author_Username})`;
 
     let oreceivedEmbed = embed_db;
     let nreceivedEmbed = await db.get(`${newMessage.id}_embed`);

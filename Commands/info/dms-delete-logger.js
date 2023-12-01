@@ -25,16 +25,34 @@ module.exports = {
     if (message.reference?.messageId) {
       const repliedTo = await fetchRepliedMessage(message);
       if (repliedTo) {
-        const rauthorTag = `${
+        const r_authorTag = `${
+          repliedTo.author.discriminator === "0" ? "@" : ""
+        }${repliedTo.author.displayName}${
+          repliedTo.author.discriminator === "0"
+            ? ""
+            : `#${repliedTo.author.discriminator}`
+        }`;
+        const r_author_Username = `${
           repliedTo.author.discriminator === "0" ? "@" : ""
         }${repliedTo.author.username}${
           repliedTo.author.discriminator === "0"
             ? ""
             : `#${repliedTo.author.discriminator}`
         }`;
-        str += `${p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
-        const rhasContent = repliedTo.content.length > 0;
-        str += rhasContent ? `${cont}: ${repliedTo.content}\n` : "";
+        let r_authorname = await member.get(`${repliedTo.author.id}_display`);
+        if (!r_authorname || r_authorname != r_authorTag) {
+          r_authorname = r_authorTag;
+          await member.set(`${repliedTo.author.id}_display`, r_authorname);
+        }
+        let r_authorusername = await member.get(
+          `${repliedTo.author.id}_username`
+        );
+        if (!r_authorusername || r_authorusername != r_author_Username) {
+          r_authorusername = r_author_Username;
+          await member.set(`${repliedTo.author.id}_username`, r_authorusername);
+        }
+
+        str += `${p_msg}: ${r_authorTag} (<@${repliedTo.author.id}> / ${r_author_Username})\n`;
 
         if (repliedTo.stickers.size > 0) {
           const ext = "png";
@@ -55,6 +73,7 @@ module.exports = {
               str += `${attachments.url}\n`;
             });
         }
+        member.get;
         if (repliedTo.embeds[0]) {
           receivedEmbed = repliedTo.embeds;
           str += `${em}:\n`;
@@ -64,9 +83,10 @@ module.exports = {
       }
     }
     const authorid = await db.get(`${message.id}_author`);
-    const authorname = await member.get(`${authorid}`);
+    let displayname = await member.get(`${message.author.id}_display`);
+    let authorusername = await member.get(`${message.author.id}_username`);
 
-    str += `${u}: ${authorname} (<@${authorid}>)\n`;
+    str += `${u}: ${displayname} (<@${authorid}> / ${authorusername})\n`;
 
     const mct = await db.get(`${message.id}_cont`);
 

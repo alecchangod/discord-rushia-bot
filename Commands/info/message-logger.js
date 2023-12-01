@@ -30,10 +30,15 @@ module.exports = {
       const u = trans.strings.find((it) => it.name === "user").trans;
 
       // Start logging
-      let user;
+      let author;
       if (!message.webhookId)
-        user = await message.guild.members.fetch(message.author.id);
-      let uname = user?.nickname || message.author.username;
+        author = await message.guild.members.fetch(message.author.id);
+      let uname = author?.nickname || message.author.displayName;
+
+      var str = `${server}: ${message.guild.name} (${message.guild.id}) ${
+        hasParent ? `\n${parent}: ${message.channel.parent.name}` : ""
+      }\n${ch}: ${message.channel.name} (${message.channel.id})\n`;
+
       const authorTag = `${
         message.author.discriminator === "0" ? "@" : ""
       }${uname}${
@@ -41,42 +46,75 @@ module.exports = {
           ? ""
           : `#${message.author.discriminator}`
       }`;
-      var str = `${server}: ${message.guild.name} (${message.guild.id}) ${
-        hasParent ? `\n${parent}: ${message.channel.parent.name}` : ""
-      }\n${ch}: ${message.channel.name} (${message.channel.id})\n`;
+      const author_Username = `${
+        message.author.discriminator === "0" ? "@" : ""
+      }${message.author.username}${
+        message.author.discriminator === "0"
+          ? ""
+          : `#${message.author.discriminator}`
+      }`;
       let authorname = await member.get(
-        `${message.guildId}_${message.author.id}`
+        `${message.guild.id}_${message.author.id}`
       );
       if (!authorname || authorname != authorTag) {
         authorname = authorTag;
-        await member.set(`${message.guildId}_${message.author.id}`, authorname);
+        await member.set(
+          `${message.guild.id}_${message.author.id}`,
+          authorname
+        );
       }
+      let authorusername = await member.get(`${message.author.id}_username`);
+      if (!authorusername || authorusername != author_Username) {
+        authorusername = author_Username;
+        await member.set(`${message.author.id}_username`, authorusername);
+      }
+
       // Is reply?
       if (message.reference?.messageId) {
         const repliedTo = await fetchRepliedMessage(message);
         if (repliedTo) {
-          let ruser;
+          let rauthor;
           if (!repliedTo.webhookId)
-            ruser = await message.guild.members.fetch(repliedTo.author.id);
-          let runame = ruser?.nickname || repliedTo.author.username;
-          const rauthorTag = `${
+            rauthor = await message.guild.members.fetch(repliedTo.author.id);
+          let runame = rauthor?.nickname || repliedTo.author.displayName;
+
+          const r_authorTag = `${
             repliedTo.author.discriminator === "0" ? "@" : ""
           }${runame}${
             repliedTo.author.discriminator === "0"
               ? ""
               : `#${repliedTo.author.discriminator}`
           }`;
-          let rauthorname = await member.get(
-            `${message.guildId}_${repliedTo.author.id}`
+          const r_author_Username = `${
+            repliedTo.author.discriminator === "0" ? "@" : ""
+          }${repliedTo.author.username}${
+            repliedTo.author.discriminator === "0"
+              ? ""
+              : `#${repliedTo.author.discriminator}`
+          }`;
+          let r_authorname = await member.get(
+            `${message.guild.id}_${repliedTo.author.id}`
           );
-          if (!rauthorname || rauthorname != rauthorTag) {
-            rauthorname = rauthorTag;
+          if (!r_authorname || r_authorname != r_authorTag) {
+            r_authorname = r_authorTag;
             await member.set(
-              `${message.guildId}_${repliedTo.author.id}`,
-              rauthorname
+              `${message.guild.id}_${repliedTo.author.id}`,
+              r_authorname
             );
           }
-          str += `${p_msg}: ${rauthorTag} (<@${repliedTo.author.id}>)\n`;
+          let r_authorusername = await member.get(
+            `${repliedTo.author.id}_username`
+          );
+          if (!r_authorusername || r_authorusername != r_author_Username) {
+            r_authorusername = r_author_Username;
+            await member.set(
+              `${repliedTo.author.id}_username`,
+              r_authorusername
+            );
+          }
+
+          str += `${p_msg}: ${r_authorTag} (<@${repliedTo.author.id}> / ${r_author_Username})\n`;
+
           const rhasContent = repliedTo.content.length > 0;
           str += rhasContent ? `${cont}: ${repliedTo.content}\n` : "";
 
@@ -108,7 +146,7 @@ module.exports = {
         }
       }
 
-      str += `${u}: ${authorname} (<@${message.author.id}>)\n`;
+      str += `${u}: ${authorTag} (<@${message.author.id}> / ${author_Username})\n`;
       await db.set(`${message.id}_author`, message.author.id);
 
       if (hasContent) {

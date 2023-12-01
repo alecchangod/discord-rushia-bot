@@ -8,7 +8,7 @@ module.exports = {
   data: {
     name: "mute",
     description:
-      "Auto delete a certain number of new messages from a specific user in a specific period of time",
+      "Auto delete new messages from a specific user in a specific period of time",
     options: [
       {
         name: "target",
@@ -17,24 +17,24 @@ module.exports = {
         required: true,
       },
       {
-        name: "count",
+        name: "time",
         type: ApplicationCommandOptionType.Integer,
-        description: "The number of messages to delete",
+        description: "Time to mute for",
         required: true,
       },
       {
-        name: "time",
+        name: "count",
         type: ApplicationCommandOptionType.Integer,
-        description: "The amount of minutes to listen to",
-        required: true,
+        description: "Unmute the user after deleting a certain amount of messages (Default to 30)",
+        required: false,
       },
     ],
-    trans: "delmsgs",
+    trans: "mute",
   },
   userPermissions: PermissionsBitField.Flags.ManageMessages,
   async execute(client, interaction, args, secret, trans) {
     const targetUser = interaction.options.getUser("target");
-    const deleteCount = interaction.options.getInteger("count");
+    const deleteCount = interaction.options.getInteger("count") || 30;
     let time = interaction.options.getInteger("time");
     time = time * 60000;
 
