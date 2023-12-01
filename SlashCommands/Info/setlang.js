@@ -9,6 +9,7 @@ const {
   ButtonStyle,
   Message,
   CommandInteraction,
+  PermissionsBitField,
 } = require("discord.js");
 const wait = require("node:timers/promises").setTimeout;
 const { QuickDB } = require("quick.db");
@@ -33,10 +34,10 @@ module.exports = {
 
   async execute(client, interaction, args, secret, trans) {
     try {
-      // Check if the interaction author have permission to delete message
+      // Check if the interaction author have permission to manage server
       if (
         !interaction.member.permissions.has(
-          PermissionsBitField.Flags.ManageMessages
+          PermissionsBitField.Flags.ManageGuild
         ) &&
         interaction.member.id != secret.me
       ) {

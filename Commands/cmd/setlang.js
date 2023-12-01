@@ -25,6 +25,16 @@ module.exports = {
       // Get message information
       const guildId = message.guild.id;
       const author = message.author.id;
+      // Check if the author have permission to manage server
+      if (
+        !message.author.permissions.has(
+          PermissionsBitField.Flags.ManageGuild
+        ) &&
+        message.author.id != secret.me
+      ) {
+        const no_perm = trans.strings.find((it) => it.name === "no_perm").trans;
+        return message.reply(no_perm);
+      }
       // Check if provided language was valid
       const slang = message.content.split(" ")[1];
       // If they inputed an invalid language code
