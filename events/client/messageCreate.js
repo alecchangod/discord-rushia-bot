@@ -315,6 +315,7 @@ client.on("messageCreate", async (message) => {
     )
       return; // Rushia chin server notify (mikeneko)
     if (message.channel.parent?.id === "942625037956030504") return; // Rushia chin small server (2) board
+    if (message.guild.id === "1079103834015662130") return; // Chat group
 
     // Ignore bot message
     if (message.author.bot) {
