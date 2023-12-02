@@ -144,15 +144,17 @@ module.exports = {
           `${b_link_t}: ${link}\n${b_logContent} ${b_omct}`,
           log,
           _,
-          oreceivedEmbed
+          oreceivedEmbed,
+          true
         );
         split(
           `${b_link_t}: ${link}\n${b_logContent} ${b_nmct}`,
           log,
           files,
-          nreceivedEmbed
+          nreceivedEmbed,
+          true
         );
-      } else split(b_str, log, files);
+      } else split(b_str, log, files, _, true);
     });
     if (channel) {
       if (oreceivedEmbedString !== nreceivedEmbedString) {
@@ -160,15 +162,17 @@ module.exports = {
           `${link_t}: ${link}\n${logContent} ${omct}`,
           channel,
           _,
-          oreceivedEmbed
+          oreceivedEmbed,
+          true
         );
         split(
           `${link_t}: ${link}\n${logContent} ${nmct}`,
           channel,
           files,
-          nreceivedEmbed
+          nreceivedEmbed,
+          true
         );
-      } else split(str, channel, files);
+      } else split(str, channel, files, _, true);
     }
   },
 };

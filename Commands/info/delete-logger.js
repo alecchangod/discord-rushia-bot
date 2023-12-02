@@ -62,17 +62,17 @@ module.exports = {
       const repliedTo = await fetchRepliedMessage(message);
       if (repliedTo) {
         let rauthor;
-          if (!repliedTo.webhookId)
-            rauthor = await message.guild.members.fetch(repliedTo.author.id);
-          let runame = rauthor?.nickname || repliedTo.author.displayName;
+        if (!repliedTo.webhookId)
+          rauthor = await message.guild.members.fetch(repliedTo.author.id);
+        let runame = rauthor?.nickname || repliedTo.author.displayName;
 
-          const r_authorTag = `${
-            repliedTo.author.discriminator === "0" ? "@" : ""
-          }${runame}${
-            repliedTo.author.discriminator === "0"
-              ? ""
-              : `#${repliedTo.author.discriminator}`
-          }`;
+        const r_authorTag = `${
+          repliedTo.author.discriminator === "0" ? "@" : ""
+        }${runame}${
+          repliedTo.author.discriminator === "0"
+            ? ""
+            : `#${repliedTo.author.discriminator}`
+        }`;
         const r_author_Username = `${
           repliedTo.author.discriminator === "0" ? "@" : ""
         }${repliedTo.author.username}${
@@ -170,7 +170,7 @@ module.exports = {
     files = attachments1.concat(attachments2);
 
     client.channels.fetch(secret.delete_log_channel).then((log) => {
-      split(b_str, log, files, receivedEmbed);
+      split(b_str, log, files, receivedEmbed, true);
     });
 
     // Don't log message deleted in the "log"
@@ -178,7 +178,7 @@ module.exports = {
     const log = message.guild.channels.cache.find(
       (ch) => ch.name.toLowerCase() === "log"
     );
-    if (log) split(str, log, files, receivedEmbed);
+    if (log) split(str, log, files, receivedEmbed, true);
   },
 };
 

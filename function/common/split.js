@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("@discordjs/builders");
-async function split(str, channel, file, embed) {
+async function split(str, channel, file, embed, nomention) {
   const exampleEmbed = embed
     ? new EmbedBuilder(embed).setTitle("New title")
     : null;
@@ -16,11 +16,13 @@ async function split(str, channel, file, embed) {
     const part = str.substring(startPos, endPos);
     startPos = endPos + 1;
     const content = `${part} \nPart ${partNumber} / ${totalParts}`;
-    // Don't mention user in the log
     let messageOptions = {
       content: content,
-      allowedMentions: { parse: [] },
     };
+
+    // Don't mention user in the log
+    if ((nomention = true)) messageOptions.allowedMentions = { parse: [] };
+
     if (partNumber === 1) {
       // Add embed if found
       if (embed) {

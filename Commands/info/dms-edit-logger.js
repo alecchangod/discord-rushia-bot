@@ -108,8 +108,8 @@ module.exports = {
     str += `\n========================================\n`;
     str += nmct;
     if (oreceivedEmbedString !== nreceivedEmbedString) {
-      split(`${logContent} ${omct}`, log, _, oreceivedEmbed);
-      split(`${logContent} ${nmct}`, log, files, nreceivedEmbed);
-    } else split(str, log, files);
+      split(`${logContent} ${omct}`, log, _, oreceivedEmbed, true);
+      split(`${logContent} ${nmct}`, log, files, nreceivedEmbed, true);
+    } else split(str, log, files, _, true);
   },
 };

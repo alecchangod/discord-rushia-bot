@@ -1,12 +1,14 @@
 const { QuickDB } = require("quick.db");
 const member = new QuickDB({ filePath: "database/members.sqlite" });
 const wait = require("node:timers/promises").setTimeout;
+const split = require("../../function/common/split.js");
 
 module.exports = {
   name: "Member Updates",
   aliases: ["member-update"],
   description: "log member changes",
   run: async (client, oldMember, newMember, secret, trans, b_trans) => {
+    let _;
     // Check if was saved at database
     const rolehasRecord = await member.get(
       `${newMember.guild.id}_${newMember.user.id}_roles`
@@ -55,8 +57,12 @@ module.exports = {
 
     // Save if not yet saved
     if (!rolehasRecord && newMember.guild.id) {
-      newrecord.send(
-        `${newMember.guild.name}(${newMember.guild.id})\n ${newMember.user.tag} ${adding}`
+      split(
+        `${newMember.guild.name}(${newMember.guild.id})\n ${newMember.user.tag} ${adding}`,
+        newrecord,
+        _,
+        _,
+        true
       );
       let role_id_added = [];
       let role_added = [];
@@ -74,15 +80,23 @@ module.exports = {
           `${newMember.guild.id}_${newMember.user.id}_roles`,
           role_id_added
         );
-        newrecord.send(
+        split(
           `${newMember.guild.name}(${newMember.guild.id})\n${
             newMember.user.tag
-          } ${b_m_add} ${role_added.join(", ")}`
+          } ${b_m_add} ${role_added.join(", ")}`,
+          newrecord,
+          _,
+          _,
+          true
         );
       })();
 
-      newrecord.send(
-        `${newMember.guild.name}(${newMember.guild.id})\n${newMember.user.tag} ${added}`
+      split(
+        `${newMember.guild.name}(${newMember.guild.id})\n${newMember.user.tag} ${added}`,
+        newrecord,
+        _,
+        _,
+        true
       );
     }
     // Find log channel
@@ -117,10 +131,14 @@ module.exports = {
         );
         const newr = `${newMember.user.tag} ${m_rm} ${roleNames}`;
         const b_newr = `${newMember.user.tag} ${b_m_rm} ${roleNames}`;
-        rolelog.send(
-          `**${b_r_changed}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_newr}`
+        split(
+          `**${b_r_changed}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_newr}`,
+          rolelog,
+          _,
+          _,
+          true
         );
-        if (log) log.send(`**${r_changed}**\n\n${newr}`);
+        if (log) split(`**${r_changed}**\n\n${newr}`, log, _, _, true);
       }
     }
 
@@ -137,10 +155,14 @@ module.exports = {
         );
         const rmr = `${newMember.user.tag} ${m_add} ${roleNames}`;
         const b_rmr = `${newMember.user.tag} ${b_m_add} ${roleNames}`;
-        rolelog.send(
-          `**${b_r_changed}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_rmr}`
+        split(
+          `**${b_r_changed}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_rmr}`,
+          rolelog,
+          _,
+          _,
+          true
         );
-        if (log) log.send(`**${r_changed}**\n\n${rmr}`);
+        if (log) split(`**${r_changed}**\n\n${rmr}`, log, _, _, true);
       }
     }
 
@@ -161,10 +183,14 @@ module.exports = {
       const b_name = `${namehasRecord} ${b_now_is} ${authorTag}`;
       // Only send message when really changed name
       if (namehasRecord != authorTag) {
-        usernamelog.send(
-          `**${b_u_change}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_name}`
+        split(
+          `**${b_u_change}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_name}`,
+          usernamelog,
+          _,
+          _,
+          true
         );
-        if (log) log.send(`**${u_change}**\n\n${name}`);
+        if (log) split(`**${u_change}**\n\n${name}`, log, _, _, true);
       }
     }
     // Display name changes
@@ -193,13 +219,23 @@ module.exports = {
       } ${removed_nickname ? namehasRecord : authorTag}`;
       // Only send message when really changed name
       if (namehasRecord != authorTag) {
-        usernamelog.send(
+        split(
           `**${removed_nickname ? b_n_removed : b_n_change}**\n\n${
             newMember.guild.name
-          }(${newMember.guild.id})\n ${b_name}`
+          }(${newMember.guild.id})\n ${b_name}`,
+          usernamelog,
+          _,
+          _,
+          true
         );
         if (log)
-          log.send(`**${removed_nickname ? n_removed : n_change}**\n\n${name}`);
+          split(
+            `**${removed_nickname ? n_removed : n_change}**\n\n${name}`,
+            log,
+            _,
+            _,
+            true
+          );
       }
     }
   },

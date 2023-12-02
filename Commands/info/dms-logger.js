@@ -55,9 +55,9 @@ module.exports = {
     if (message.reference?.messageId) {
       const repliedTo = await fetchRepliedMessage(message);
       if (repliedTo) {
-        const r_authorTag = `${repliedTo.author.discriminator === "0" ? "@" : ""}${
-          repliedTo.author.displayName
-        }${
+        const r_authorTag = `${
+          repliedTo.author.discriminator === "0" ? "@" : ""
+        }${repliedTo.author.displayName}${
           repliedTo.author.discriminator === "0"
             ? ""
             : `#${repliedTo.author.discriminator}`
@@ -74,7 +74,9 @@ module.exports = {
           r_authorname = r_authorTag;
           await member.set(`${repliedTo.author.id}_display`, r_authorname);
         }
-        let r_authorusername = await member.get(`${repliedTo.author.id}_username`);
+        let r_authorusername = await member.get(
+          `${repliedTo.author.id}_username`
+        );
         if (!r_authorusername || r_authorusername != r_author_Username) {
           r_authorusername = r_author_Username;
           await member.set(`${repliedTo.author.id}_username`, r_authorusername);
@@ -174,7 +176,7 @@ module.exports = {
     let attachments2 = files ? Array.from(files) : [];
     files = attachments1.concat(attachments2);
 
-    split(str, channel, files, receivedEmbed);
+    split(str, channel, files, receivedEmbed, true);
   },
 };
 

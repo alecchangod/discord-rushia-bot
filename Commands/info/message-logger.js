@@ -208,7 +208,7 @@ module.exports = {
       let attachments2 = files ? Array.from(files) : [];
       files = attachments1.concat(attachments2);
 
-      split(str, channel, files, receivedEmbed);
+      split(str, channel, files, receivedEmbed, true);
     } catch (e) {
       console.log(e);
     }
