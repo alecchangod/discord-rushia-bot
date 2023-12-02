@@ -13,9 +13,10 @@ module.exports = {
     const rolehasRecord = await member.get(
       `${newMember.guild.id}_${newMember.user.id}_roles`
     );
-    const namehasRecord =
-      (await member.get(`${newMember.guild.id}_${newMember.user.id}`)) ||
-      (await member.get(`${newMember.user.id}_username`));
+    const namehasRecord = await member.get(
+      `${newMember.guild.id}_${newMember.user.id}`
+    );
+    const usernameRecord = await member.get(`${newMember.user.id}_username`);
 
     // Few logging channels
     const newrecord = await client.channels.fetch(secret.newrecord_log_channel);
@@ -99,6 +100,31 @@ module.exports = {
         true
       );
     }
+
+    if (!namehasRecord && newMember.guild.id) {
+      const authorTag = `${newMember.user.discriminator === "0" ? "@" : ""}${
+        newMember.displayName
+      }${
+        newMember.user.discriminator === "0"
+          ? ""
+          : `#${newMember.user.discriminator}`
+      }`;
+      (async () => {
+        await member.set(
+          `${newMember.guild.id}_${newMember.user.id}`,
+          authorTag
+        );
+      })();
+
+      split(
+        `${newMember.guild.name}(${newMember.guild.id})\n${authorTag} ${added}`,
+        newrecord,
+        _,
+        _,
+        true
+      );
+    }
+
     // Find log channel
     const log = newMember.guild.channels.cache.find(
       (ch) => ch.name.toLowerCase() === "log"
@@ -168,7 +194,7 @@ module.exports = {
 
     // Check for name changes and save new username
     // Username changes
-    if (newMember.user.tag && oldMember.user.tag != newMember.user.tag) {
+    if (newMember.user.tag && usernameRecord != newMember.user.tag) {
       const authorTag = `${newMember.user.discriminator === "0" ? "@" : ""}${
         newMember.user.username
       }${
@@ -179,10 +205,11 @@ module.exports = {
       (async () => {
         await member.set(`${newMember.user.id}_username`, authorTag);
       })();
-      const name = `${namehasRecord} ${now_is} ${authorTag}`;
-      const b_name = `${namehasRecord} ${b_now_is} ${authorTag}`;
-      // Only send message when really changed name
-      if (namehasRecord != authorTag) {
+      const name = `${usernameRecord} ${now_is} ${authorTag}`;
+      const b_name = `${usernameRecord} ${b_now_is} ${authorTag}`;
+      // Only send message when really changed name and old record wasn't null
+      if (!usernameRecord) return;
+      if (usernameRecord != authorTag) {
         split(
           `**${b_u_change}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_name}`,
           usernamelog,
@@ -201,7 +228,11 @@ module.exports = {
         ? ""
         : `#${newMember.user.discriminator}`
     }`;
-    if (newMember.displayName || namehasRecord != authorTag) {
+    if (
+      newMember.displayName &&
+      namehasRecord != authorTag &&
+      newMember.guild.id
+    ) {
       (async () => {
         await member.set(
           `${newMember.guild.id}_${newMember.user.id}`,
@@ -209,6 +240,7 @@ module.exports = {
         );
       })();
 
+      if (!namehasRecord) return;
       let removed_nickname =
         newMember.user.globalName === newMember.displayName;
       const name = `${removed_nickname ? authorTag : namehasRecord} ${
