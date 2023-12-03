@@ -71,6 +71,7 @@ module.exports = {
 
       // Is reply?
       if (message.reference?.messageId) {
+        await db.set(`${message.id}_reference`, message.reference.messageId);
         const repliedTo = await fetchRepliedMessage(message);
         if (repliedTo) {
           let rauthor;

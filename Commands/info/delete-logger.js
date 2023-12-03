@@ -58,8 +58,10 @@ module.exports = {
       message.channel.id
     }>) ${was_deleted}\n`;
     // Is reply?
-    if (message.reference?.messageId) {
-      const repliedTo = await fetchRepliedMessage(message);
+    const referenceid =
+      (await db.get(`${message.id}_reference`)) || message.reference?.messageId;
+    if (referenceid) {
+      const repliedTo = await fetchRepliedMessage(message, referenceid);
       if (repliedTo) {
         let rauthor;
         if (!repliedTo.webhookId)
@@ -133,7 +135,9 @@ module.exports = {
       }
     }
     const authorid = await db.get(`${message.id}_author`);
-    let displayname = message.guild.id ? await member.get(`${message.guild.id}_${authorid}`) : await member.get(`${authorid}_display`);
+    let displayname = message.guild.id
+      ? await member.get(`${message.guild.id}_${authorid}`)
+      : await member.get(`${authorid}_display`);
     let authorusername = await member.get(`${authorid}_username`);
 
     b_str += `${b_u}: ${displayname} (<@${authorid}> / ${authorusername})\n`;
@@ -182,9 +186,9 @@ module.exports = {
   },
 };
 
-async function fetchRepliedMessage(message) {
+async function fetchRepliedMessage(message, messageId) {
   try {
-    return await message.channel.messages.fetch(message.reference.messageId);
+    return await message.channel.messages.fetch(messageId);
   } catch (error) {
     return null;
   }
