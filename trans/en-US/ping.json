@@ -1,12 +1,16 @@
 {
-    "strings": [
-        {
-            "name": "your_ping",
-            "trans": "Your ping"
-        },
-        {
-            "name": "bot_ping",
-            "trans": "Bot ping"
-        }
-    ]
+  "strings": [
+    {
+      "name": "bot_ping",
+      "trans": "Bot ping"
+    },
+    {
+      "name": "your_ping",
+      "trans": "Your ping"
+    },
+    {
+      "name": "ms",
+      "trans": "ms"
+    }
+  ]
 }

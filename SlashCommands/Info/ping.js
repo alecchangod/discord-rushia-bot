@@ -1,3 +1,4 @@
+const trans = require("../../function/common/trans.js");
 module.exports = {
   data: {
     name: "ping",
@@ -5,13 +6,18 @@ module.exports = {
     description: "get your ping",
     trans: "ping",
   },
-  async execute(client, interaction, args, secret, trans) {
+  async execute(client, interaction, args, secret, _, langc) {
+    // Get translation
+    const cmd = module.exports.data.name;
+    const { your_ping, bot_ping, ms } = await trans(cmd, langc, [
+      "your_ping",
+      "bot_ping",
+      "ms",
+    ]);
     // Get ping
     var yourping = new Date().getTime() - interaction.createdTimestamp;
     var botping = Math.round(client.ws.ping);
     // Report ping to the user
-    const your_ping = trans.strings.find((it) => it.name === "your_ping").trans;
-    const bot_ping = trans.strings.find((it) => it.name === "bot_ping").trans;
-    interaction.reply(`${your_ping}: ${yourping} \n${bot_ping}: ${botping}`);
+    interaction.reply(`${your_ping}: ${yourping}${ms} \n${bot_ping}: ${botping}${ms}`);
   },
 };
