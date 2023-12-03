@@ -1,0 +1,17 @@
+{
+    "strings": [
+      {
+        "name": "bot_ping",
+        "trans": "ボットのping"
+      },
+      {
+        "name": "your_ping",
+        "trans": "あなた様のping"
+      },
+      {
+        "name": "ms",
+        "trans": "ms"
+      }
+    ]
+  }
+  
