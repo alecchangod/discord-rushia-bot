@@ -73,7 +73,7 @@ module.exports = {
           !JSON.stringify(rolehasRecord).includes(role.id)
         ) {
           role_id_added.push(role.id);
-          role_added.push(role.name);
+          role_added.push(`@\`\`${role.name}\`\``);
         }
       });
       (async () => {
@@ -146,7 +146,7 @@ module.exports = {
 
     // Removal
     const removedRoles = oldMember.roles.cache.filter(
-      (role) => !recorded.includes(role.id)
+      (role) => !newMember.roles.cache.has(role.id)
     );
     if (removedRoles.size) {
       const roleNames = removedRoles.map((r) => r.name).toString();
@@ -155,8 +155,8 @@ module.exports = {
           `${newMember.guild.id}_${newMember.user.id}_roles`,
           removedRoles.map((r) => r.id)
         );
-        const newr = `${newMember.user.tag} ${m_rm} ${roleNames}`;
-        const b_newr = `${newMember.user.tag} ${b_m_rm} ${roleNames}`;
+        const newr = `${newMember.user.tag} ${m_rm} @\`\`${roleNames}\`\``;
+        const b_newr = `${newMember.user.tag} ${b_m_rm} @\`\`${roleNames}\`\``;
         split(
           `**${b_r_changed}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_newr}`,
           rolelog,
@@ -170,7 +170,7 @@ module.exports = {
 
     // Addition
     const addedRoles = newMember.roles.cache.filter(
-      (role) => !recorded.includes(role.id)
+      (role) => !oldMember.roles.cache.has(role.id)
     );
     if (addedRoles.size) {
       const roleNames = addedRoles.map((r) => r.name).toString();
@@ -179,8 +179,8 @@ module.exports = {
           `${newMember.guild.id}_${newMember.user.id}_roles`,
           addedRoles.map((r) => r.id)
         );
-        const rmr = `${newMember.user.tag} ${m_add} ${roleNames}`;
-        const b_rmr = `${newMember.user.tag} ${b_m_add} ${roleNames}`;
+        const rmr = `${newMember.user.tag} ${m_add} @\`\`${roleNames}\`\``;
+        const b_rmr = `${newMember.user.tag} ${b_m_add} @\`\`${roleNames}\`\``;
         split(
           `**${b_r_changed}**\n\n${newMember.guild.name}(${newMember.guild.id})\n ${b_rmr}`,
           rolelog,
