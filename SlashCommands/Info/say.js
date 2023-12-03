@@ -3,6 +3,7 @@ const {
   ApplicationCommandOptionType,
   AttachmentBuilder,
 } = require("discord.js");
+const wait = require("node:timers/promises").setTimeout;
 const fetch = require("node-fetch");
 
 module.exports = {
@@ -25,6 +26,12 @@ module.exports = {
             name: "file",
             type: ApplicationCommandOptionType.Attachment,
             description: "The file to send",
+            required: false,
+          },
+          {
+            name: "autodelete",
+            type: ApplicationCommandOptionType.Integer,
+            description: "Auto delete the message(in seconds)",
             required: false,
           },
         ],
@@ -52,6 +59,12 @@ module.exports = {
             description: "The file to send",
             required: false,
           },
+          {
+            name: "autodelete",
+            type: ApplicationCommandOptionType.Integer,
+            description: "Auto delete the message(in seconds)",
+            required: false,
+          },
         ],
       },
     ],
@@ -75,6 +88,7 @@ module.exports = {
       if (isAllowed) {
         // Get message to send
         const content = interaction.options.getString("content");
+        const autodelete = interaction.options.getInteger("autodelete") * 1000;
         var i_file = await interaction.options.getAttachment("file");
         const messageId =
           interaction.options.getSubcommand() === "reply"
@@ -111,11 +125,18 @@ module.exports = {
             .get(interaction.channelId)
             .messages.fetch(messageId);
           if (message) {
-            message.reply(
-              file
-                ? { content: content, files: [attach] }
-                : { content: content }
-            );
+            message
+              .reply(
+                file
+                  ? { content: content, files: [attach] }
+                  : { content: content }
+              )
+              .then(async (msg) => {
+                if (autodelete) {
+                  await wait(autodelete);
+                  msg.delete();
+                }
+              });
           } else {
             const invalid_id = trans.strings.find(
               (it) => it.name === "invalid_id"
@@ -128,9 +149,18 @@ module.exports = {
         }
         // If not, send the message normally
         else {
-          interaction.channel.send(
-            file ? { content: content, files: [attach] } : { content: content }
-          );
+          interaction.channel
+            .send(
+              file
+                ? { content: content, files: [attach] }
+                : { content: content }
+            )
+            .then(async (msg) => {
+              if (autodelete) {
+                await wait(autodelete);
+                msg.delete();
+              }
+            });
         }
 
         interaction.editReply(
