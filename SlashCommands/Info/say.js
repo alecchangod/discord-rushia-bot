@@ -107,7 +107,19 @@ module.exports = {
         // If there were file provided,
         // Buffer the file and set the filename
         let attach;
+        let size = 0;
         if (i_file?.attachment) {
+          i_file.attachments.forEach((attachments) => {
+            size += attachments.size;
+          });
+          const invalid_filesize = trans.strings.find(
+            (it) => it.name === "invalid_filesize"
+          ).trans;
+          if (size > 26214400)
+            return interaction.editReply({
+              content: invalid_filesize,
+              ephemeral: true,
+            });
           var file = await fetch(i_file.attachment);
           const buffer = await file.buffer();
           attach = new AttachmentBuilder(buffer);

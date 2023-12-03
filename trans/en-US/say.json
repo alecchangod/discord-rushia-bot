@@ -19,6 +19,10 @@
         {
             "name": "nothing",
             "trans": "Please provide a file or content to say."
+        },
+        {
+            "name": "invalid_filesize",
+            "trans": "File size exists discord's limit of 25MB."
         }
     ]
 }

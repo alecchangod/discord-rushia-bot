@@ -297,10 +297,15 @@ client.on("messageCreate", async (message) => {
     avatarURL: user.displayAvatarURL(),
   };
 
-  // Add attatchments when found
-  if (message.attachments.size >= 1)
+  // Add attatchments when found and doesn't exist the file size limit
+  if (message.attachments.size >= 1) {
+    let size = 0;
+    message.attachments.forEach((attachments) => {
+      size += attachments.size;
+    });
+    if (size > 26214400) return;
     msg.files = Array.from(message.attachments.values());
-
+  }
   // Resend user message as a webhook
   try {
     await webhook.send(msg).then(async () => await message.delete());
