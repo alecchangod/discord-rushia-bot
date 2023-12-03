@@ -177,7 +177,7 @@ module.exports = {
       if (roleNames.length) {
         await member.push(
           `${newMember.guild.id}_${newMember.user.id}_roles`,
-          addedRoles.map((r) => r.id)
+          ...addedRoles.map((r) => r.id)
         );
         const rmr = `${newMember.user.tag} ${m_add} @\`\`${roleNames}\`\``;
         const b_rmr = `${newMember.user.tag} ${b_m_add} @\`\`${roleNames}\`\``;
