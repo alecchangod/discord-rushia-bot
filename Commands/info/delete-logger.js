@@ -133,8 +133,8 @@ module.exports = {
       }
     }
     const authorid = await db.get(`${message.id}_author`);
-    let displayname = await member.get(`${message.author.id}_display`);
-    let authorusername = await member.get(`${message.author.id}_username`);
+    let displayname = message.guild.id ? await member.get(`${message.guild.id}_${authorid}`) : await member.get(`${authorid}_display`);
+    let authorusername = await member.get(`${authorid}_username`);
 
     b_str += `${b_u}: ${displayname} (<@${authorid}> / ${authorusername})\n`;
     str += `${u}: ${displayname} (<@${authorid}> / ${authorusername})\n`;
