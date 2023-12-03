@@ -269,8 +269,7 @@ client.on("messageCreate", async (message) => {
       : message.content.split("<:")[1].split(":")[1].split(">")[0];
     emoji = client.emojis.cache.get(emoji_id);
   }
-  if (message.stickers.size >= 1 || message.attachments.size >= 1) return;
-  if (!message.content || message.content.length < 1) return;
+  if (message.stickers.size >= 1) return;
 
   // Find webhook that the bot can use
   const webhookClient = await message.channel.fetchWebhooks();
@@ -291,15 +290,20 @@ client.on("messageCreate", async (message) => {
   const user = await message.guild.members.fetch(message.author.id);
   let uname = user.nickname ? user.nickname : message.author.username;
 
+  // Set message details
+  let msg = {
+    content: message.content.toString(),
+    username: uname,
+    avatarURL: user.displayAvatarURL(),
+  };
+
+  // Add attatchments when found
+  if (message.attachments.size >= 1)
+    msg.files = Array.from(message.attachments.values());
+
   // Resend user message as a webhook
   try {
-    await webhook
-      .send({
-        content: message.content.toString(),
-        username: uname,
-        avatarURL: user.displayAvatarURL(),
-      })
-      .then(async () => await message.delete());
+    await webhook.send(msg).then(async () => await message.delete());
   } catch (error) {
     console.log(error);
     console.log(message);
