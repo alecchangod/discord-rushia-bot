@@ -1,0 +1,16 @@
+{
+  "strings": [
+    {
+      "name": "bot_ping",
+      "trans": "機器人ping值"
+    },
+    {
+      "name": "your_ping",
+      "trans": "你的ping值"
+    },
+    {
+      "name": "ms",
+      "trans": "毫秒"
+    }
+  ]
+}
