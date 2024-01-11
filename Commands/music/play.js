@@ -10,6 +10,7 @@ module.exports = {
     const string = args.join(" ");
     if (!string)
       return message.channel.send(`${client.emotes.error} | ${not_found}`);
+
     client.distube.play(message.member.voice.channel, string, {
       member: message.member,
       textChannel: message.channel,

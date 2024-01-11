@@ -1,5 +1,4 @@
 const { Constants } = require("discord.js");
-
 module.exports = {
   name: "join",
   aliases: ["join"],
@@ -9,7 +8,7 @@ module.exports = {
     var invalid_ch = trans.strings.find((it) => it.name === "invalid_ch").trans;
     var no_ch = trans.strings.find((it) => it.name === "no_ch").trans;
 
-    let voiceChannel = message.member.voice.channel;
+    let voiceChannel;
     if (args[0]) {
       voiceChannel = await client.channels.fetch(args[0]);
       if (!Constants.VoiceBasedChannelTypes.includes(voiceChannel?.type)) {
@@ -18,9 +17,16 @@ module.exports = {
         );
       }
     }
+    else if (message.member.voice.channel.id){
+      voiceChannel = await client.channels.fetch(
+        message.member.voice.channel.id
+      );
+    }
+
     if (!voiceChannel) {
       return message.channel.send(`${client.emotes.error} | ${no_ch}`);
     }
-    client.distube.voices.join(voiceChannel);
+
+    await client.distube.voices.join(voiceChannel);
   },
 };
