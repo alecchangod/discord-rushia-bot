@@ -2,6 +2,8 @@
 const client = require("../../index.js");
 const secret = require("../../config.json");
 const cron = require("cron");
+const { spawn } = require("node:child_process");
+const fs = require("fs");
 
 // Define function
 // Schedule Messages
@@ -13,6 +15,48 @@ function startScheduledMessage(time, server, channelid, contents) {
   });
   scheduledMessage.start();
 }
+
+async function start_download_vid(time, server, channelid, link, path) {
+  let download_vid = new cron.CronJob(time, async () => {
+    const guild = client.guilds.cache.get(server);
+    const channel = guild.channels.cache.get(channelid);
+
+    const command = `yt-dlp`;
+    const args = [
+      "--live-from-start",
+      "-f",
+      "bv[ext=mp4]+ba[ext=m4a]",
+      "--embed-thumbnail",
+      "--write-thumbnail",
+      "--write-description",
+      "--write-info-json",
+      "-o",
+      `${path}/%(title)s-%(id)s.%(ext)s`,
+      link,
+    ];
+
+    const child = spawn(command, args);
+    let log = "";
+
+    child.stdout.on("data", (data) => {
+      // console.log(`stdout: ${data}`);
+      log += data;
+    });
+
+    child.stderr.on("data", (data) => {
+      console.error(`stderr: ${data}`);
+    });
+
+    child.on("close", (code) => {
+      console.log(`child process exited with code ${code}`);
+      // console.log(log);
+      fs.writeFileSync(`${path}/down.log`, log, "utf8");
+      channel.send(`Done backup of ${link}`)
+    });
+  });
+  download_vid.start();
+}
+
 // Self-role
 async function handleSelfRole(guildid, channel, messageid, reactionid, roleid) {
   const sr_log = await client.channels.fetch(secret.self_role_log_channel);
@@ -92,4 +136,13 @@ client.on("ready", async () => {
     "958407417559908382",
     "964140235401355304"
   );
+
+  // Start to backup video
+  // await start_download_vid(
+  //   "20 41 * * * *", // time
+  //   "107910383401566213", // server
+  //   "107910383513135108", // discord channelid
+  //   "https://www.youtube.com/watch?v=", // video link
+  //   "~/backup/" // local path to store the video
+  // );
 });
