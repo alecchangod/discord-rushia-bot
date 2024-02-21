@@ -44,7 +44,7 @@
     "formidable": "^3.5.0",
     "fs": "^0.0.1-security",
     "https-proxy-agent": "^5.0.1",
-    "ip": "^1.1.8",
+    "ip": "^1.1.9",
     "libsodium-wrappers": "^0.7.13",
     "moment": "^2.29.4",
     "playwright": "^1.32.0",
